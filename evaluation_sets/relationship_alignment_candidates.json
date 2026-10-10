@@ -1,0 +1,1214 @@
+{
+  "canonical_dataset": "VG150",
+  "canonical_predicate_count": 50,
+  "mapping_definitions": {
+    "EXACT": "Same predicate meaning and effectively identical relationship semantics and direction.",
+    "SEMANTIC_EQUIVALENT": "Different wording/lexical/grammatical form but identical relationship semantics and direction.",
+    "AMBIGUOUS": "Potentially related VG150 predicate exists, but equivalence is incomplete, polysemous, or loses key constraints.",
+    "NO_MATCH": "No appropriate VG150 predicate exists in the canonical vocabulary."
+  },
+  "summary_statistics": {
+    "PSG": {
+      "total_predicates": 56,
+      "counts": {
+        "EXACT": 22,
+        "SEMANTIC_EQUIVALENT": 1,
+        "AMBIGUOUS": 6,
+        "NO_MATCH": 27
+      }
+    },
+    "IndoorVG": {
+      "total_predicates": 37,
+      "counts": {
+        "EXACT": 29,
+        "SEMANTIC_EQUIVALENT": 0,
+        "AMBIGUOUS": 5,
+        "NO_MATCH": 3
+      }
+    },
+    "OpenImagesV6": {
+      "total_predicates": 31,
+      "counts": {
+        "EXACT": 4,
+        "SEMANTIC_EQUIVALENT": 6,
+        "AMBIGUOUS": 4,
+        "NO_MATCH": 17
+      }
+    }
+  },
+  "provisional_common_vocabulary": {
+    "strict_4_way_intersection_count": 6,
+    "strict_4_way_intersection_predicates": [
+      "eating",
+      "hanging from",
+      "holding",
+      "in",
+      "on",
+      "under"
+    ],
+    "union_supported_canonical_predicates_count": 36,
+    "union_supported_canonical_predicates": [
+      "above",
+      "against",
+      "and",
+      "at",
+      "attached to",
+      "behind",
+      "between",
+      "carrying",
+      "covering",
+      "eating",
+      "for",
+      "hanging from",
+      "has",
+      "holding",
+      "in",
+      "in front of",
+      "laying on",
+      "looking at",
+      "lying on",
+      "mounted on",
+      "near",
+      "of",
+      "on",
+      "on back of",
+      "over",
+      "playing",
+      "riding",
+      "sitting on",
+      "standing on",
+      "under",
+      "using",
+      "walking on",
+      "watching",
+      "wearing",
+      "wears",
+      "with"
+    ],
+    "status": "PROVISIONAL \u2014 Subject to manual researcher review before freezing common evaluation vocabulary."
+  },
+  "mappings": {
+    "PSG": [
+      {
+        "source_id": 1,
+        "source_predicate": "over",
+        "canonical_id": 33,
+        "canonical_predicate": "over",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; expresses spatial position higher than/vertically above the object in the subject\u2192object direction."
+      },
+      {
+        "source_id": 2,
+        "source_predicate": "in front of",
+        "canonical_id": 23,
+        "canonical_predicate": "in front of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; expresses anterior spatial positioning relative to the reference object."
+      },
+      {
+        "source_id": 3,
+        "source_predicate": "beside",
+        "canonical_id": 29,
+        "canonical_predicate": "near",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "'beside' specifies strict lateral adjacency (next to), whereas VG150 'near' denotes general spatial proximity without orientation constraints."
+      },
+      {
+        "source_id": 4,
+        "source_predicate": "on",
+        "canonical_id": 31,
+        "canonical_predicate": "on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; expresses physical contact and surface support."
+      },
+      {
+        "source_id": 5,
+        "source_predicate": "in",
+        "canonical_id": 22,
+        "canonical_predicate": "in",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; expresses spatial containment or interior placement."
+      },
+      {
+        "source_id": 6,
+        "source_predicate": "attached to",
+        "canonical_id": 7,
+        "canonical_predicate": "attached to",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; denotes physical fastening or mechanical connection."
+      },
+      {
+        "source_id": 7,
+        "source_predicate": "hanging from",
+        "canonical_id": 19,
+        "canonical_predicate": "hanging from",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; denotes suspension from a support anchor."
+      },
+      {
+        "source_id": 8,
+        "source_predicate": "on back of",
+        "canonical_id": 32,
+        "canonical_predicate": "on back of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; denotes surface support upon the posterior or dorsal region of an entity."
+      },
+      {
+        "source_id": 9,
+        "source_predicate": "falling off",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Dynamic downward detachment action with no semantic counterpart in VG150."
+      },
+      {
+        "source_id": 10,
+        "source_predicate": "going down",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Directional descending movement; no equivalent predicate in VG150."
+      },
+      {
+        "source_id": 11,
+        "source_predicate": "stopping on",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Dynamic deceleration/transition to rest on a surface; no general counterpart in VG150."
+      },
+      {
+        "source_id": 12,
+        "source_predicate": "between",
+        "canonical_id": 10,
+        "canonical_predicate": "between",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; denotes spatial position intermediate to reference bounds."
+      },
+      {
+        "source_id": 13,
+        "source_predicate": "and",
+        "canonical_id": 5,
+        "canonical_predicate": "and",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; symmetrical coordination / co-presence relation."
+      },
+      {
+        "source_id": 14,
+        "source_predicate": "under",
+        "canonical_id": 43,
+        "canonical_predicate": "under",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; denotes spatial position beneath/underneath."
+      },
+      {
+        "source_id": 15,
+        "source_predicate": "riding",
+        "canonical_id": 38,
+        "canonical_predicate": "riding",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; denotes active operation/transit upon a mount or vehicle in the subject\u2192object direction."
+      },
+      {
+        "source_id": 16,
+        "source_predicate": "playing with",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "'playing with' specifies leisure interaction with a specific plaything/toy or peer, whereas VG150 'playing' is broader (e.g. playing games, playing instruments)."
+      },
+      {
+        "source_id": 17,
+        "source_predicate": "sitting on",
+        "canonical_id": 40,
+        "canonical_predicate": "sitting on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; seated bodily posture supported by a surface."
+      },
+      {
+        "source_id": 18,
+        "source_predicate": "standing on",
+        "canonical_id": 41,
+        "canonical_predicate": "standing on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; upright bodily posture supported by a surface."
+      },
+      {
+        "source_id": 19,
+        "source_predicate": "jumping on",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Dynamic vertical propulsion action onto a surface; no VG150 equivalent."
+      },
+      {
+        "source_id": 20,
+        "source_predicate": "walking on",
+        "canonical_id": 46,
+        "canonical_predicate": "walking on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; pedestrian locomotion supported by a surface."
+      },
+      {
+        "source_id": 21,
+        "source_predicate": "running on",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Rapid gaited locomotion on a surface; distinct from walking in gait mechanics and speed; absent in VG150."
+      },
+      {
+        "source_id": 22,
+        "source_predicate": "climbing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Ascending locomotion using limbs; no counterpart in VG150."
+      },
+      {
+        "source_id": 23,
+        "source_predicate": "jumping to",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Directed ballistic airborne movement; no counterpart in VG150."
+      },
+      {
+        "source_id": 24,
+        "source_predicate": "holding",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; manual grasp/support of an object."
+      },
+      {
+        "source_id": 25,
+        "source_predicate": "touching",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Physical surface contact without load-bearing support or containment; absent in VG150."
+      },
+      {
+        "source_id": 26,
+        "source_predicate": "carrying",
+        "canonical_id": 11,
+        "canonical_predicate": "carrying",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; bearing and transporting an object."
+      },
+      {
+        "source_id": 27,
+        "source_predicate": "eating",
+        "canonical_id": 14,
+        "canonical_predicate": "eating",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; consumption/oral ingestion of food."
+      },
+      {
+        "source_id": 28,
+        "source_predicate": "drinking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Liquid ingestion action; absent in VG150 (VG150 only contains 'eating')."
+      },
+      {
+        "source_id": 29,
+        "source_predicate": "pulling",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Exerting tensile force to draw an object toward the subject; absent in VG150."
+      },
+      {
+        "source_id": 30,
+        "source_predicate": "pushing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Exerting compressive force to propel an object away; absent in VG150."
+      },
+      {
+        "source_id": 31,
+        "source_predicate": "throwing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Ballistic propulsion/release of a projectile; absent in VG150."
+      },
+      {
+        "source_id": 32,
+        "source_predicate": "catching",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Manual interception/capture of a projectile; absent in VG150."
+      },
+      {
+        "source_id": 33,
+        "source_predicate": "wearing",
+        "canonical_id": 48,
+        "canonical_predicate": "wearing",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; wearing attire or accessory."
+      },
+      {
+        "source_id": 34,
+        "source_predicate": "wears",
+        "canonical_id": 49,
+        "canonical_predicate": "wears",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; identical 3rd person singular present predicate present in VG150."
+      },
+      {
+        "source_id": 35,
+        "source_predicate": "pointing to",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Deictic gestural indication; absent in VG150."
+      },
+      {
+        "source_id": 36,
+        "source_predicate": "watching",
+        "canonical_id": 47,
+        "canonical_predicate": "watching",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; sustained visual monitoring of a target."
+      },
+      {
+        "source_id": 37,
+        "source_predicate": "driving",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Vehicular control and operation; absent in VG150."
+      },
+      {
+        "source_id": 38,
+        "source_predicate": "cooking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Culinary food preparation; absent in VG150."
+      },
+      {
+        "source_id": 39,
+        "source_predicate": "looking at",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; directing gaze toward a target."
+      },
+      {
+        "source_id": 40,
+        "source_predicate": "kissing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Affectionate oral contact; absent in VG150."
+      },
+      {
+        "source_id": 41,
+        "source_predicate": "hugging",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Affectionate bodily embrace; absent in VG150."
+      },
+      {
+        "source_id": 42,
+        "source_predicate": "teaching",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Instructional interpersonal social interaction; absent in VG150."
+      },
+      {
+        "source_id": 43,
+        "source_predicate": "talking to",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Verbal interpersonal communication; absent in VG150 (VG150 'says' represents displayed written text, e.g. 'sign says stop')."
+      },
+      {
+        "source_id": 44,
+        "source_predicate": "waiting for",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Temporal expectation/delay; absent in VG150."
+      },
+      {
+        "source_id": 45,
+        "source_predicate": "cleaning",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Sanitation/maintenance action on an object; absent in VG150."
+      },
+      {
+        "source_id": 46,
+        "source_predicate": "playing",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; recreational activity/sport/game engagement."
+      },
+      {
+        "source_id": 47,
+        "source_predicate": "chasing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Pursuit locomotion; absent in VG150."
+      },
+      {
+        "source_id": 48,
+        "source_predicate": "feeding",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Providing nourishment to another entity; absent in VG150."
+      },
+      {
+        "source_id": 49,
+        "source_predicate": "standing behind",
+        "canonical_id": 8,
+        "canonical_predicate": "behind",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "Combines upright posture ('standing') with posterior spatial relation ('behind'); mapping to 'behind' captures relative position but discards postural semantics."
+      },
+      {
+        "source_id": 50,
+        "source_predicate": "sitting behind",
+        "canonical_id": 8,
+        "canonical_predicate": "behind",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "Combines seated posture ('sitting') with posterior spatial relation ('behind'); mapping to 'behind' discards postural semantics."
+      },
+      {
+        "source_id": 51,
+        "source_predicate": "walking with",
+        "canonical_id": 50,
+        "canonical_predicate": "with",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "'walking with' composes pedestrian locomotion with social company; VG150 lacks 'walking with' and mapping to 'with' discards the locomotion activity."
+      },
+      {
+        "source_id": 52,
+        "source_predicate": "swinging",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Periodic oscillatory movement; absent in VG150."
+      },
+      {
+        "source_id": 53,
+        "source_predicate": "entering",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Dynamic spatial ingress transition; absent in VG150."
+      },
+      {
+        "source_id": 54,
+        "source_predicate": "exiting",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Dynamic spatial egress transition; absent in VG150."
+      },
+      {
+        "source_id": 55,
+        "source_predicate": "enclosing",
+        "canonical_id": 13,
+        "canonical_predicate": "covering",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "LOW",
+        "reason": "'enclosing' denotes 3D boundary containment or framing, whereas 'covering' implies 2D surface overlay. Distinct topological relationships."
+      },
+      {
+        "source_id": 56,
+        "source_predicate": "leaning on",
+        "canonical_id": 3,
+        "canonical_predicate": "against",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Both describe oblique physical contact where subject rests inclined against an upright support in the subject\u2192object direction (e.g. bicycle leaning on wall vs bicycle against wall)."
+      }
+    ],
+    "IndoorVG": [
+      {
+        "source_id": 1,
+        "source_predicate": "above",
+        "canonical_id": 1,
+        "canonical_predicate": "above",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; vertical elevation without contact."
+      },
+      {
+        "source_id": 2,
+        "source_predicate": "against",
+        "canonical_id": 3,
+        "canonical_predicate": "against",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; physical contact/bearing against an upright surface."
+      },
+      {
+        "source_id": 3,
+        "source_predicate": "at",
+        "canonical_id": 6,
+        "canonical_predicate": "at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; spatial collocation."
+      },
+      {
+        "source_id": 4,
+        "source_predicate": "attached to",
+        "canonical_id": 7,
+        "canonical_predicate": "attached to",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; physical or mechanical connection."
+      },
+      {
+        "source_id": 5,
+        "source_predicate": "behind",
+        "canonical_id": 8,
+        "canonical_predicate": "behind",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; posterior spatial positioning."
+      },
+      {
+        "source_id": 6,
+        "source_predicate": "between",
+        "canonical_id": 10,
+        "canonical_predicate": "between",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; intermediate spatial positioning."
+      },
+      {
+        "source_id": 7,
+        "source_predicate": "carrying",
+        "canonical_id": 11,
+        "canonical_predicate": "carrying",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; bearing and transporting an object."
+      },
+      {
+        "source_id": 8,
+        "source_predicate": "covering",
+        "canonical_id": 13,
+        "canonical_predicate": "covering",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; overlaying surface contact."
+      },
+      {
+        "source_id": 9,
+        "source_predicate": "cutting",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Instrumental separation of material; absent in VG150."
+      },
+      {
+        "source_id": 10,
+        "source_predicate": "drinking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Liquid ingestion action; absent in VG150."
+      },
+      {
+        "source_id": 11,
+        "source_predicate": "eating",
+        "canonical_id": 14,
+        "canonical_predicate": "eating",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; food consumption."
+      },
+      {
+        "source_id": 12,
+        "source_predicate": "filled with",
+        "canonical_id": 12,
+        "canonical_predicate": "covered in",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "LOW",
+        "reason": "'filled with' denotes interior volumetric containment of bulk substance (container\u2192substance); mapping to 'covered in' changes containment to exterior surface coating, while mapping to 'in' reverses subject/object direction."
+      },
+      {
+        "source_id": 13,
+        "source_predicate": "for",
+        "canonical_id": 16,
+        "canonical_predicate": "for",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; functional purpose/destination."
+      },
+      {
+        "source_id": 14,
+        "source_predicate": "hanging from",
+        "canonical_id": 19,
+        "canonical_predicate": "hanging from",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; suspension from support anchor."
+      },
+      {
+        "source_id": 15,
+        "source_predicate": "has",
+        "canonical_id": 20,
+        "canonical_predicate": "has",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; meronymic or possession relationship."
+      },
+      {
+        "source_id": 16,
+        "source_predicate": "holding",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; manual grasp/support of an object."
+      },
+      {
+        "source_id": 17,
+        "source_predicate": "in",
+        "canonical_id": 22,
+        "canonical_predicate": "in",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; spatial containment/interior placement."
+      },
+      {
+        "source_id": 18,
+        "source_predicate": "in front of",
+        "canonical_id": 23,
+        "canonical_predicate": "in front of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; anterior spatial positioning."
+      },
+      {
+        "source_id": 19,
+        "source_predicate": "laying on",
+        "canonical_id": 24,
+        "canonical_predicate": "laying on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; recumbent posture supported by a surface."
+      },
+      {
+        "source_id": 20,
+        "source_predicate": "looking at",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; directing visual gaze."
+      },
+      {
+        "source_id": 21,
+        "source_predicate": "lying on",
+        "canonical_id": 26,
+        "canonical_predicate": "lying on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; recumbent bodily posture upon a surface."
+      },
+      {
+        "source_id": 22,
+        "source_predicate": "mounted on",
+        "canonical_id": 28,
+        "canonical_predicate": "mounted on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; fixed fixture attachment on a surface."
+      },
+      {
+        "source_id": 23,
+        "source_predicate": "near",
+        "canonical_id": 29,
+        "canonical_predicate": "near",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; general spatial proximity."
+      },
+      {
+        "source_id": 24,
+        "source_predicate": "of",
+        "canonical_id": 30,
+        "canonical_predicate": "of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; associative or possessive connection."
+      },
+      {
+        "source_id": 25,
+        "source_predicate": "on",
+        "canonical_id": 31,
+        "canonical_predicate": "on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; surface contact and support."
+      },
+      {
+        "source_id": 26,
+        "source_predicate": "playing with",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "'playing with' specifies recreational interaction with a specific plaything/toy or peer, whereas VG150 'playing' is broader (e.g. playing games, sports, instruments)."
+      },
+      {
+        "source_id": 27,
+        "source_predicate": "reading",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "'reading' implies specific cognitive text engagement; mapping to 'looking at' dilutes the semantic focus."
+      },
+      {
+        "source_id": 28,
+        "source_predicate": "sitting at",
+        "canonical_id": 40,
+        "canonical_predicate": "sitting on",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "'sitting at' denotes seated proximity relative to a table/desk without sitting ON that surface (the chair is sat on, the desk is sat at); mapping to 'sitting on' introduces erroneous direct surface support, while mapping to 'at' discards seated posture."
+      },
+      {
+        "source_id": 29,
+        "source_predicate": "sitting on",
+        "canonical_id": 40,
+        "canonical_predicate": "sitting on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; seated posture supported by surface."
+      },
+      {
+        "source_id": 30,
+        "source_predicate": "standing on",
+        "canonical_id": 41,
+        "canonical_predicate": "standing on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; upright posture supported by surface."
+      },
+      {
+        "source_id": 31,
+        "source_predicate": "taking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Dynamic acquisition action; absent in VG150."
+      },
+      {
+        "source_id": 32,
+        "source_predicate": "talking on",
+        "canonical_id": 44,
+        "canonical_predicate": "using",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "Specific telecommunication action (talking on phone); mapping to 'using' loses the verbal/conversational semantic."
+      },
+      {
+        "source_id": 33,
+        "source_predicate": "under",
+        "canonical_id": 43,
+        "canonical_predicate": "under",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; spatial position beneath/underneath."
+      },
+      {
+        "source_id": 34,
+        "source_predicate": "using",
+        "canonical_id": 44,
+        "canonical_predicate": "using",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; instrumental utilization of an object."
+      },
+      {
+        "source_id": 35,
+        "source_predicate": "watching",
+        "canonical_id": 47,
+        "canonical_predicate": "watching",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; sustained visual monitoring."
+      },
+      {
+        "source_id": 36,
+        "source_predicate": "wearing",
+        "canonical_id": 48,
+        "canonical_predicate": "wearing",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; dressed in or carrying apparel."
+      },
+      {
+        "source_id": 37,
+        "source_predicate": "with",
+        "canonical_id": 50,
+        "canonical_predicate": "with",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; co-presence or accompaniment."
+      }
+    ],
+    "OpenImagesV6": [
+      {
+        "source_id": 1,
+        "source_predicate": "at",
+        "canonical_id": 6,
+        "canonical_predicate": "at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; general spatial collocation (e.g. person at desk/table)."
+      },
+      {
+        "source_id": 2,
+        "source_predicate": "holds",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Both describe the subject physically grasping/supporting the object in the subject\u2192object direction; only grammatical inflection differs (3rd person singular present 'holds' vs participle 'holding')."
+      },
+      {
+        "source_id": 3,
+        "source_predicate": "wears",
+        "canonical_id": 49,
+        "canonical_predicate": "wears",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; identical 3rd person singular present form present in VG150 (and equivalent to 'wearing')."
+      },
+      {
+        "source_id": 4,
+        "source_predicate": "surf",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Water-sport locomotion on a surfboard/wave; absent in VG150."
+      },
+      {
+        "source_id": 5,
+        "source_predicate": "hang",
+        "canonical_id": 19,
+        "canonical_predicate": "hanging from",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Both express physical suspension of the subject from an anchor/support object in the subject\u2192object direction (e.g. painting hang wall vs painting hanging from wall); lexical variation of suspension."
+      },
+      {
+        "source_id": 6,
+        "source_predicate": "drink",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Liquid consumption; absent in VG150 (VG150 only contains 'eating')."
+      },
+      {
+        "source_id": 7,
+        "source_predicate": "holding_hands",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "LOW",
+        "reason": "'holding_hands' is a reciprocal/interpersonal mutual grasp between two persons; VG150 'holding' describes unilateral object manipulation. Mapping to 'holding' loses interpersonal reciprocity."
+      },
+      {
+        "source_id": 8,
+        "source_predicate": "on",
+        "canonical_id": 31,
+        "canonical_predicate": "on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; surface contact and support."
+      },
+      {
+        "source_id": 9,
+        "source_predicate": "ride",
+        "canonical_id": 38,
+        "canonical_predicate": "riding",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Both express active locomotion/transit operating or mounted upon a vehicle or animal in the subject\u2192object direction; only grammatical inflection differs (base form 'ride' vs gerund 'riding')."
+      },
+      {
+        "source_id": 10,
+        "source_predicate": "dance",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Rhythmic bodily choreography; absent in VG150."
+      },
+      {
+        "source_id": 11,
+        "source_predicate": "skateboard",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Action-specific locomotion on a skateboard; absent in VG150."
+      },
+      {
+        "source_id": 12,
+        "source_predicate": "catch",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Dynamic interception/capture of an object in motion; absent in VG150."
+      },
+      {
+        "source_id": 13,
+        "source_predicate": "highfive",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Interpersonal celebratory palm-slap gesture; absent in VG150."
+      },
+      {
+        "source_id": 14,
+        "source_predicate": "inside_of",
+        "canonical_id": 22,
+        "canonical_predicate": "in",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Both denote spatial containment where subject is enclosed within the interior boundary of the object in the subject\u2192object direction (e.g. food inside_of bowl vs food in bowl)."
+      },
+      {
+        "source_id": 15,
+        "source_predicate": "eat",
+        "canonical_id": 14,
+        "canonical_predicate": "eating",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Both express oral ingestion of food by subject in the subject\u2192object direction; lexical inflection variation (base form 'eat' vs participle 'eating')."
+      },
+      {
+        "source_id": 16,
+        "source_predicate": "cut",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Instrumental material division; absent in VG150."
+      },
+      {
+        "source_id": 17,
+        "source_predicate": "contain",
+        "canonical_id": 20,
+        "canonical_predicate": "has",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "Direction is container\u2192contained (e.g. bowl contain fruit). Reversing to 'in' (fruit in bowl) violates directionality rules. Mapping to 'has' captures ownership/containment broadly but loses geometric interior enclosure."
+      },
+      {
+        "source_id": 18,
+        "source_predicate": "handshake",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Interpersonal mutual hand-clasp greeting; absent in VG150."
+      },
+      {
+        "source_id": 19,
+        "source_predicate": "kiss",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Affectionate oral contact; absent in VG150."
+      },
+      {
+        "source_id": 20,
+        "source_predicate": "talk_on_phone",
+        "canonical_id": 44,
+        "canonical_predicate": "using",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "Telecommunication conversation; mapping to 'using' loses the vocal/communicative component."
+      },
+      {
+        "source_id": 21,
+        "source_predicate": "interacts_with",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Unspecified generic interaction umbrella category; no direct semantic equivalent in VG150."
+      },
+      {
+        "source_id": 22,
+        "source_predicate": "under",
+        "canonical_id": 43,
+        "canonical_predicate": "under",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match; spatial placement beneath/underneath."
+      },
+      {
+        "source_id": 23,
+        "source_predicate": "hug",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Affectionate bodily embrace; absent in VG150."
+      },
+      {
+        "source_id": 24,
+        "source_predicate": "throw",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Ballistic propulsion/release; absent in VG150."
+      },
+      {
+        "source_id": 25,
+        "source_predicate": "hits",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Dynamic forceful physical impact; absent in VG150."
+      },
+      {
+        "source_id": 26,
+        "source_predicate": "snowboard",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Winter-sport locomotion on a snowboard; absent in VG150."
+      },
+      {
+        "source_id": 27,
+        "source_predicate": "is",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Entity-to-attribute copula link (e.g. 'Table is Wooden', 'Person is Walk'); in VG150 attributes are stored in object attribute arrays, not as relationship triplets."
+      },
+      {
+        "source_id": 28,
+        "source_predicate": "kick",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Impact strike with the foot; absent in VG150."
+      },
+      {
+        "source_id": 29,
+        "source_predicate": "ski",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Winter-sport locomotion on skis; absent in VG150."
+      },
+      {
+        "source_id": 30,
+        "source_predicate": "plays",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Both express recreational game/sport or musical instrument performance in the subject\u2192object direction; only grammatical inflection differs (3rd person singular 'plays' vs gerund 'playing')."
+      },
+      {
+        "source_id": 31,
+        "source_predicate": "read",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "AMBIGUOUS",
+        "confidence": "MEDIUM",
+        "reason": "'read' implies textual comprehension; mapping to 'looking at' discards textual interaction semantics."
+      }
+    ]
+  }
+}

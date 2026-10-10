@@ -1,0 +1,14 @@
+{
+  "dataset": "PSG",
+  "number_expected": 200,
+  "number_downloaded": 200,
+  "missing_ids": [],
+  "extra_ids": [],
+  "failed_ids": [],
+  "download_directory": "evaluation_sets/images/PSG",
+  "verification_status": "SUCCESS",
+  "total_size_bytes": 34737363,
+  "total_size_mb": 33.13,
+  "dimension_mismatches_count": 0,
+  "download_completed_at": "2026-10-08T20:57:13.903552+00:00"
+}

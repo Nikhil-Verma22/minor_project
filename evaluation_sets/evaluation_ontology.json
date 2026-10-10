@@ -1,0 +1,1793 @@
+{
+  "ontology_metadata": {
+    "title": "Frozen SGG Benchmark Shared Relationship Evaluation Ontology",
+    "created_at": "2026-10-08T22:33:19.007779+00:00",
+    "canonical_baseline": "VG150",
+    "canonical_attire_label": "wearing",
+    "canonical_attire_source_id": 48,
+    "normalization_rules": [
+      "VG150 'wears' (ID 49) normalizes to 'wearing' (ID 48).",
+      "Open Images V6 'wears' normalizes to 'wearing' (ID 48).",
+      "Subject/object directionality is strictly preserved across all normalized views.",
+      "Predictions and ground truth outside the target vocabulary view are filtered without reversing endpoints."
+    ]
+  },
+  "vocabularies": {
+    "strict_core_4way": {
+      "size": 6,
+      "description": "Strict 4-dataset common vocabulary requiring EXACT or proven SEMANTIC_EQUIVALENT across all 4 datasets without broader generalization.",
+      "predicates": [
+        "eating",
+        "hanging from",
+        "holding",
+        "in",
+        "on",
+        "wearing"
+      ],
+      "ontology_ids": {
+        "eating": 1,
+        "hanging from": 2,
+        "holding": 3,
+        "in": 4,
+        "on": 5,
+        "wearing": 6
+      }
+    },
+    "extended_core_4way": {
+      "size": 8,
+      "description": "Extended 4-dataset common vocabulary including documented ACCEPTABLE_SEMANTIC_GENERALIZATION mappings ('looking at' from read/reading, 'playing' from playing with).",
+      "predicates": [
+        "eating",
+        "hanging from",
+        "holding",
+        "in",
+        "looking at",
+        "on",
+        "playing",
+        "wearing"
+      ],
+      "ontology_ids": {
+        "eating": 1,
+        "hanging from": 2,
+        "holding": 3,
+        "in": 4,
+        "looking at": 5,
+        "on": 6,
+        "playing": 7,
+        "wearing": 8
+      }
+    },
+    "tri_dataset_core": {
+      "size": 20,
+      "description": "20-predicate vocabulary supported by VG150 and at least two other benchmark datasets (with 17 predicates unanimously supported across VG150, PSG, and IndoorVG).",
+      "predicates": [
+        "against",
+        "at",
+        "attached to",
+        "carrying",
+        "eating",
+        "hanging from",
+        "has",
+        "holding",
+        "in",
+        "in front of",
+        "looking at",
+        "lying on",
+        "near",
+        "on",
+        "playing",
+        "riding",
+        "sitting on",
+        "standing on",
+        "under",
+        "wearing"
+      ],
+      "ontology_ids": {
+        "against": 1,
+        "at": 2,
+        "attached to": 3,
+        "carrying": 4,
+        "eating": 5,
+        "hanging from": 6,
+        "has": 7,
+        "holding": 8,
+        "in": 9,
+        "in front of": 10,
+        "looking at": 11,
+        "lying on": 12,
+        "near": 13,
+        "on": 14,
+        "playing": 15,
+        "riding": 16,
+        "sitting on": 17,
+        "standing on": 18,
+        "under": 19,
+        "wearing": 20
+      },
+      "predicate_support_matrix": {
+        "against": {
+          "canonical_predicate": "against",
+          "canonical_id": 3,
+          "ontology_eval_id": 1,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "at": {
+          "canonical_predicate": "at",
+          "canonical_id": 6,
+          "ontology_eval_id": 2,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": false
+        },
+        "attached to": {
+          "canonical_predicate": "attached to",
+          "canonical_id": 7,
+          "ontology_eval_id": 3,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "carrying": {
+          "canonical_predicate": "carrying",
+          "canonical_id": 11,
+          "ontology_eval_id": 4,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "eating": {
+          "canonical_predicate": "eating",
+          "canonical_id": 14,
+          "ontology_eval_id": 5,
+          "supported_dataset_count": 4,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "hanging from": {
+          "canonical_predicate": "hanging from",
+          "canonical_id": 19,
+          "ontology_eval_id": 6,
+          "supported_dataset_count": 4,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "has": {
+          "canonical_predicate": "has",
+          "canonical_id": 20,
+          "ontology_eval_id": 7,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": false
+        },
+        "holding": {
+          "canonical_predicate": "holding",
+          "canonical_id": 21,
+          "ontology_eval_id": 8,
+          "supported_dataset_count": 4,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "in": {
+          "canonical_predicate": "in",
+          "canonical_id": 22,
+          "ontology_eval_id": 9,
+          "supported_dataset_count": 4,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "in front of": {
+          "canonical_predicate": "in front of",
+          "canonical_id": 23,
+          "ontology_eval_id": 10,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "looking at": {
+          "canonical_predicate": "looking at",
+          "canonical_id": 25,
+          "ontology_eval_id": 11,
+          "supported_dataset_count": 4,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "lying on": {
+          "canonical_predicate": "lying on",
+          "canonical_id": 26,
+          "ontology_eval_id": 12,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "near": {
+          "canonical_predicate": "near",
+          "canonical_id": 29,
+          "ontology_eval_id": 13,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "on": {
+          "canonical_predicate": "on",
+          "canonical_id": 31,
+          "ontology_eval_id": 14,
+          "supported_dataset_count": 4,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "playing": {
+          "canonical_predicate": "playing",
+          "canonical_id": 37,
+          "ontology_eval_id": 15,
+          "supported_dataset_count": 4,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "riding": {
+          "canonical_predicate": "riding",
+          "canonical_id": 38,
+          "ontology_eval_id": 16,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": false
+        },
+        "sitting on": {
+          "canonical_predicate": "sitting on",
+          "canonical_id": 40,
+          "ontology_eval_id": 17,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "standing on": {
+          "canonical_predicate": "standing on",
+          "canonical_id": 41,
+          "ontology_eval_id": 18,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        },
+        "under": {
+          "canonical_predicate": "under",
+          "canonical_id": 43,
+          "ontology_eval_id": 19,
+          "supported_dataset_count": 3,
+          "supported_datasets": [
+            "VG150",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": false
+        },
+        "wearing": {
+          "canonical_predicate": "wearing",
+          "canonical_id": 48,
+          "ontology_eval_id": 20,
+          "supported_dataset_count": 4,
+          "supported_datasets": [
+            "VG150",
+            "PSG",
+            "IndoorVG",
+            "OpenImagesV6"
+          ],
+          "in_tri_dataset_benchmark_core": true,
+          "supported_by_vg_psg_indoor": true
+        }
+      }
+    }
+  },
+  "dataset_normalizations": {
+    "VG150": {
+      "source_total_predicates": 50,
+      "source_to_ontology_mapping": {
+        "above": {
+          "source_id": 1,
+          "normalized_canonical_predicate": "above",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "across": {
+          "source_id": 2,
+          "normalized_canonical_predicate": "across",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "against": {
+          "source_id": 3,
+          "normalized_canonical_predicate": "against",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "along": {
+          "source_id": 4,
+          "normalized_canonical_predicate": "along",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "and": {
+          "source_id": 5,
+          "normalized_canonical_predicate": "and",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "at": {
+          "source_id": 6,
+          "normalized_canonical_predicate": "at",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "attached to": {
+          "source_id": 7,
+          "normalized_canonical_predicate": "attached to",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "behind": {
+          "source_id": 8,
+          "normalized_canonical_predicate": "behind",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "belonging to": {
+          "source_id": 9,
+          "normalized_canonical_predicate": "belonging to",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "between": {
+          "source_id": 10,
+          "normalized_canonical_predicate": "between",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "carrying": {
+          "source_id": 11,
+          "normalized_canonical_predicate": "carrying",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "covered in": {
+          "source_id": 12,
+          "normalized_canonical_predicate": "covered in",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "covering": {
+          "source_id": 13,
+          "normalized_canonical_predicate": "covering",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "eating": {
+          "source_id": 14,
+          "normalized_canonical_predicate": "eating",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "flying in": {
+          "source_id": 15,
+          "normalized_canonical_predicate": "flying in",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "for": {
+          "source_id": 16,
+          "normalized_canonical_predicate": "for",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "from": {
+          "source_id": 17,
+          "normalized_canonical_predicate": "from",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "growing on": {
+          "source_id": 18,
+          "normalized_canonical_predicate": "growing on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "hanging from": {
+          "source_id": 19,
+          "normalized_canonical_predicate": "hanging from",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "has": {
+          "source_id": 20,
+          "normalized_canonical_predicate": "has",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "holding": {
+          "source_id": 21,
+          "normalized_canonical_predicate": "holding",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "in": {
+          "source_id": 22,
+          "normalized_canonical_predicate": "in",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "in front of": {
+          "source_id": 23,
+          "normalized_canonical_predicate": "in front of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "laying on": {
+          "source_id": 24,
+          "normalized_canonical_predicate": "laying on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "looking at": {
+          "source_id": 25,
+          "normalized_canonical_predicate": "looking at",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "lying on": {
+          "source_id": 26,
+          "normalized_canonical_predicate": "lying on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "made of": {
+          "source_id": 27,
+          "normalized_canonical_predicate": "made of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "mounted on": {
+          "source_id": 28,
+          "normalized_canonical_predicate": "mounted on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "near": {
+          "source_id": 29,
+          "normalized_canonical_predicate": "near",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "of": {
+          "source_id": 30,
+          "normalized_canonical_predicate": "of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "on": {
+          "source_id": 31,
+          "normalized_canonical_predicate": "on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "on back of": {
+          "source_id": 32,
+          "normalized_canonical_predicate": "on back of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "over": {
+          "source_id": 33,
+          "normalized_canonical_predicate": "over",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "painted on": {
+          "source_id": 34,
+          "normalized_canonical_predicate": "painted on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "parked on": {
+          "source_id": 35,
+          "normalized_canonical_predicate": "parked on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "part of": {
+          "source_id": 36,
+          "normalized_canonical_predicate": "part of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "playing": {
+          "source_id": 37,
+          "normalized_canonical_predicate": "playing",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "riding": {
+          "source_id": 38,
+          "normalized_canonical_predicate": "riding",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "says": {
+          "source_id": 39,
+          "normalized_canonical_predicate": "says",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "sitting on": {
+          "source_id": 40,
+          "normalized_canonical_predicate": "sitting on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "standing on": {
+          "source_id": 41,
+          "normalized_canonical_predicate": "standing on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "to": {
+          "source_id": 42,
+          "normalized_canonical_predicate": "to",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "under": {
+          "source_id": 43,
+          "normalized_canonical_predicate": "under",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "using": {
+          "source_id": 44,
+          "normalized_canonical_predicate": "using",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "walking in": {
+          "source_id": 45,
+          "normalized_canonical_predicate": "walking in",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "walking on": {
+          "source_id": 46,
+          "normalized_canonical_predicate": "walking on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "watching": {
+          "source_id": 47,
+          "normalized_canonical_predicate": "watching",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "wearing": {
+          "source_id": 48,
+          "normalized_canonical_predicate": "wearing",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "wears": {
+          "source_id": 49,
+          "normalized_canonical_predicate": "wearing",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "with": {
+          "source_id": 50,
+          "normalized_canonical_predicate": "with",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        }
+      }
+    },
+    "PSG": {
+      "source_total_predicates": 56,
+      "source_to_ontology_mapping": {
+        "over": {
+          "source_id": 1,
+          "normalized_canonical_predicate": "over",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "in front of": {
+          "source_id": 2,
+          "normalized_canonical_predicate": "in front of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "beside": {
+          "source_id": 3,
+          "normalized_canonical_predicate": "near",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "on": {
+          "source_id": 4,
+          "normalized_canonical_predicate": "on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "in": {
+          "source_id": 5,
+          "normalized_canonical_predicate": "in",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "attached to": {
+          "source_id": 6,
+          "normalized_canonical_predicate": "attached to",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "hanging from": {
+          "source_id": 7,
+          "normalized_canonical_predicate": "hanging from",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "on back of": {
+          "source_id": 8,
+          "normalized_canonical_predicate": "on back of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "falling off": {
+          "source_id": 9,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "going down": {
+          "source_id": 10,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "painted on": {
+          "source_id": 11,
+          "normalized_canonical_predicate": "painted on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "walking on": {
+          "source_id": 12,
+          "normalized_canonical_predicate": "walking on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "running on": {
+          "source_id": 13,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "crossing": {
+          "source_id": 14,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "standing on": {
+          "source_id": 15,
+          "normalized_canonical_predicate": "standing on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "lying on": {
+          "source_id": 16,
+          "normalized_canonical_predicate": "lying on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "sitting on": {
+          "source_id": 17,
+          "normalized_canonical_predicate": "sitting on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "flying over": {
+          "source_id": 18,
+          "normalized_canonical_predicate": "over",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "jumping over": {
+          "source_id": 19,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "jumping from": {
+          "source_id": 20,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "wearing": {
+          "source_id": 21,
+          "normalized_canonical_predicate": "wearing",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "holding": {
+          "source_id": 22,
+          "normalized_canonical_predicate": "holding",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "carrying": {
+          "source_id": 23,
+          "normalized_canonical_predicate": "carrying",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "looking at": {
+          "source_id": 24,
+          "normalized_canonical_predicate": "looking at",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "guiding": {
+          "source_id": 25,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "kissing": {
+          "source_id": 26,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "eating": {
+          "source_id": 27,
+          "normalized_canonical_predicate": "eating",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "drinking": {
+          "source_id": 28,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "feeding": {
+          "source_id": 29,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "biting": {
+          "source_id": 30,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "catching": {
+          "source_id": 31,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "picking": {
+          "source_id": 32,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "playing with": {
+          "source_id": 33,
+          "normalized_canonical_predicate": "playing",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "chasing": {
+          "source_id": 34,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "climbing": {
+          "source_id": 35,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "cleaning": {
+          "source_id": 36,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "playing": {
+          "source_id": 37,
+          "normalized_canonical_predicate": "playing",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "touching": {
+          "source_id": 38,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "pushing": {
+          "source_id": 39,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "pulling": {
+          "source_id": 40,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "opening": {
+          "source_id": 41,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "cooking": {
+          "source_id": 42,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "talking to": {
+          "source_id": 43,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "throwing": {
+          "source_id": 44,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "slicing": {
+          "source_id": 45,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "driving": {
+          "source_id": 46,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "riding": {
+          "source_id": 47,
+          "normalized_canonical_predicate": "riding",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "parked on": {
+          "source_id": 48,
+          "normalized_canonical_predicate": "parked on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "driving on": {
+          "source_id": 49,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "about to hit": {
+          "source_id": 50,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "kicking": {
+          "source_id": 51,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "swinging": {
+          "source_id": 52,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "entering": {
+          "source_id": 53,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "exiting": {
+          "source_id": 54,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "enclosing": {
+          "source_id": 55,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "AMBIGUOUS_REJECTED",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "leaning on": {
+          "source_id": 56,
+          "normalized_canonical_predicate": "against",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        }
+      }
+    },
+    "IndoorVG": {
+      "source_total_predicates": 37,
+      "source_to_ontology_mapping": {
+        "above": {
+          "source_id": 1,
+          "normalized_canonical_predicate": "above",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "against": {
+          "source_id": 2,
+          "normalized_canonical_predicate": "against",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "at": {
+          "source_id": 3,
+          "normalized_canonical_predicate": "at",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "attached to": {
+          "source_id": 4,
+          "normalized_canonical_predicate": "attached to",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "behind": {
+          "source_id": 5,
+          "normalized_canonical_predicate": "behind",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "between": {
+          "source_id": 6,
+          "normalized_canonical_predicate": "between",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "carrying": {
+          "source_id": 7,
+          "normalized_canonical_predicate": "carrying",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "covering": {
+          "source_id": 8,
+          "normalized_canonical_predicate": "covering",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "cutting": {
+          "source_id": 9,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "drinking": {
+          "source_id": 10,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "eating": {
+          "source_id": 11,
+          "normalized_canonical_predicate": "eating",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "filled with": {
+          "source_id": 12,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "AMBIGUOUS_REJECTED",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "for": {
+          "source_id": 13,
+          "normalized_canonical_predicate": "for",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "hanging from": {
+          "source_id": 14,
+          "normalized_canonical_predicate": "hanging from",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "has": {
+          "source_id": 15,
+          "normalized_canonical_predicate": "has",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "holding": {
+          "source_id": 16,
+          "normalized_canonical_predicate": "holding",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "in": {
+          "source_id": 17,
+          "normalized_canonical_predicate": "in",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "in front of": {
+          "source_id": 18,
+          "normalized_canonical_predicate": "in front of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "laying on": {
+          "source_id": 19,
+          "normalized_canonical_predicate": "laying on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "looking at": {
+          "source_id": 20,
+          "normalized_canonical_predicate": "looking at",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "lying on": {
+          "source_id": 21,
+          "normalized_canonical_predicate": "lying on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "mounted on": {
+          "source_id": 22,
+          "normalized_canonical_predicate": "mounted on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "near": {
+          "source_id": 23,
+          "normalized_canonical_predicate": "near",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "of": {
+          "source_id": 24,
+          "normalized_canonical_predicate": "of",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "on": {
+          "source_id": 25,
+          "normalized_canonical_predicate": "on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "playing with": {
+          "source_id": 26,
+          "normalized_canonical_predicate": "playing",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "reading": {
+          "source_id": 27,
+          "normalized_canonical_predicate": "looking at",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "sitting at": {
+          "source_id": 28,
+          "normalized_canonical_predicate": "at",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "sitting on": {
+          "source_id": 29,
+          "normalized_canonical_predicate": "sitting on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "standing on": {
+          "source_id": 30,
+          "normalized_canonical_predicate": "standing on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "taking": {
+          "source_id": 31,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "talking on": {
+          "source_id": 32,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "AMBIGUOUS_REJECTED",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "under": {
+          "source_id": 33,
+          "normalized_canonical_predicate": "under",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "using": {
+          "source_id": 34,
+          "normalized_canonical_predicate": "using",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "watching": {
+          "source_id": 35,
+          "normalized_canonical_predicate": "watching",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "wearing": {
+          "source_id": 36,
+          "normalized_canonical_predicate": "wearing",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "with": {
+          "source_id": 37,
+          "normalized_canonical_predicate": "with",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        }
+      }
+    },
+    "OpenImagesV6": {
+      "source_total_predicates": 31,
+      "source_to_ontology_mapping": {
+        "at": {
+          "source_id": 1,
+          "normalized_canonical_predicate": "at",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "holds": {
+          "source_id": 2,
+          "normalized_canonical_predicate": "holding",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "wears": {
+          "source_id": 3,
+          "normalized_canonical_predicate": "wearing",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "surf": {
+          "source_id": 4,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "hang": {
+          "source_id": 5,
+          "normalized_canonical_predicate": "hanging from",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "drink": {
+          "source_id": 6,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "holding_hands": {
+          "source_id": 7,
+          "normalized_canonical_predicate": "holding",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "on": {
+          "source_id": 8,
+          "normalized_canonical_predicate": "on",
+          "mapping_type": "EXACT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "ride": {
+          "source_id": 9,
+          "normalized_canonical_predicate": "riding",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "dance": {
+          "source_id": 10,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "skateboard": {
+          "source_id": 11,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "catch": {
+          "source_id": 12,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "highfive": {
+          "source_id": 13,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "inside_of": {
+          "source_id": 14,
+          "normalized_canonical_predicate": "in",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "eat": {
+          "source_id": 15,
+          "normalized_canonical_predicate": "eating",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": true,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "cut": {
+          "source_id": 16,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "contain": {
+          "source_id": 17,
+          "normalized_canonical_predicate": "has",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "handshake": {
+          "source_id": 18,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "kiss": {
+          "source_id": 19,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "talk_on_phone": {
+          "source_id": 20,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "AMBIGUOUS_REJECTED",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "interacts_with": {
+          "source_id": 21,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "under": {
+          "source_id": 22,
+          "normalized_canonical_predicate": "under",
+          "mapping_type": "EXACT",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": true
+        },
+        "hug": {
+          "source_id": 23,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "throw": {
+          "source_id": 24,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "hits": {
+          "source_id": 25,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "snowboard": {
+          "source_id": 26,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "is": {
+          "source_id": 27,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "kick": {
+          "source_id": 28,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "ski": {
+          "source_id": 29,
+          "normalized_canonical_predicate": null,
+          "mapping_type": "NO_MATCH",
+          "in_strict_4way": false,
+          "in_extended_4way": false,
+          "in_tri_dataset": false
+        },
+        "plays": {
+          "source_id": 30,
+          "normalized_canonical_predicate": "playing",
+          "mapping_type": "SEMANTIC_EQUIVALENT",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        },
+        "read": {
+          "source_id": 31,
+          "normalized_canonical_predicate": "looking at",
+          "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+          "in_strict_4way": false,
+          "in_extended_4way": true,
+          "in_tri_dataset": true
+        }
+      }
+    }
+  }
+}

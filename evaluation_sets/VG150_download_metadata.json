@@ -1,0 +1,12 @@
+{
+  "dataset": "VG150",
+  "number_expected": 200,
+  "number_downloaded": 200,
+  "failed_ids": [],
+  "download_directory": "evaluation_sets/images/VG150",
+  "verification_status": "SUCCESS",
+  "total_size_bytes": 26791821,
+  "total_size_mb": 25.55,
+  "download_completed_at": "2026-10-08T18:11:27.770783+00:00",
+  "corrupted_images_count": 0
+}

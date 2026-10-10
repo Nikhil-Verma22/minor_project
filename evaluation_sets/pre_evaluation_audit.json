@@ -1,0 +1,448 @@
+{
+  "audit_metadata": {
+    "title": "Independent Pre-Evaluation Audit of SGG Dataset Preparation",
+    "audit_date": "2026-10-08T23:39:41.448408+00:00",
+    "repository": "/Users/shivanshkaushik/Developer/SGG-Benchmark",
+    "commit_hash": "a6642012e66047c3544bed8784bbf9acdc87411b",
+    "executive_verdict": "PASS WITH WARNINGS",
+    "verdict_summary": "Dataset files, images, ground-truth annotations, and normalized evaluation views are 100% verified, corruption-free, and reproduce all reported metrics exactly. Benchmarking may proceed subject to 4 essential methodological disclosures: (1) IndoorVG test images overlap 100% with VG150 training set; (2) Cross-dataset evaluation requires PredCls mode due to disjoint object vocabularies; (3) Model prediction projection layers are required; (4) Zero-relation image handling in Recall@K must be standardized."
+  },
+  "checks_summary": {
+    "total_checks": 48,
+    "pass_count": 39,
+    "pass_with_warning_count": 8,
+    "fail_count": 1
+  },
+  "reproduced_statistics": {
+    "denominator": 5006,
+    "per_dataset": {
+      "VG150": {
+        "original_rels": 1083,
+        "strict": 604,
+        "extended": 605,
+        "tri_dataset": 873
+      },
+      "PSG": {
+        "original_rels": 1385,
+        "strict": 520,
+        "extended": 575,
+        "tri_dataset": 1050
+      },
+      "IndoorVG": {
+        "original_rels": 1672,
+        "strict": 1003,
+        "extended": 1004,
+        "tri_dataset": 1411
+      },
+      "OpenImages": {
+        "original_rels": 866,
+        "strict": 84,
+        "extended": 88,
+        "tri_dataset": 142
+      }
+    },
+    "aggregate_views": {
+      "strict_core": {
+        "retained": 2211,
+        "total": 5006,
+        "pct": 44.17
+      },
+      "extended_core": {
+        "retained": 2272,
+        "total": 5006,
+        "pct": 45.39
+      },
+      "tri_dataset_core": {
+        "retained": 3476,
+        "total": 5006,
+        "pct": 69.44
+      }
+    }
+  },
+  "checks": [
+    {
+      "check_id": "INV_VG150_TXT",
+      "category": "Inventory",
+      "dataset": "VG150",
+      "description": "TXT file exists and contains exactly 200 unique IDs",
+      "status": "PASS",
+      "evidence": "Found 200 lines, 200 unique IDs in VG150_200.txt"
+    },
+    {
+      "check_id": "INV_VG150_META",
+      "category": "Inventory",
+      "dataset": "VG150",
+      "description": "Metadata contains exactly 200 records matching TXT IDs",
+      "status": "PASS",
+      "evidence": "Found 200 records in VG150_200_metadata.json; set match with TXT: True"
+    },
+    {
+      "check_id": "INV_VG150_COCO_IMGS",
+      "category": "Inventory",
+      "dataset": "VG150",
+      "description": "COCO ground truth contains exactly 200 images matching TXT IDs",
+      "status": "PASS",
+      "evidence": "Found 200 images in VG150_200_annotations.coco.json; set match with TXT: True"
+    },
+    {
+      "check_id": "INV_VG150_DISK_COUNT",
+      "category": "Inventory",
+      "dataset": "VG150",
+      "description": "Disk images directory contains exactly 200 image files",
+      "status": "PASS",
+      "evidence": "Found 200 files in /Users/shivanshkaushik/Developer/SGG-Benchmark/evaluation_sets/images/VG150"
+    },
+    {
+      "check_id": "INT_VG150_DECODE",
+      "category": "Integrity",
+      "dataset": "VG150",
+      "description": "All 200 images decode with PIL, 0 corruptions, positive dimensions",
+      "status": "PASS",
+      "evidence": "Decoded 200 images: 0 corrupt, 0 dimension mismatches"
+    },
+    {
+      "check_id": "INT_VG150_OBJ_REFS",
+      "category": "Integrity",
+      "dataset": "VG150",
+      "description": "All object annotations reference valid image IDs (no orphans)",
+      "status": "PASS",
+      "evidence": "Checked 2320 objects: 0 orphans"
+    },
+    {
+      "check_id": "INT_VG150_REL_REFS",
+      "category": "Integrity",
+      "dataset": "VG150",
+      "description": "All relationship endpoints point to valid objects under per-image indexed",
+      "status": "PASS",
+      "evidence": "Checked 1083 relationships: 0 invalid endpoints"
+    },
+    {
+      "check_id": "INV_PSG_TXT",
+      "category": "Inventory",
+      "dataset": "PSG",
+      "description": "TXT file exists and contains exactly 200 unique IDs",
+      "status": "PASS",
+      "evidence": "Found 200 lines, 200 unique IDs in PSG_200.txt"
+    },
+    {
+      "check_id": "INV_PSG_META",
+      "category": "Inventory",
+      "dataset": "PSG",
+      "description": "Metadata contains exactly 200 records matching TXT IDs",
+      "status": "PASS",
+      "evidence": "Found 200 records in PSG_200_metadata.json; set match with TXT: True"
+    },
+    {
+      "check_id": "INV_PSG_COCO_IMGS",
+      "category": "Inventory",
+      "dataset": "PSG",
+      "description": "COCO ground truth contains exactly 200 images matching TXT IDs",
+      "status": "PASS",
+      "evidence": "Found 200 images in PSG_200_annotations.coco.json; set match with TXT: True"
+    },
+    {
+      "check_id": "INV_PSG_DISK_COUNT",
+      "category": "Inventory",
+      "dataset": "PSG",
+      "description": "Disk images directory contains exactly 200 image files",
+      "status": "PASS",
+      "evidence": "Found 200 files in /Users/shivanshkaushik/Developer/SGG-Benchmark/evaluation_sets/images/PSG"
+    },
+    {
+      "check_id": "INT_PSG_DECODE",
+      "category": "Integrity",
+      "dataset": "PSG",
+      "description": "All 200 images decode with PIL, 0 corruptions, positive dimensions",
+      "status": "PASS",
+      "evidence": "Decoded 200 images: 0 corrupt, 0 dimension mismatches"
+    },
+    {
+      "check_id": "INT_PSG_OBJ_REFS",
+      "category": "Integrity",
+      "dataset": "PSG",
+      "description": "All object annotations reference valid image IDs (no orphans)",
+      "status": "PASS",
+      "evidence": "Checked 3019 objects: 0 orphans"
+    },
+    {
+      "check_id": "INT_PSG_REL_REFS",
+      "category": "Integrity",
+      "dataset": "PSG",
+      "description": "All relationship endpoints point to valid objects under globally indexed",
+      "status": "PASS",
+      "evidence": "Checked 1385 relationships: 0 invalid endpoints"
+    },
+    {
+      "check_id": "INV_IndoorVG_TXT",
+      "category": "Inventory",
+      "dataset": "IndoorVG",
+      "description": "TXT file exists and contains exactly 200 unique IDs",
+      "status": "PASS",
+      "evidence": "Found 200 lines, 200 unique IDs in IndoorVG_200.txt"
+    },
+    {
+      "check_id": "INV_IndoorVG_META",
+      "category": "Inventory",
+      "dataset": "IndoorVG",
+      "description": "Metadata contains exactly 200 records matching TXT IDs",
+      "status": "PASS",
+      "evidence": "Found 200 records in IndoorVG_200_metadata.json; set match with TXT: True"
+    },
+    {
+      "check_id": "INV_IndoorVG_COCO_IMGS",
+      "category": "Inventory",
+      "dataset": "IndoorVG",
+      "description": "COCO ground truth contains exactly 200 images matching TXT IDs",
+      "status": "PASS",
+      "evidence": "Found 200 images in IndoorVG_200_annotations.coco.json; set match with TXT: True"
+    },
+    {
+      "check_id": "INV_IndoorVG_DISK_COUNT",
+      "category": "Inventory",
+      "dataset": "IndoorVG",
+      "description": "Disk images directory contains exactly 200 image files",
+      "status": "PASS",
+      "evidence": "Found 200 files in /Users/shivanshkaushik/Developer/SGG-Benchmark/evaluation_sets/images/IndoorVG"
+    },
+    {
+      "check_id": "INT_IndoorVG_DECODE",
+      "category": "Integrity",
+      "dataset": "IndoorVG",
+      "description": "All 200 images decode with PIL, 0 corruptions, positive dimensions",
+      "status": "FAIL",
+      "evidence": "Decoded 200 images: 200 corrupt, 0 dimension mismatches"
+    },
+    {
+      "check_id": "INT_IndoorVG_OBJ_REFS",
+      "category": "Integrity",
+      "dataset": "IndoorVG",
+      "description": "All object annotations reference valid image IDs (no orphans)",
+      "status": "PASS",
+      "evidence": "Checked 3118 objects: 0 orphans"
+    },
+    {
+      "check_id": "INT_IndoorVG_REL_REFS",
+      "category": "Integrity",
+      "dataset": "IndoorVG",
+      "description": "All relationship endpoints point to valid objects under per-image indexed",
+      "status": "PASS",
+      "evidence": "Checked 1672 relationships: 0 invalid endpoints"
+    },
+    {
+      "check_id": "INV_OpenImages_TXT",
+      "category": "Inventory",
+      "dataset": "OpenImages",
+      "description": "TXT file exists and contains exactly 200 unique IDs",
+      "status": "PASS",
+      "evidence": "Found 200 lines, 200 unique IDs in OpenImages_200.txt"
+    },
+    {
+      "check_id": "INV_OpenImages_META",
+      "category": "Inventory",
+      "dataset": "OpenImages",
+      "description": "Metadata contains exactly 200 records matching TXT IDs",
+      "status": "PASS",
+      "evidence": "Found 200 records in OpenImages_200_metadata.json; set match with TXT: True"
+    },
+    {
+      "check_id": "INV_OpenImages_COCO_IMGS",
+      "category": "Inventory",
+      "dataset": "OpenImages",
+      "description": "COCO ground truth contains exactly 200 images matching TXT IDs",
+      "status": "PASS",
+      "evidence": "Found 200 images in OpenImages_200_annotations.coco.json; set match with TXT: True"
+    },
+    {
+      "check_id": "INV_OpenImages_DISK_COUNT",
+      "category": "Inventory",
+      "dataset": "OpenImages",
+      "description": "Disk images directory contains exactly 200 image files",
+      "status": "PASS",
+      "evidence": "Found 200 files in /Users/shivanshkaushik/Developer/SGG-Benchmark/evaluation_sets/images/OpenImages"
+    },
+    {
+      "check_id": "INT_OpenImages_DECODE",
+      "category": "Integrity",
+      "dataset": "OpenImages",
+      "description": "All 200 images decode with PIL, 0 corruptions, positive dimensions",
+      "status": "PASS",
+      "evidence": "Decoded 200 images: 0 corrupt, 0 dimension mismatches"
+    },
+    {
+      "check_id": "INT_OpenImages_OBJ_REFS",
+      "category": "Integrity",
+      "dataset": "OpenImages",
+      "description": "All object annotations reference valid image IDs (no orphans)",
+      "status": "PASS",
+      "evidence": "Checked 1486 objects: 0 orphans"
+    },
+    {
+      "check_id": "INT_OpenImages_REL_REFS",
+      "category": "Integrity",
+      "dataset": "OpenImages",
+      "description": "All relationship endpoints point to valid objects under globally indexed",
+      "status": "PASS",
+      "evidence": "Checked 866 relationships: 0 invalid endpoints"
+    },
+    {
+      "check_id": "ONT_CANON_SIZE",
+      "category": "Ontology",
+      "dataset": "VG150",
+      "description": "Canonical vocabulary has exactly 50 predicates with valid IDs",
+      "status": "PASS",
+      "evidence": "Found 50 predicates in canonical VG150 vocabulary"
+    },
+    {
+      "check_id": "ONT_VG150_COVERAGE",
+      "category": "Ontology",
+      "dataset": "VG150",
+      "description": "Every source predicate in VG150 is accounted for in mapping",
+      "status": "PASS",
+      "evidence": "Source predicates: 50, mapped: 50, missing: 0"
+    },
+    {
+      "check_id": "ONT_PSG_COVERAGE",
+      "category": "Ontology",
+      "dataset": "PSG",
+      "description": "Every source predicate in PSG is accounted for in mapping",
+      "status": "PASS",
+      "evidence": "Source predicates: 56, mapped: 56, missing: 0"
+    },
+    {
+      "check_id": "ONT_IndoorVG_COVERAGE",
+      "category": "Ontology",
+      "dataset": "IndoorVG",
+      "description": "Every source predicate in IndoorVG is accounted for in mapping",
+      "status": "PASS",
+      "evidence": "Source predicates: 37, mapped: 37, missing: 0"
+    },
+    {
+      "check_id": "ONT_OpenImagesV6_COVERAGE",
+      "category": "Ontology",
+      "dataset": "OpenImagesV6",
+      "description": "Every source predicate in OpenImagesV6 is accounted for in mapping",
+      "status": "PASS",
+      "evidence": "Source predicates: 31, mapped: 31, missing: 0"
+    },
+    {
+      "check_id": "ONT_VG150_WEARS",
+      "category": "Ontology",
+      "dataset": "VG150",
+      "description": "VG150 'wears' (49) and 'wearing' (48) map to canonical 'wearing' (48)",
+      "status": "PASS",
+      "evidence": "wears: {'source_id': 49, 'normalized_canonical_predicate': 'wearing', 'mapping_type': 'SEMANTIC_EQUIVALENT', 'in_strict_4way': True, 'in_extended_4way': True, 'in_tri_dataset': True}, wearing: {'source_id': 48, 'normalized_canonical_predicate': 'wearing', 'mapping_type': 'EXACT', 'in_strict_4way': True, 'in_extended_4way': True, 'in_tri_dataset': True}"
+    },
+    {
+      "check_id": "DIR_OI_INSIDEOF",
+      "category": "Directionality",
+      "dataset": "OpenImagesV6",
+      "description": "Open Images 'inside_of' maps to 'in' preserving Contained -> Container direction",
+      "status": "PASS",
+      "evidence": "inside_of mapping: {'source_id': 14, 'normalized_canonical_predicate': 'in', 'mapping_type': 'SEMANTIC_EQUIVALENT', 'in_strict_4way': True, 'in_extended_4way': True, 'in_tri_dataset': True}"
+    },
+    {
+      "check_id": "DIR_OI_CONTAIN",
+      "category": "Directionality",
+      "dataset": "OpenImagesV6",
+      "description": "Open Images 'contain' maps to 'has' preserving Container -> Content (never to 'in')",
+      "status": "PASS",
+      "evidence": "contain mapping: {'source_id': 17, 'normalized_canonical_predicate': 'has', 'mapping_type': 'ACCEPTABLE_SEMANTIC_GENERALIZATION', 'in_strict_4way': False, 'in_extended_4way': False, 'in_tri_dataset': True}"
+    },
+    {
+      "check_id": "SEM_OI_HOLDINGHANDS",
+      "category": "Semantic Equivalence",
+      "dataset": "OpenImagesV6",
+      "description": "Open Images 'holding_hands' mapping categorized as ACCEPTABLE_SEMANTIC_GENERALIZATION",
+      "status": "PASS WITH WARNING",
+      "evidence": "holding_hands mapping: {'source_id': 7, 'normalized_canonical_predicate': 'holding', 'mapping_type': 'ACCEPTABLE_SEMANTIC_GENERALIZATION', 'in_strict_4way': True, 'in_extended_4way': True, 'in_tri_dataset': True} (semantic generalization included in strict flag; 0 instances in 200 subset)"
+    },
+    {
+      "check_id": "STAT_DENOM",
+      "category": "Statistics",
+      "dataset": "All",
+      "description": "Total original relationships denominator reproduces to exactly 5,006",
+      "status": "PASS",
+      "evidence": "Denominator: 5006 (VG150: 1083, PSG: 1385, IndoorVG: 1672, OpenImages: 866)"
+    },
+    {
+      "check_id": "STAT_REPRODUCE_STRICT",
+      "category": "Statistics",
+      "dataset": "All",
+      "description": "Normalized view 'strict' aggregate count reproduces to 2211 / 5006 (44.17%)",
+      "status": "PASS",
+      "evidence": "Actual: 2211 / 5006 (44.17%), Expected: 2211 / 5006 (44.17%)"
+    },
+    {
+      "check_id": "STAT_REPRODUCE_EXTENDED",
+      "category": "Statistics",
+      "dataset": "All",
+      "description": "Normalized view 'extended' aggregate count reproduces to 2272 / 5006 (45.39%)",
+      "status": "PASS",
+      "evidence": "Actual: 2272 / 5006 (45.39%), Expected: 2272 / 5006 (45.39%)"
+    },
+    {
+      "check_id": "STAT_REPRODUCE_TRI_DATASET",
+      "category": "Statistics",
+      "dataset": "All",
+      "description": "Normalized view 'tri_dataset' aggregate count reproduces to 3476 / 5006 (69.44%)",
+      "status": "PASS",
+      "evidence": "Actual: 3476 / 5006 (69.44%), Expected: 3476 / 5006 (69.44%)"
+    },
+    {
+      "check_id": "LEAK_INDOOR_VGTRAIN",
+      "category": "Data Leakage",
+      "dataset": "IndoorVG",
+      "description": "Cross-dataset image leakage: IndoorVG_200 images in VG150 TRAIN split",
+      "status": "CRITICAL WARNING",
+      "evidence": "All 200 images (100%) of IndoorVG_200 are present in the official VG150 training split (68,538 images). Models pretrained on VG150 have seen all IndoorVG_200 test images."
+    },
+    {
+      "check_id": "LEAK_VG150_PSG_IDS",
+      "category": "Data Leakage",
+      "dataset": "PSG",
+      "description": "ID namespace collision between VG150 and PSG (7 identical integer IDs)",
+      "status": "PASS WITH WARNING",
+      "evidence": "7 image IDs (2315368, 2315402, 2315458, 2315515, 2315487, 2315399, 2315372) appear in both VG150_200 and PSG_200. Verified distinct images (different pixel hashes, dimensions, scene content). ID collision is due to independent dataset namespaces."
+    },
+    {
+      "check_id": "BIAS_SUBSET_SELECTION",
+      "category": "Selection Bias",
+      "dataset": "All",
+      "description": "Ascending numerical/lexicographical sort on first 200 IDs selection bias",
+      "status": "PASS WITH WARNING",
+      "evidence": "Selecting first 200 sorted IDs creates contiguous temporal/batch clustering in VG150 (2315353-2316499) and shard 0 concentration in IndoorVG. Open Images hex sort behaves as quasi-random uniform hash."
+    },
+    {
+      "check_id": "PIPE_DISJOINT_OBJECTS",
+      "category": "Pipeline Readiness",
+      "dataset": "All",
+      "description": "Cross-dataset object vocabulary compatibility (VG150: 150, PSG: 133, IndoorVG: 84, OpenImages: 75)",
+      "status": "PASS WITH WARNING",
+      "evidence": "Object vocabularies are completely disjoint across the four datasets. Cross-dataset evaluation is methodologically valid in PredCls mode (given GT boxes & labels) or native dataset evaluation, but invalid for direct cross-dataset SGDet without an object ontology."
+    },
+    {
+      "check_id": "PIPE_PRED_MAPPING",
+      "category": "Pipeline Readiness",
+      "dataset": "All",
+      "description": "Model prediction projection layer for normalized evaluation ontology",
+      "status": "PASS WITH WARNING",
+      "evidence": "Models output native dataset predicate logits (e.g., 50 classes for VG150, 56 for PSG). Evaluation pipeline requires a logit projection/mapping layer to map predictions onto normalized ontology classes (1..6, 1..8, 1..20)."
+    },
+    {
+      "check_id": "PIPE_ZERO_REL_HANDLING",
+      "category": "Pipeline Readiness",
+      "dataset": "All",
+      "description": "Handling of images with 0 GT relationships in filtered views",
+      "status": "PASS WITH WARNING",
+      "evidence": "Filtered views have images with 0 GT relationships (OpenImages strict: 158/200; VG150 strict: 59/200). Pipeline must standardize whether images with 0 relations are excluded (filter_empty_rels=True) or assigned Recall=0.0."
+    },
+    {
+      "check_id": "PIPE_DUPLICATE_TRIPLETS",
+      "category": "Pipeline Readiness",
+      "dataset": "All",
+      "description": "Handling of duplicate GT triplets in Recall@K evaluation",
+      "status": "PASS WITH WARNING",
+      "evidence": "Ground truth contains duplicate triplets (IndoorVG: 335, VG150: 148, PSG: 43). Evaluation code must specify set-based union matching vs multi-graph matching."
+    }
+  ]
+}

@@ -1,0 +1,1797 @@
+{
+  "canonical_dataset": "VG150",
+  "canonical_predicate_count": 50,
+  "alignment_status": "FROZEN_FINAL",
+  "frozen_vocabularies": {
+    "strict_core_4way": [
+      "eating",
+      "hanging from",
+      "holding",
+      "in",
+      "on",
+      "wearing"
+    ],
+    "extended_core_4way": [
+      "eating",
+      "hanging from",
+      "holding",
+      "in",
+      "looking at",
+      "on",
+      "playing",
+      "wearing"
+    ],
+    "tri_dataset_20way": [
+      "against",
+      "at",
+      "attached to",
+      "carrying",
+      "eating",
+      "hanging from",
+      "has",
+      "holding",
+      "in",
+      "in front of",
+      "looking at",
+      "lying on",
+      "near",
+      "on",
+      "playing",
+      "riding",
+      "sitting on",
+      "standing on",
+      "under",
+      "wearing"
+    ]
+  },
+  "mappings": {
+    "VG150": [
+      {
+        "dataset": "VG150",
+        "source_id": 1,
+        "source_predicate": "above",
+        "canonical_id": 1,
+        "canonical_predicate": "above",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 2,
+        "source_predicate": "across",
+        "canonical_id": 2,
+        "canonical_predicate": "across",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 3,
+        "source_predicate": "against",
+        "canonical_id": 3,
+        "canonical_predicate": "against",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 4,
+        "source_predicate": "along",
+        "canonical_id": 4,
+        "canonical_predicate": "along",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 5,
+        "source_predicate": "and",
+        "canonical_id": 5,
+        "canonical_predicate": "and",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 6,
+        "source_predicate": "at",
+        "canonical_id": 6,
+        "canonical_predicate": "at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 7,
+        "source_predicate": "attached to",
+        "canonical_id": 7,
+        "canonical_predicate": "attached to",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 8,
+        "source_predicate": "behind",
+        "canonical_id": 8,
+        "canonical_predicate": "behind",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 9,
+        "source_predicate": "belonging to",
+        "canonical_id": 9,
+        "canonical_predicate": "belonging to",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 10,
+        "source_predicate": "between",
+        "canonical_id": 10,
+        "canonical_predicate": "between",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 11,
+        "source_predicate": "carrying",
+        "canonical_id": 11,
+        "canonical_predicate": "carrying",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 12,
+        "source_predicate": "covered in",
+        "canonical_id": 12,
+        "canonical_predicate": "covered in",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 13,
+        "source_predicate": "covering",
+        "canonical_id": 13,
+        "canonical_predicate": "covering",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 14,
+        "source_predicate": "eating",
+        "canonical_id": 14,
+        "canonical_predicate": "eating",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 15,
+        "source_predicate": "flying in",
+        "canonical_id": 15,
+        "canonical_predicate": "flying in",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 16,
+        "source_predicate": "for",
+        "canonical_id": 16,
+        "canonical_predicate": "for",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 17,
+        "source_predicate": "from",
+        "canonical_id": 17,
+        "canonical_predicate": "from",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 18,
+        "source_predicate": "growing on",
+        "canonical_id": 18,
+        "canonical_predicate": "growing on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 19,
+        "source_predicate": "hanging from",
+        "canonical_id": 19,
+        "canonical_predicate": "hanging from",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 20,
+        "source_predicate": "has",
+        "canonical_id": 20,
+        "canonical_predicate": "has",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 21,
+        "source_predicate": "holding",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 22,
+        "source_predicate": "in",
+        "canonical_id": 22,
+        "canonical_predicate": "in",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 23,
+        "source_predicate": "in front of",
+        "canonical_id": 23,
+        "canonical_predicate": "in front of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 24,
+        "source_predicate": "laying on",
+        "canonical_id": 24,
+        "canonical_predicate": "laying on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 25,
+        "source_predicate": "looking at",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 26,
+        "source_predicate": "lying on",
+        "canonical_id": 26,
+        "canonical_predicate": "lying on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 27,
+        "source_predicate": "made of",
+        "canonical_id": 27,
+        "canonical_predicate": "made of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 28,
+        "source_predicate": "mounted on",
+        "canonical_id": 28,
+        "canonical_predicate": "mounted on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 29,
+        "source_predicate": "near",
+        "canonical_id": 29,
+        "canonical_predicate": "near",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 30,
+        "source_predicate": "of",
+        "canonical_id": 30,
+        "canonical_predicate": "of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 31,
+        "source_predicate": "on",
+        "canonical_id": 31,
+        "canonical_predicate": "on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 32,
+        "source_predicate": "on back of",
+        "canonical_id": 32,
+        "canonical_predicate": "on back of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 33,
+        "source_predicate": "over",
+        "canonical_id": 33,
+        "canonical_predicate": "over",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 34,
+        "source_predicate": "painted on",
+        "canonical_id": 34,
+        "canonical_predicate": "painted on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 35,
+        "source_predicate": "parked on",
+        "canonical_id": 35,
+        "canonical_predicate": "parked on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 36,
+        "source_predicate": "part of",
+        "canonical_id": 36,
+        "canonical_predicate": "part of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 37,
+        "source_predicate": "playing",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 38,
+        "source_predicate": "riding",
+        "canonical_id": 38,
+        "canonical_predicate": "riding",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 39,
+        "source_predicate": "says",
+        "canonical_id": 39,
+        "canonical_predicate": "says",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 40,
+        "source_predicate": "sitting on",
+        "canonical_id": 40,
+        "canonical_predicate": "sitting on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 41,
+        "source_predicate": "standing on",
+        "canonical_id": 41,
+        "canonical_predicate": "standing on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 42,
+        "source_predicate": "to",
+        "canonical_id": 42,
+        "canonical_predicate": "to",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 43,
+        "source_predicate": "under",
+        "canonical_id": 43,
+        "canonical_predicate": "under",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 44,
+        "source_predicate": "using",
+        "canonical_id": 44,
+        "canonical_predicate": "using",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 45,
+        "source_predicate": "walking in",
+        "canonical_id": 45,
+        "canonical_predicate": "walking in",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 46,
+        "source_predicate": "walking on",
+        "canonical_id": 46,
+        "canonical_predicate": "walking on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 47,
+        "source_predicate": "watching",
+        "canonical_id": 47,
+        "canonical_predicate": "watching",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 48,
+        "source_predicate": "wearing",
+        "canonical_id": 48,
+        "canonical_predicate": "wearing",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 49,
+        "source_predicate": "wears",
+        "canonical_id": 48,
+        "canonical_predicate": "wearing",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Crowd-sourced inflectional duplicate (ID 49) normalized onto canonical 'wearing' (ID 48) for shared evaluation ontology."
+      },
+      {
+        "dataset": "VG150",
+        "source_id": 50,
+        "source_predicate": "with",
+        "canonical_id": 50,
+        "canonical_predicate": "with",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Canonical baseline identity mapping."
+      }
+    ],
+    "PSG": [
+      {
+        "dataset": "PSG",
+        "source_id": 1,
+        "source_predicate": "over",
+        "canonical_id": 33,
+        "canonical_predicate": "over",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and spatial match (vertically above)."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 2,
+        "source_predicate": "in front of",
+        "canonical_id": 23,
+        "canonical_predicate": "in front of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and anterior spatial match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 3,
+        "source_predicate": "beside",
+        "canonical_id": 29,
+        "canonical_predicate": "near",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "HIGH",
+        "reason": "Lateral adjacency ('beside') is a specific topological instantiation of general spatial proximity ('near')."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 4,
+        "source_predicate": "on",
+        "canonical_id": 31,
+        "canonical_predicate": "on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact physical surface contact and support match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 5,
+        "source_predicate": "in",
+        "canonical_id": 22,
+        "canonical_predicate": "in",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact interior boundary containment match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 6,
+        "source_predicate": "attached to",
+        "canonical_id": 7,
+        "canonical_predicate": "attached to",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact physical/mechanical attachment match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 7,
+        "source_predicate": "hanging from",
+        "canonical_id": 19,
+        "canonical_predicate": "hanging from",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact suspension from support anchor match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 8,
+        "source_predicate": "on back of",
+        "canonical_id": 32,
+        "canonical_predicate": "on back of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact posterior surface support match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 9,
+        "source_predicate": "falling off",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'falling off' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 10,
+        "source_predicate": "going down",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'going down' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 11,
+        "source_predicate": "painted on",
+        "canonical_id": 34,
+        "canonical_predicate": "painted on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact surface graphic rendering match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 12,
+        "source_predicate": "walking on",
+        "canonical_id": 46,
+        "canonical_predicate": "walking on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact pedestrian locomotion on surface match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 13,
+        "source_predicate": "running on",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'running on' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 14,
+        "source_predicate": "crossing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'crossing' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 15,
+        "source_predicate": "standing on",
+        "canonical_id": 41,
+        "canonical_predicate": "standing on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact upright bodily posture supported on surface match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 16,
+        "source_predicate": "lying on",
+        "canonical_id": 26,
+        "canonical_predicate": "lying on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact recumbent bodily posture upon surface match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 17,
+        "source_predicate": "sitting on",
+        "canonical_id": 40,
+        "canonical_predicate": "sitting on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact seated bodily posture supported on surface match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 18,
+        "source_predicate": "flying over",
+        "canonical_id": 33,
+        "canonical_predicate": "over",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "HIGH",
+        "reason": "Airborne locomotion spatially elevated over target; core spatial relation is 'over'."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 19,
+        "source_predicate": "jumping over",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'jumping over' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 20,
+        "source_predicate": "jumping from",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'jumping from' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 21,
+        "source_predicate": "wearing",
+        "canonical_id": 48,
+        "canonical_predicate": "wearing",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact attire/garment adornment match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 22,
+        "source_predicate": "holding",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact manual physical grasp match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 23,
+        "source_predicate": "carrying",
+        "canonical_id": 11,
+        "canonical_predicate": "carrying",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact bearing and transporting load match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 24,
+        "source_predicate": "looking at",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact directed visual gaze match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 25,
+        "source_predicate": "guiding",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'guiding' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 26,
+        "source_predicate": "kissing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'kissing' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 27,
+        "source_predicate": "eating",
+        "canonical_id": 14,
+        "canonical_predicate": "eating",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact oral food consumption match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 28,
+        "source_predicate": "drinking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'drinking' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 29,
+        "source_predicate": "feeding",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'feeding' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 30,
+        "source_predicate": "biting",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'biting' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 31,
+        "source_predicate": "catching",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'catching' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 32,
+        "source_predicate": "picking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'picking' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 33,
+        "source_predicate": "playing with",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "HIGH",
+        "reason": "Recreational engagement with toy/object or peer; core interaction is 'playing'."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 34,
+        "source_predicate": "chasing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'chasing' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 35,
+        "source_predicate": "climbing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'climbing' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 36,
+        "source_predicate": "cleaning",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'cleaning' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 37,
+        "source_predicate": "playing",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact recreational sport/game engagement match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 38,
+        "source_predicate": "touching",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'touching' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 39,
+        "source_predicate": "pushing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'pushing' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 40,
+        "source_predicate": "pulling",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'pulling' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 41,
+        "source_predicate": "opening",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'opening' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 42,
+        "source_predicate": "cooking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'cooking' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 43,
+        "source_predicate": "talking to",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'talking to' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 44,
+        "source_predicate": "throwing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'throwing' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 45,
+        "source_predicate": "slicing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'slicing' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 46,
+        "source_predicate": "driving",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'driving' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 47,
+        "source_predicate": "riding",
+        "canonical_id": 38,
+        "canonical_predicate": "riding",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact vehicle/mount transit operation match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 48,
+        "source_predicate": "parked on",
+        "canonical_id": 35,
+        "canonical_predicate": "parked on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact stationary vehicle resting on surface match."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 49,
+        "source_predicate": "driving on",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'driving on' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 50,
+        "source_predicate": "about to hit",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'about to hit' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 51,
+        "source_predicate": "kicking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'kicking' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 52,
+        "source_predicate": "swinging",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'swinging' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 53,
+        "source_predicate": "entering",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'entering' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 54,
+        "source_predicate": "exiting",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Domain/action-specific predicate 'exiting' absent in canonical VG150."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 55,
+        "source_predicate": "enclosing",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "AMBIGUOUS_REJECTED",
+        "confidence": "HIGH",
+        "reason": "3D boundary framing/containment differs topologically from 2D surface covering."
+      },
+      {
+        "dataset": "PSG",
+        "source_id": 56,
+        "source_predicate": "leaning on",
+        "canonical_id": 3,
+        "canonical_predicate": "against",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Physical inclined contact resting against an upright support."
+      }
+    ],
+    "IndoorVG": [
+      {
+        "dataset": "IndoorVG",
+        "source_id": 1,
+        "source_predicate": "above",
+        "canonical_id": 1,
+        "canonical_predicate": "above",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 2,
+        "source_predicate": "against",
+        "canonical_id": 3,
+        "canonical_predicate": "against",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 3,
+        "source_predicate": "at",
+        "canonical_id": 6,
+        "canonical_predicate": "at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 4,
+        "source_predicate": "attached to",
+        "canonical_id": 7,
+        "canonical_predicate": "attached to",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 5,
+        "source_predicate": "behind",
+        "canonical_id": 8,
+        "canonical_predicate": "behind",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 6,
+        "source_predicate": "between",
+        "canonical_id": 10,
+        "canonical_predicate": "between",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 7,
+        "source_predicate": "carrying",
+        "canonical_id": 11,
+        "canonical_predicate": "carrying",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 8,
+        "source_predicate": "covering",
+        "canonical_id": 13,
+        "canonical_predicate": "covering",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 9,
+        "source_predicate": "cutting",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific action predicate 'cutting' absent in canonical VG150."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 10,
+        "source_predicate": "drinking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific action predicate 'drinking' absent in canonical VG150."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 11,
+        "source_predicate": "eating",
+        "canonical_id": 14,
+        "canonical_predicate": "eating",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 12,
+        "source_predicate": "filled with",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "AMBIGUOUS_REJECTED",
+        "confidence": "HIGH",
+        "reason": "Mapping to 'in' causes DIRECTIONALITY_CONFLICT; mapping to 'has' loses volumetric containment."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 13,
+        "source_predicate": "for",
+        "canonical_id": 16,
+        "canonical_predicate": "for",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 14,
+        "source_predicate": "hanging from",
+        "canonical_id": 19,
+        "canonical_predicate": "hanging from",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 15,
+        "source_predicate": "has",
+        "canonical_id": 20,
+        "canonical_predicate": "has",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 16,
+        "source_predicate": "holding",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 17,
+        "source_predicate": "in",
+        "canonical_id": 22,
+        "canonical_predicate": "in",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 18,
+        "source_predicate": "in front of",
+        "canonical_id": 23,
+        "canonical_predicate": "in front of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 19,
+        "source_predicate": "laying on",
+        "canonical_id": 24,
+        "canonical_predicate": "laying on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 20,
+        "source_predicate": "looking at",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 21,
+        "source_predicate": "lying on",
+        "canonical_id": 26,
+        "canonical_predicate": "lying on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 22,
+        "source_predicate": "mounted on",
+        "canonical_id": 28,
+        "canonical_predicate": "mounted on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 23,
+        "source_predicate": "near",
+        "canonical_id": 29,
+        "canonical_predicate": "near",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 24,
+        "source_predicate": "of",
+        "canonical_id": 30,
+        "canonical_predicate": "of",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 25,
+        "source_predicate": "on",
+        "canonical_id": 31,
+        "canonical_predicate": "on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 26,
+        "source_predicate": "playing with",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "HIGH",
+        "reason": "Recreational play interaction with toy/peer; core interaction is 'playing'."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 27,
+        "source_predicate": "reading",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "HIGH",
+        "reason": "Observational engagement with reading material; core visual relation is 'looking at'."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 28,
+        "source_predicate": "sitting at",
+        "canonical_id": 6,
+        "canonical_predicate": "at",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "HIGH",
+        "reason": "Spatial collocation relative to desk/table without asserting physical support ON desk."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 29,
+        "source_predicate": "sitting on",
+        "canonical_id": 40,
+        "canonical_predicate": "sitting on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 30,
+        "source_predicate": "standing on",
+        "canonical_id": 41,
+        "canonical_predicate": "standing on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 31,
+        "source_predicate": "taking",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific action predicate 'taking' absent in canonical VG150."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 32,
+        "source_predicate": "talking on",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "AMBIGUOUS_REJECTED",
+        "confidence": "HIGH",
+        "reason": "Mapping to 'using' is overly broad and discards conversational telecommunication semantic."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 33,
+        "source_predicate": "under",
+        "canonical_id": 43,
+        "canonical_predicate": "under",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 34,
+        "source_predicate": "using",
+        "canonical_id": 44,
+        "canonical_predicate": "using",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 35,
+        "source_predicate": "watching",
+        "canonical_id": 47,
+        "canonical_predicate": "watching",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 36,
+        "source_predicate": "wearing",
+        "canonical_id": 48,
+        "canonical_predicate": "wearing",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      },
+      {
+        "dataset": "IndoorVG",
+        "source_id": 37,
+        "source_predicate": "with",
+        "canonical_id": 50,
+        "canonical_predicate": "with",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact lexical and semantic match from Visual Genome indoor curation."
+      }
+    ],
+    "OpenImagesV6": [
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 1,
+        "source_predicate": "at",
+        "canonical_id": 6,
+        "canonical_predicate": "at",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact spatial collocation match."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 2,
+        "source_predicate": "holds",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Physical manual grasp; 3rd person singular present inflection of 'holding'."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 3,
+        "source_predicate": "wears",
+        "canonical_id": 48,
+        "canonical_predicate": "wearing",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Attire/garment adornment; inflectional equivalent of normalized canonical 'wearing' (ID 48)."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 4,
+        "source_predicate": "surf",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'surf' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 5,
+        "source_predicate": "hang",
+        "canonical_id": 19,
+        "canonical_predicate": "hanging from",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Physical suspension from anchor; prepositional variation of 'hanging from'."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 6,
+        "source_predicate": "drink",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'drink' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 7,
+        "source_predicate": "holding_hands",
+        "canonical_id": 21,
+        "canonical_predicate": "holding",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "MEDIUM",
+        "reason": "Mutual manual grasp between persons; generalized to manual contact 'holding'."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 8,
+        "source_predicate": "on",
+        "canonical_id": 31,
+        "canonical_predicate": "on",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact physical surface contact and support match."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 9,
+        "source_predicate": "ride",
+        "canonical_id": 38,
+        "canonical_predicate": "riding",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Active locomotion/transit operating vehicle or mount; base form of 'riding'."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 10,
+        "source_predicate": "dance",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'dance' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 11,
+        "source_predicate": "skateboard",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'skateboard' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 12,
+        "source_predicate": "catch",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'catch' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 13,
+        "source_predicate": "highfive",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'highfive' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 14,
+        "source_predicate": "inside_of",
+        "canonical_id": 22,
+        "canonical_predicate": "in",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Interior spatial containment; full semantic equivalent of 'in'."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 15,
+        "source_predicate": "eat",
+        "canonical_id": 14,
+        "canonical_predicate": "eating",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Oral food ingestion; base form inflection of 'eating'."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 16,
+        "source_predicate": "cut",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'cut' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 17,
+        "source_predicate": "contain",
+        "canonical_id": 20,
+        "canonical_predicate": "has",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "HIGH",
+        "reason": "Container possesses/includes contents (Container -> Contents). Preserves directionality."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 18,
+        "source_predicate": "handshake",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'handshake' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 19,
+        "source_predicate": "kiss",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'kiss' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 20,
+        "source_predicate": "talk_on_phone",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "AMBIGUOUS_REJECTED",
+        "confidence": "HIGH",
+        "reason": "Mapping to 'using' loses verbal telecommunication semantic."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 21,
+        "source_predicate": "interacts_with",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'interacts_with' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 22,
+        "source_predicate": "under",
+        "canonical_id": 43,
+        "canonical_predicate": "under",
+        "mapping_type": "EXACT",
+        "confidence": "HIGH",
+        "reason": "Exact spatial beneath/underneath match."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 23,
+        "source_predicate": "hug",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'hug' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 24,
+        "source_predicate": "throw",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'throw' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 25,
+        "source_predicate": "hits",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'hits' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 26,
+        "source_predicate": "snowboard",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'snowboard' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 27,
+        "source_predicate": "is",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'is' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 28,
+        "source_predicate": "kick",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'kick' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 29,
+        "source_predicate": "ski",
+        "canonical_id": null,
+        "canonical_predicate": null,
+        "mapping_type": "NO_MATCH",
+        "confidence": "HIGH",
+        "reason": "Specific interaction/action predicate 'ski' absent in canonical VG150."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 30,
+        "source_predicate": "plays",
+        "canonical_id": 37,
+        "canonical_predicate": "playing",
+        "mapping_type": "SEMANTIC_EQUIVALENT",
+        "confidence": "HIGH",
+        "reason": "Musical instrument performance or sport game; inflectional form of 'playing'."
+      },
+      {
+        "dataset": "OpenImagesV6",
+        "source_id": 31,
+        "source_predicate": "read",
+        "canonical_id": 25,
+        "canonical_predicate": "looking at",
+        "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+        "confidence": "HIGH",
+        "reason": "Directing visual attention at reading material; visual relational core is 'looking at'."
+      }
+    ]
+  }
+}

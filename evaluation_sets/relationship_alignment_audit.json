@@ -1,0 +1,1283 @@
+{
+  "audit_metadata": {
+    "title": "SGG Benchmark Relationship Vocabulary Alignment Audit",
+    "timestamp": "2026-10-08T22:23:55.103380+00:00",
+    "canonical_dataset": "VG150",
+    "canonical_predicate_count": 50,
+    "audited_source_datasets": [
+      "PSG",
+      "IndoorVG",
+      "OpenImagesV6"
+    ]
+  },
+  "audit_1_validation_results": {
+    "PSG": {
+      "total_true_vocabulary_count": 56,
+      "total_mappings_count": 56,
+      "duplicate_source_ids": [],
+      "duplicate_source_names": [],
+      "phantom_predicates_in_mappings": [
+        "and",
+        "between",
+        "hugging",
+        "jumping on",
+        "jumping to",
+        "pointing to",
+        "sitting behind",
+        "standing behind",
+        "stopping on",
+        "teaching",
+        "under",
+        "waiting for",
+        "walking with",
+        "watching",
+        "wears"
+      ],
+      "omitted_true_predicates": [
+        "about to hit",
+        "biting",
+        "crossing",
+        "driving on",
+        "flying over",
+        "guiding",
+        "jumping from",
+        "jumping over",
+        "kicking",
+        "lying on",
+        "opening",
+        "painted on",
+        "parked on",
+        "picking",
+        "slicing"
+      ],
+      "invalid_canonical_targets": [],
+      "canonical_id_mismatches": [],
+      "exact_one_decision_per_predicate": true
+    },
+    "IndoorVG": {
+      "total_true_vocabulary_count": 37,
+      "total_mappings_count": 37,
+      "duplicate_source_ids": [],
+      "duplicate_source_names": [],
+      "phantom_predicates_in_mappings": [],
+      "omitted_true_predicates": [],
+      "invalid_canonical_targets": [],
+      "canonical_id_mismatches": [],
+      "exact_one_decision_per_predicate": true
+    },
+    "OpenImagesV6": {
+      "total_true_vocabulary_count": 31,
+      "total_mappings_count": 31,
+      "duplicate_source_ids": [],
+      "duplicate_source_names": [],
+      "phantom_predicates_in_mappings": [],
+      "omitted_true_predicates": [],
+      "invalid_canonical_targets": [],
+      "canonical_id_mismatches": [],
+      "exact_one_decision_per_predicate": true
+    }
+  },
+  "audit_2_nine_predicate_verification": [
+    {
+      "canonical_predicate": "eating",
+      "vg150_source": "eating (ID 14)",
+      "psg_source": "eating (ID 27 in true PSG)",
+      "indoor_source": "eating (ID 11)",
+      "oi_source": "eat (identifier 'eat')",
+      "psg_status": "EXACT",
+      "indoor_status": "EXACT",
+      "oi_status": "SEMANTIC_EQUIVALENT",
+      "overall_status": "STRICT_AND_EXTENDED",
+      "directionality_check": "PRESERVED (Subject: Ingestor -> Object: Food across all 4 datasets)",
+      "semantic_justification": "Oral food ingestion; only grammatical inflection differs between Open Images base verb 'eat' and gerund 'eating'.",
+      "information_lost": "None.",
+      "verdict": "RETAIN in both Strict and Extended common vocabulary."
+    },
+    {
+      "canonical_predicate": "hanging from",
+      "vg150_source": "hanging from (ID 19)",
+      "psg_source": "hanging from (ID 7 in true PSG)",
+      "indoor_source": "hanging from (ID 14)",
+      "oi_source": "hang (identifier 'hang')",
+      "psg_status": "EXACT",
+      "indoor_status": "EXACT",
+      "oi_status": "SEMANTIC_EQUIVALENT",
+      "overall_status": "STRICT_AND_EXTENDED",
+      "directionality_check": "PRESERVED (Subject: Suspended item -> Object: Anchor/Support across all 4 datasets; e.g. fruit hang tree)",
+      "semantic_justification": "Physical suspension of subject from an anchor/support. Only grammatical prepositional variation between 'hang' and 'hanging from'.",
+      "information_lost": "None.",
+      "verdict": "RETAIN in both Strict and Extended common vocabulary."
+    },
+    {
+      "canonical_predicate": "holding",
+      "vg150_source": "holding (ID 21)",
+      "psg_source": "holding (ID 22 in true PSG)",
+      "indoor_source": "holding (ID 16)",
+      "oi_source": "holds (identifier 'holds') [also holding_hands ~]",
+      "psg_status": "EXACT",
+      "indoor_status": "EXACT",
+      "oi_status": "SEMANTIC_EQUIVALENT (holds), ACCEPTABLE_SEMANTIC_GENERALIZATION (holding_hands)",
+      "overall_status": "STRICT_AND_EXTENDED",
+      "directionality_check": "PRESERVED (Subject: Grasper -> Object: Grasped object in 'holds'; mutual in 'holding_hands')",
+      "semantic_justification": "Physical manual grasp/support of an object. 'holds' is 3rd person singular present vs gerund 'holding'.",
+      "information_lost": "In 'holding_hands', interpersonal mutual reciprocity is abstracted into physical grasp.",
+      "verdict": "RETAIN in both Strict and Extended common vocabulary (via primary mapping 'holds' -> 'holding')."
+    },
+    {
+      "canonical_predicate": "in",
+      "vg150_source": "in (ID 22)",
+      "psg_source": "in (ID 5 in true PSG)",
+      "indoor_source": "in (ID 17)",
+      "oi_source": "inside_of (identifier 'inside_of')",
+      "psg_status": "EXACT",
+      "indoor_status": "EXACT",
+      "oi_status": "SEMANTIC_EQUIVALENT",
+      "overall_status": "STRICT_AND_EXTENDED",
+      "directionality_check": "PRESERVED (Subject: Contained entity -> Object: Enclosing boundary/container across all 4 datasets; e.g. Man inside_of Car)",
+      "semantic_justification": "Topological 2D/3D interior boundary containment. 'inside_of' and 'in' are complete semantic equivalents.",
+      "information_lost": "None.",
+      "verdict": "RETAIN in both Strict and Extended common vocabulary."
+    },
+    {
+      "canonical_predicate": "looking at",
+      "vg150_source": "looking at (ID 25)",
+      "psg_source": "looking at (ID 24 in true PSG)",
+      "indoor_source": "looking at (ID 20) [also reading ~]",
+      "oi_source": "read (identifier 'read')",
+      "psg_status": "EXACT",
+      "indoor_status": "EXACT (looking at), ACCEPTABLE_SEMANTIC_GENERALIZATION (reading)",
+      "oi_status": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+      "overall_status": "EXTENDED_ONLY",
+      "directionality_check": "PRESERVED (Subject: Observer -> Object: Target of gaze / Reading material across all 4 datasets)",
+      "semantic_justification": "Directing visual gaze at reading material is the primary visual relational act. In image-based scene graphs, reading is an observational specialization of looking at.",
+      "information_lost": "Specific cognitive textual comprehension is abstracted to visual gaze engagement.",
+      "verdict": "RETAIN in Extended common vocabulary; EXCLUDE from Strict common vocabulary."
+    },
+    {
+      "canonical_predicate": "on",
+      "vg150_source": "on (ID 31)",
+      "psg_source": "on (ID 4 in true PSG)",
+      "indoor_source": "on (ID 25)",
+      "oi_source": "on (identifier 'on')",
+      "psg_status": "EXACT",
+      "indoor_status": "EXACT",
+      "oi_status": "EXACT",
+      "overall_status": "STRICT_AND_EXTENDED (Universal Exact Match)",
+      "directionality_check": "PRESERVED (Subject: Supported item -> Object: Supporting surface across all 4 datasets)",
+      "semantic_justification": "Identical surface contact and support relationship across all 4 datasets.",
+      "information_lost": "None.",
+      "verdict": "RETAIN in both Strict and Extended common vocabulary."
+    },
+    {
+      "canonical_predicate": "playing",
+      "vg150_source": "playing (ID 37)",
+      "psg_source": "playing (ID 37 in true PSG) [also playing with ~]",
+      "indoor_source": "playing with (ID 26)",
+      "oi_source": "plays (identifier 'plays')",
+      "psg_status": "EXACT (playing), ACCEPTABLE_SEMANTIC_GENERALIZATION (playing with)",
+      "indoor_status": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+      "oi_status": "SEMANTIC_EQUIVALENT",
+      "overall_status": "EXTENDED_ONLY",
+      "directionality_check": "PRESERVED (Subject: Player -> Object: Game/instrument/toy across all 4 datasets)",
+      "semantic_justification": "Recreational game/sport or musical instrument performance. 'plays' is inflectional equivalent. IndoorVG lacks base 'playing' but annotates 'playing with'.",
+      "information_lost": "In IndoorVG, specific toy/object accompaniment is generalized to broader play engagement.",
+      "verdict": "RETAIN in Extended common vocabulary; EXCLUDE from Strict common vocabulary."
+    },
+    {
+      "canonical_predicate": "under",
+      "vg150_source": "under (ID 43)",
+      "psg_source": "MISSING in true PSG (PSG lacks 'under'; phantom in reviewed alignment)",
+      "indoor_source": "under (ID 33)",
+      "oi_source": "under (identifier 'under')",
+      "psg_status": "NO_MATCH (Absent from true PSG vocabulary)",
+      "indoor_status": "EXACT",
+      "oi_status": "EXACT",
+      "overall_status": "3_WAY_ONLY (VG150 + IndoorVG + OIDv6)",
+      "directionality_check": "PRESERVED in VG150, IndoorVG, and Open Images (Subject: Lower entity -> Object: Upper entity)",
+      "semantic_justification": "Identical spatial relation beneath/underneath in VG150, IndoorVG, and Open Images. However, PSG does not annotate 'under' (only 'over').",
+      "information_lost": "N/A for PSG (predicate does not exist).",
+      "verdict": "REVISE: MUST BE EXCLUDED from the 4-dataset intersection because PSG lacks 'under'. Retained as a valid 3-dataset common predicate."
+    },
+    {
+      "canonical_predicate": "wearing",
+      "vg150_source": "wearing (ID 48) [also duplicate wears ID 49]",
+      "psg_source": "wearing (ID 21 in true PSG)",
+      "indoor_source": "wearing (ID 36)",
+      "oi_source": "wears (identifier 'wears')",
+      "psg_status": "EXACT",
+      "indoor_status": "EXACT",
+      "oi_status": "SEMANTIC_EQUIVALENT (to 'wearing'), EXACT (to duplicate 'wears')",
+      "overall_status": "STRICT_AND_EXTENDED",
+      "directionality_check": "PRESERVED (Subject: Person/Wearer -> Object: Clothing/Accessory across all 4 datasets)",
+      "semantic_justification": "Physical attire/adornment relationship. 'wears' in Open Images is purely an inflectional variant of 'wearing'.",
+      "information_lost": "None.",
+      "verdict": "RETAIN in both Strict and Extended common vocabulary under normalized canonical label 'wearing'."
+    }
+  ],
+  "audit_3_wearing_wears_investigation": {
+    "vg150_labels": {
+      "wearing": {
+        "id": 48,
+        "frequency_train_val_test": 136099,
+        "frequency_test": 20148
+      },
+      "wears": {
+        "id": 49,
+        "frequency_train_val_test": 15457,
+        "frequency_test": 2324
+      }
+    },
+    "semantic_relationship": "100% semantically redundant grammatical duplicates (participle vs 3rd person singular present) connecting Subject (Person/Animal) to Object (Clothing/Accessory).",
+    "dataset_usage": {
+      "VG150": "Both 'wearing' (ID 48) and 'wears' (ID 49) exist.",
+      "PSG": "Only 'wearing' (ID 21) exists in authoritative annotations. 'wears' is absent.",
+      "IndoorVG": "Only 'wearing' (ID 36) exists. 'wears' is absent.",
+      "OpenImagesV6": "Only 'wears' exists. 'wearing' is absent."
+    },
+    "alignment_inconsistency_identified": "In relationship_alignment_reviewed.json and .md, row 48 ('wearing') was marked supported across all 4 datasets, while row 49 ('wears') was marked unsupported ('*None*') because Open Images 'wears' was redirected to 'wearing'. While this correctly recognized the semantic equivalence, it left VG150 'wears' unlinked and created ambiguity.",
+    "recommendation": "1. In the canonical VG150 vocabulary files, retain both 'wearing' (ID 48) and 'wears' (ID 49) verbatim to preserve historical dataset integrity.\n2. For cross-dataset evaluation ontology, designate 'wearing' (ID 48) as the single normalized canonical attire predicate.\n3. Explicitly document an intra-VG150 normalization rule: VG150 'wears' (ID 49) -> normalized 'wearing' (ID 48).\n4. Map Open Images 'wears' -> normalized 'wearing' as SEMANTIC_EQUIVALENT.\n5. Consequence: Attire becomes a fully justified, robust member of both the Strict (6-predicate) and Extended (8-predicate) common evaluation vocabularies."
+  },
+  "audit_4_open_images_scrutiny": [
+    {
+      "oi_predicate": "inside_of",
+      "vg_target": "in (ID 22)",
+      "mapping_type": "SEMANTIC_EQUIVALENT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 48,
+      "sample_triplets": [
+        "Man -> inside_of -> Car",
+        "Dog -> inside_of -> Car",
+        "Girl -> inside_of -> Bus"
+      ],
+      "subject_object_roles": "Subject: Contained entity; Object: Enclosing vehicle/boundary. Roles are strictly preserved (same as VG150 'Man in Car').",
+      "semantic_scope_shift": "None. 3D interior enclosure is preserved.",
+      "evidence_type": "Official Open Images V6 triplet annotations (oidv6-relationship-triplets.csv).",
+      "verdict": "ACCEPT as SEMANTIC_EQUIVALENT."
+    },
+    {
+      "oi_predicate": "contain",
+      "vg_target": "has (ID 20)",
+      "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+      "confidence": "HIGH (for 'has'); DIRECTIONALITY_CONFLICT (for 'in')",
+      "triplet_schema_count": 124,
+      "sample_triplets": [
+        "Coffee cup -> contain -> Coffee",
+        "Platter -> contain -> Tart",
+        "Wine glass -> contain -> Cocktail"
+      ],
+      "subject_object_roles": "Subject: Container; Object: Contained substance/item. Mapping to 'in' ('Coffee in cup') would INVERT subject and object roles (DIRECTIONALITY CONFLICT). Mapping to 'has' ('Cup has Coffee') preserves the Subject->Object orientation.",
+      "semantic_scope_shift": "Broadens from physical volumetric containment to general possession/meronymy. The container is affirmed to hold the content.",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as ACCEPTABLE_SEMANTIC_GENERALIZATION to 'has' only; strictly reject mapping to 'in' due to directionality conflict."
+    },
+    {
+      "oi_predicate": "hang",
+      "vg_target": "hanging from (ID 19)",
+      "mapping_type": "SEMANTIC_EQUIVALENT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 24,
+      "sample_triplets": [
+        "Pear -> hang -> Tree",
+        "Grape -> hang -> Tree",
+        "Grapefruit -> hang -> Houseplant"
+      ],
+      "subject_object_roles": "Subject: Suspended item; Object: Anchor/support. Roles are strictly preserved (identical to VG150 'Pear hanging from Tree').",
+      "semantic_scope_shift": "None. Pure grammatical prepositional variation.",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as SEMANTIC_EQUIVALENT."
+    },
+    {
+      "oi_predicate": "holding_hands",
+      "vg_target": "holding (ID 21)",
+      "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+      "confidence": "MEDIUM",
+      "triplet_schema_count": 12,
+      "sample_triplets": [
+        "Man -> holding_hands -> Man",
+        "Girl -> holding_hands -> Girl",
+        "Man -> holding_hands -> Boy"
+      ],
+      "subject_object_roles": "Subject: Person; Object: Person. In VG150, 'holding' predominantly connects Person to an object/item. Here it connects Person to Person via mutual manual grasp.",
+      "semantic_scope_shift": "Loss of interpersonal mutual reciprocity. The relationship is generalized to physical manual grasp.",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT under Extended generalizations only; primary OI mapping to 'holding' is already provided by 'holds' (457 triplets)."
+    },
+    {
+      "oi_predicate": "wears",
+      "vg_target": "wearing (ID 48)",
+      "mapping_type": "SEMANTIC_EQUIVALENT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 101,
+      "sample_triplets": [
+        "Man -> wears -> Glasses",
+        "Man -> wears -> Fedora",
+        "Boy -> wears -> Baseball glove"
+      ],
+      "subject_object_roles": "Subject: Person; Object: Clothing/accessory. Roles are strictly preserved (identical to VG150 'Man wearing Glasses').",
+      "semantic_scope_shift": "None. Pure grammatical inflection (3rd person singular present vs participle).",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as SEMANTIC_EQUIVALENT to 'wearing' (and EXACT to VG150 duplicate 'wears')."
+    },
+    {
+      "oi_predicate": "read",
+      "vg_target": "looking at (ID 25)",
+      "mapping_type": "ACCEPTABLE_SEMANTIC_GENERALIZATION",
+      "confidence": "HIGH",
+      "triplet_schema_count": 4,
+      "sample_triplets": [
+        "Man -> read -> Book",
+        "Woman -> read -> Book",
+        "Girl -> read -> Book"
+      ],
+      "subject_object_roles": "Subject: Person; Object: Book. Roles are strictly preserved.",
+      "semantic_scope_shift": "Generalizes cognitive textual reading to the required visual relational engagement ('looking at').",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT under Extended generalizations only."
+    },
+    {
+      "oi_predicate": "plays",
+      "vg_target": "playing (ID 37)",
+      "mapping_type": "SEMANTIC_EQUIVALENT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 65,
+      "sample_triplets": [
+        "Man -> plays -> Violin",
+        "Man -> plays -> Piano",
+        "Woman -> plays -> Cello"
+      ],
+      "subject_object_roles": "Subject: Person; Object: Musical instrument. Roles are strictly preserved (identical to VG150 'Man playing Violin').",
+      "semantic_scope_shift": "None. Pure grammatical inflection (3rd person singular present 'plays' vs participle 'playing').",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as SEMANTIC_EQUIVALENT."
+    },
+    {
+      "oi_predicate": "holds",
+      "vg_target": "holding (ID 21)",
+      "mapping_type": "SEMANTIC_EQUIVALENT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 457,
+      "sample_triplets": [
+        "Man -> holds -> Tennis racket",
+        "Woman -> holds -> Racket",
+        "Girl -> holds -> Racket"
+      ],
+      "subject_object_roles": "Subject: Person; Object: Item/Tool. Roles are strictly preserved.",
+      "semantic_scope_shift": "None. Pure grammatical inflection (holds vs holding).",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as SEMANTIC_EQUIVALENT."
+    },
+    {
+      "oi_predicate": "eat",
+      "vg_target": "eating (ID 14)",
+      "mapping_type": "SEMANTIC_EQUIVALENT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 46,
+      "sample_triplets": [
+        "Boy -> eat -> Watermelon",
+        "Woman -> eat -> Watermelon",
+        "Man -> eat -> Pizza"
+      ],
+      "subject_object_roles": "Subject: Person; Object: Food. Roles are strictly preserved.",
+      "semantic_scope_shift": "None. Pure grammatical inflection (eat vs eating).",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as SEMANTIC_EQUIVALENT."
+    },
+    {
+      "oi_predicate": "ride",
+      "vg_target": "riding (ID 38)",
+      "mapping_type": "SEMANTIC_EQUIVALENT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 76,
+      "sample_triplets": [
+        "Man -> ride -> Horse",
+        "Woman -> ride -> Cart",
+        "Man -> ride -> Canoe"
+      ],
+      "subject_object_roles": "Subject: Person; Object: Mount/vehicle. Roles are strictly preserved.",
+      "semantic_scope_shift": "None. Pure grammatical inflection (ride vs riding).",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as SEMANTIC_EQUIVALENT."
+    },
+    {
+      "oi_predicate": "at",
+      "vg_target": "at (ID 6)",
+      "mapping_type": "EXACT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 13,
+      "sample_triplets": [
+        "Man -> at -> Table",
+        "Woman -> at -> Table"
+      ],
+      "subject_object_roles": "Subject: Person; Object: Furniture/location. Roles are strictly preserved.",
+      "semantic_scope_shift": "None.",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as EXACT."
+    },
+    {
+      "oi_predicate": "on",
+      "vg_target": "on (ID 31)",
+      "mapping_type": "EXACT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 272,
+      "sample_triplets": [
+        "Cat -> on -> Bed",
+        "Bowl -> on -> Table"
+      ],
+      "subject_object_roles": "Subject: Supported item; Object: Supporting surface. Roles are strictly preserved.",
+      "semantic_scope_shift": "None.",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as EXACT."
+    },
+    {
+      "oi_predicate": "under",
+      "vg_target": "under (ID 43)",
+      "mapping_type": "EXACT",
+      "confidence": "HIGH",
+      "triplet_schema_count": 42,
+      "sample_triplets": [
+        "Dog -> under -> Table",
+        "Cat -> under -> Car"
+      ],
+      "subject_object_roles": "Subject: Lower item; Object: Upper structure. Roles are strictly preserved.",
+      "semantic_scope_shift": "None.",
+      "evidence_type": "Official Open Images V6 triplet annotations.",
+      "verdict": "ACCEPT as EXACT."
+    }
+  ],
+  "audit_5_recomputed_coverage": {
+    "strict_4_way_intersection": {
+      "count": 6,
+      "predicates": [
+        "eating",
+        "hanging from",
+        "holding",
+        "in",
+        "on",
+        "wearing"
+      ],
+      "rule": "Only EXACT and proven SEMANTIC_EQUIVALENT mappings across all 4 datasets."
+    },
+    "extended_4_way_intersection": {
+      "count": 8,
+      "predicates": [
+        "eating",
+        "hanging from",
+        "holding",
+        "in",
+        "looking at",
+        "on",
+        "playing",
+        "wearing"
+      ],
+      "rule": "EXACT, SEMANTIC_EQUIVALENT, and ACCEPTABLE_SEMANTIC_GENERALIZATION across all 4 datasets."
+    },
+    "tri_dataset_3_way_intersection": {
+      "count": 20,
+      "predicates": [
+        "against",
+        "at",
+        "attached to",
+        "carrying",
+        "eating",
+        "hanging from",
+        "has",
+        "holding",
+        "in",
+        "in front of",
+        "looking at",
+        "lying on",
+        "near",
+        "on",
+        "playing",
+        "riding",
+        "sitting on",
+        "standing on",
+        "under",
+        "wearing"
+      ],
+      "rule": "Supported in VG150 and at least 2 other datasets."
+    },
+    "union_coverage_any_source": {
+      "count": 36,
+      "percentage": 72.0,
+      "predicates": [
+        "above",
+        "against",
+        "at",
+        "attached to",
+        "behind",
+        "between",
+        "carrying",
+        "covering",
+        "eating",
+        "for",
+        "hanging from",
+        "has",
+        "holding",
+        "in",
+        "in front of",
+        "laying on",
+        "looking at",
+        "lying on",
+        "mounted on",
+        "near",
+        "of",
+        "on",
+        "on back of",
+        "over",
+        "painted on",
+        "parked on",
+        "playing",
+        "riding",
+        "sitting on",
+        "standing on",
+        "under",
+        "using",
+        "walking on",
+        "watching",
+        "wearing",
+        "with"
+      ],
+      "rule": "Supported in VG150 and at least 1 other dataset."
+    },
+    "dataset_breakdown": {
+      "PSG": {
+        "total_predicates": 56,
+        "mapped_predicates": 24,
+        "unmapped_or_rejected": 32,
+        "exact": 20,
+        "semantic_equivalent": 1,
+        "acceptable_generalization": 3,
+        "rejected": 1,
+        "no_match": 31
+      },
+      "IndoorVG": {
+        "total_predicates": 37,
+        "mapped_predicates": 32,
+        "unmapped_or_rejected": 5,
+        "exact": 29,
+        "semantic_equivalent": 0,
+        "acceptable_generalization": 3,
+        "rejected": 2,
+        "no_match": 3
+      },
+      "OpenImagesV6": {
+        "total_predicates": 31,
+        "mapped_predicates": 13,
+        "unmapped_or_rejected": 18,
+        "exact": 3,
+        "semantic_equivalent": 7,
+        "acceptable_generalization": 3,
+        "rejected": 1,
+        "no_match": 17
+      }
+    },
+    "audited_coverage_table": [
+      {
+        "id": 1,
+        "predicate": "above",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "above (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 2,
+        "predicate": "across",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 3,
+        "predicate": "against",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "leaning on (\u2713)"
+        ],
+        "indoor_sources": [
+          "against (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 4,
+        "predicate": "along",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 5,
+        "predicate": "and",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 6,
+        "predicate": "at",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2713",
+        "psg_sources": [],
+        "indoor_sources": [
+          "at (\u2713)",
+          "sitting at (~)"
+        ],
+        "oi_sources": [
+          "at (\u2713)"
+        ]
+      },
+      {
+        "id": 7,
+        "predicate": "attached to",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "attached to (\u2713)"
+        ],
+        "indoor_sources": [
+          "attached to (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 8,
+        "predicate": "behind",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "behind (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 9,
+        "predicate": "belonging to",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 10,
+        "predicate": "between",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "between (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 11,
+        "predicate": "carrying",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "carrying (\u2713)"
+        ],
+        "indoor_sources": [
+          "carrying (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 12,
+        "predicate": "covered in",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 13,
+        "predicate": "covering",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "covering (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 14,
+        "predicate": "eating",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2713",
+        "psg_sources": [
+          "eating (\u2713)"
+        ],
+        "indoor_sources": [
+          "eating (\u2713)"
+        ],
+        "oi_sources": [
+          "eat (\u2713)"
+        ]
+      },
+      {
+        "id": 15,
+        "predicate": "flying in",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 16,
+        "predicate": "for",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "for (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 17,
+        "predicate": "from",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 18,
+        "predicate": "growing on",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 19,
+        "predicate": "hanging from",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2713",
+        "psg_sources": [
+          "hanging from (\u2713)"
+        ],
+        "indoor_sources": [
+          "hanging from (\u2713)"
+        ],
+        "oi_sources": [
+          "hang (\u2713)"
+        ]
+      },
+      {
+        "id": 20,
+        "predicate": "has",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "~",
+        "psg_sources": [],
+        "indoor_sources": [
+          "has (\u2713)"
+        ],
+        "oi_sources": [
+          "contain (~)"
+        ]
+      },
+      {
+        "id": 21,
+        "predicate": "holding",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2713",
+        "psg_sources": [
+          "holding (\u2713)"
+        ],
+        "indoor_sources": [
+          "holding (\u2713)"
+        ],
+        "oi_sources": [
+          "holds (\u2713)",
+          "holding_hands (~)"
+        ]
+      },
+      {
+        "id": 22,
+        "predicate": "in",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2713",
+        "psg_sources": [
+          "in (\u2713)"
+        ],
+        "indoor_sources": [
+          "in (\u2713)"
+        ],
+        "oi_sources": [
+          "inside_of (\u2713)"
+        ]
+      },
+      {
+        "id": 23,
+        "predicate": "in front of",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "in front of (\u2713)"
+        ],
+        "indoor_sources": [
+          "in front of (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 24,
+        "predicate": "laying on",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "laying on (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 25,
+        "predicate": "looking at",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "~",
+        "psg_sources": [
+          "looking at (\u2713)"
+        ],
+        "indoor_sources": [
+          "looking at (\u2713)",
+          "reading (~)"
+        ],
+        "oi_sources": [
+          "read (~)"
+        ]
+      },
+      {
+        "id": 26,
+        "predicate": "lying on",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "lying on (\u2713)"
+        ],
+        "indoor_sources": [
+          "lying on (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 27,
+        "predicate": "made of",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 28,
+        "predicate": "mounted on",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "mounted on (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 29,
+        "predicate": "near",
+        "VG150": "\u2713",
+        "PSG": "~",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "beside (~)"
+        ],
+        "indoor_sources": [
+          "near (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 30,
+        "predicate": "of",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "of (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 31,
+        "predicate": "on",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2713",
+        "psg_sources": [
+          "on (\u2713)"
+        ],
+        "indoor_sources": [
+          "on (\u2713)"
+        ],
+        "oi_sources": [
+          "on (\u2713)"
+        ]
+      },
+      {
+        "id": 32,
+        "predicate": "on back of",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "on back of (\u2713)"
+        ],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 33,
+        "predicate": "over",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "over (\u2713)",
+          "flying over (~)"
+        ],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 34,
+        "predicate": "painted on",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "painted on (\u2713)"
+        ],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 35,
+        "predicate": "parked on",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "parked on (\u2713)"
+        ],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 36,
+        "predicate": "part of",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 37,
+        "predicate": "playing",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "~",
+        "OpenImages": "\u2713",
+        "psg_sources": [
+          "playing (\u2713)",
+          "playing with (~)"
+        ],
+        "indoor_sources": [
+          "playing with (~)"
+        ],
+        "oi_sources": [
+          "plays (\u2713)"
+        ]
+      },
+      {
+        "id": 38,
+        "predicate": "riding",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2713",
+        "psg_sources": [
+          "riding (\u2713)"
+        ],
+        "indoor_sources": [],
+        "oi_sources": [
+          "ride (\u2713)"
+        ]
+      },
+      {
+        "id": 39,
+        "predicate": "says",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 40,
+        "predicate": "sitting on",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "sitting on (\u2713)"
+        ],
+        "indoor_sources": [
+          "sitting on (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 41,
+        "predicate": "standing on",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "standing on (\u2713)"
+        ],
+        "indoor_sources": [
+          "standing on (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 42,
+        "predicate": "to",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 43,
+        "predicate": "under",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2713",
+        "psg_sources": [],
+        "indoor_sources": [
+          "under (\u2713)"
+        ],
+        "oi_sources": [
+          "under (\u2713)"
+        ]
+      },
+      {
+        "id": 44,
+        "predicate": "using",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "using (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 45,
+        "predicate": "walking in",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 46,
+        "predicate": "walking on",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [
+          "walking on (\u2713)"
+        ],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 47,
+        "predicate": "watching",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "watching (\u2713)"
+        ],
+        "oi_sources": []
+      },
+      {
+        "id": 48,
+        "predicate": "wearing",
+        "VG150": "\u2713",
+        "PSG": "\u2713",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2713",
+        "psg_sources": [
+          "wearing (\u2713)"
+        ],
+        "indoor_sources": [
+          "wearing (\u2713)"
+        ],
+        "oi_sources": [
+          "wears (\u2713)"
+        ]
+      },
+      {
+        "id": 49,
+        "predicate": "wears",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2717",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [],
+        "oi_sources": []
+      },
+      {
+        "id": 50,
+        "predicate": "with",
+        "VG150": "\u2713",
+        "PSG": "\u2717",
+        "IndoorVG": "\u2713",
+        "OpenImages": "\u2717",
+        "psg_sources": [],
+        "indoor_sources": [
+          "with (\u2713)"
+        ],
+        "oi_sources": []
+      }
+    ]
+  },
+  "recommendations_and_corrections": [
+    {
+      "id": "REC-01",
+      "title": "Correct PSG vocabulary alignment mapping",
+      "description": "Replace the 15 phantom PSG predicates in the alignment files with the true 15 predicates from datasets/PSG/coco_format/test/_annotations.coco.json."
+    },
+    {
+      "id": "REC-02",
+      "title": "Exclude 'under' from 4-dataset intersection",
+      "description": "Revise the 4-way common vocabulary from 9 to 8 predicates. PSG does not contain 'under'. Retain 'under' as a highly reliable 3-dataset predicate (VG150, IndoorVG, Open Images)."
+    },
+    {
+      "id": "REC-03",
+      "title": "Establish normalized 'wearing' attire predicate",
+      "description": "In the canonical evaluation ontology, map Open Images 'wears' and VG150 duplicate 'wears' (ID 49) to normalized 'wearing' (ID 48), establishing universal 4-way support for attire."
+    },
+    {
+      "id": "REC-04",
+      "title": "Strictly prevent directional inversion on 'contain'",
+      "description": "Enforce that Open Images 'contain' (Container -> Content) must never map to 'in' (Content -> Container). Accept mapping to 'has' under Extended generalizations only."
+    }
+  ]
+}

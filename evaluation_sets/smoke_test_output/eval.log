@@ -1,0 +1,32 @@
+2026-10-09 05:35:14.323 | INFO     | sgg_benchmark.utils.loggersetup_logger31 - Using loguru logger with level: INFO
+2026-10-09 05:35:14.323 | INFO     | __main___run_single891 - Model dir  : /Users/shivanshkaushik/Developer/SGG-Benchmark/checkpoints/PSG/react++_yolo12m
+2026-10-09 05:35:14.323 | INFO     | __main___run_single892 - Output dir : /Users/shivanshkaushik/Developer/SGG-Benchmark/evaluation_sets/smoke_test_output
+2026-10-09 05:35:14.323 | INFO     | __main___run_single893 - Backend    : ONNX  (CPUExecutionProvider)
+2026-10-09 05:35:14.323 | INFO     | __main___run_single894 - Task       : sgdet  View: strict
+2026-10-09 05:35:14.348 | INFO     | __main___run_single913 - Evaluation Mode Verified: {'status': 'VALID', 'task': 'sgdet', 'source_dataset': 'PSG', 'eval_dataset': 'PSG', 'exposure_label': 'NATIVE'}
+2026-10-09 05:35:14.352 | INFO     | __main___load_evaluation_dataset727 - Loaded evaluation dataset from /Users/shivanshkaushik/Developer/SGG-Benchmark/evaluation_sets/normalized/PSG_200_strict.coco.json (3 images)
+2026-10-09 05:35:14.352 | INFO     | __main___run_single926 - Dataset: PSG (3 images, 134 obj classes, 7 rel classes)
+2026-10-09 05:35:14.352 | INFO     | __main___run_single935 - Loading ONNX from /Users/shivanshkaushik/Developer/SGG-Benchmark/checkpoints/PSG/react++_yolo12m/yolo12m/react_pp_yolo12m.onnx…
+2026-10-09 05:35:14.540 | INFO     | __main__load_onnx_session297 - ONNX session ready. Providers: ['CPUExecutionProvider']
+2026-10-09 05:35:14.540 | INFO     | __main__load_onnx_session299 -   Input : input  ['batch_size', 3, 640, 640]
+2026-10-09 05:35:14.540 | INFO     | __main__load_onnx_session301 -   Output: boxes  ['num_objects', 'Concatboxes_dim_1']
+2026-10-09 05:35:14.540 | INFO     | __main__load_onnx_session301 -   Output: rels  ['num_rels', 5]
+2026-10-09 05:35:14.540 | INFO     | __main__eval_onnx394 - Warming up ONNX session…
+2026-10-09 05:35:15.069 | INFO     | __main__eval_onnx404 - Running ONNX inference on 3 images (view=strict)…
+2026-10-09 05:35:15.559 | INFO     | __main__eval_onnx455 - ONNX eval done. Mean forward: 153.2 ms  Mean E2E: 156.5 ms  Peak RSS: 885.6 MB
+2026-10-09 05:35:15.559 | INFO     | __main___run_single957 - Running SGG evaluation (R@K / mR@K / F1@K / zR@K + bbox mAP)…
+2026-10-09 05:35:15.561 | INFO     | sgg_benchmark.data.buildget_dataset_statistics224 - ----------------------------------------------------------------------------------------------------
+2026-10-09 05:35:15.561 | INFO     | sgg_benchmark.data.buildget_dataset_statistics225 - get dataset statistics...
+2026-10-09 05:35:15.562 | INFO     | sgg_benchmark.data.buildget_dataset_statistics239 - Unable to load data statistics from: /Users/shivanshkaushik/Developer/SGG-Benchmark/checkpoints/PSG/react++_yolo12m/PSG_statistics.cache
+2026-10-09 05:35:39.343 | WARNING  | sgg_benchmark.data.datasets.evaluation.sgg_evaldo_sgg_evaluation37 - Could not compute seen triplets from training statistics: Couldn't reach 'maelic/PSG-coco-format' on the Hub (LocalEntryNotFoundError). Falling back to zeroshot_file if available.
+2026-10-09 05:35:39.383 | INFO     | sgg_benchmark.data.datasets.evaluation.sgg_evaldo_sgg_evaluation92 - 
+====================================================================================================
+Detection evaluation mAp=0.7132
+====================================================================================================
+SGG eval:     R @ 20: 0.4667 (all: 0.4667);     R @ 50: 0.4667 (all: 0.4667);     R @ 100: 0.4667 (all: 0.4667);  for mode=sgdet.
+SGG eval:    mR @ 20: 0.2778;    mR @ 50: 0.2778;    mR @ 100: 0.2778;  for mode=sgdet.
+SGG eval:     zR @ 20: 0.0000 (all: 0.0000);     zR @ 50: 0.0000 (all: 0.0000);     zR @ 100: 0.0000 (all: 0.0000);  for mode=sgdet.
+SGG eval:     F1 @ 20: 0.3483;     F1 @ 50: 0.3483;     F1 @ 100: 0.3483;  for mode=sgdet.
+====================================================================================================
+
+2026-10-09 05:35:39.384 | INFO     | __main___run_single1003 - Summary saved to: /Users/shivanshkaushik/Developer/SGG-Benchmark/evaluation_sets/smoke_test_output/eval_summary.json

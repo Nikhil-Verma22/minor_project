@@ -1,0 +1,759 @@
+{
+  "VG150": {
+    "source": "datasets/VG150/VG150_coco_format/test/_annotations.coco.json (authoritative split annotation derived from datasets/vg/VG-SGG-dicts-with-attri.json)",
+    "predicate_count": 50,
+    "canonical_status": "CANONICAL_TARGET_VOCABULARY",
+    "predicates": [
+      {
+        "id": 1,
+        "name": "above"
+      },
+      {
+        "id": 2,
+        "name": "across"
+      },
+      {
+        "id": 3,
+        "name": "against"
+      },
+      {
+        "id": 4,
+        "name": "along"
+      },
+      {
+        "id": 5,
+        "name": "and"
+      },
+      {
+        "id": 6,
+        "name": "at"
+      },
+      {
+        "id": 7,
+        "name": "attached to"
+      },
+      {
+        "id": 8,
+        "name": "behind"
+      },
+      {
+        "id": 9,
+        "name": "belonging to"
+      },
+      {
+        "id": 10,
+        "name": "between"
+      },
+      {
+        "id": 11,
+        "name": "carrying"
+      },
+      {
+        "id": 12,
+        "name": "covered in"
+      },
+      {
+        "id": 13,
+        "name": "covering"
+      },
+      {
+        "id": 14,
+        "name": "eating"
+      },
+      {
+        "id": 15,
+        "name": "flying in"
+      },
+      {
+        "id": 16,
+        "name": "for"
+      },
+      {
+        "id": 17,
+        "name": "from"
+      },
+      {
+        "id": 18,
+        "name": "growing on"
+      },
+      {
+        "id": 19,
+        "name": "hanging from"
+      },
+      {
+        "id": 20,
+        "name": "has"
+      },
+      {
+        "id": 21,
+        "name": "holding"
+      },
+      {
+        "id": 22,
+        "name": "in"
+      },
+      {
+        "id": 23,
+        "name": "in front of"
+      },
+      {
+        "id": 24,
+        "name": "laying on"
+      },
+      {
+        "id": 25,
+        "name": "looking at"
+      },
+      {
+        "id": 26,
+        "name": "lying on"
+      },
+      {
+        "id": 27,
+        "name": "made of"
+      },
+      {
+        "id": 28,
+        "name": "mounted on"
+      },
+      {
+        "id": 29,
+        "name": "near"
+      },
+      {
+        "id": 30,
+        "name": "of"
+      },
+      {
+        "id": 31,
+        "name": "on"
+      },
+      {
+        "id": 32,
+        "name": "on back of"
+      },
+      {
+        "id": 33,
+        "name": "over"
+      },
+      {
+        "id": 34,
+        "name": "painted on"
+      },
+      {
+        "id": 35,
+        "name": "parked on"
+      },
+      {
+        "id": 36,
+        "name": "part of"
+      },
+      {
+        "id": 37,
+        "name": "playing"
+      },
+      {
+        "id": 38,
+        "name": "riding"
+      },
+      {
+        "id": 39,
+        "name": "says"
+      },
+      {
+        "id": 40,
+        "name": "sitting on"
+      },
+      {
+        "id": 41,
+        "name": "standing on"
+      },
+      {
+        "id": 42,
+        "name": "to"
+      },
+      {
+        "id": 43,
+        "name": "under"
+      },
+      {
+        "id": 44,
+        "name": "using"
+      },
+      {
+        "id": 45,
+        "name": "walking in"
+      },
+      {
+        "id": 46,
+        "name": "walking on"
+      },
+      {
+        "id": 47,
+        "name": "watching"
+      },
+      {
+        "id": 48,
+        "name": "wearing"
+      },
+      {
+        "id": 49,
+        "name": "wears"
+      },
+      {
+        "id": 50,
+        "name": "with"
+      }
+    ]
+  },
+  "PSG": {
+    "source": "datasets/PSG/coco_format/test/_annotations.coco.json (authoritative official test split annotation, upstream: https://huggingface.co/datasets/maelic/PSG-coco-format)",
+    "predicate_count": 56,
+    "canonical_status": "SOURCE_TO_BE_ALIGNED",
+    "predicates": [
+      {
+        "id": 1,
+        "name": "over"
+      },
+      {
+        "id": 2,
+        "name": "in front of"
+      },
+      {
+        "id": 3,
+        "name": "beside"
+      },
+      {
+        "id": 4,
+        "name": "on"
+      },
+      {
+        "id": 5,
+        "name": "in"
+      },
+      {
+        "id": 6,
+        "name": "attached to"
+      },
+      {
+        "id": 7,
+        "name": "hanging from"
+      },
+      {
+        "id": 8,
+        "name": "on back of"
+      },
+      {
+        "id": 9,
+        "name": "falling off"
+      },
+      {
+        "id": 10,
+        "name": "going down"
+      },
+      {
+        "id": 11,
+        "name": "painted on"
+      },
+      {
+        "id": 12,
+        "name": "walking on"
+      },
+      {
+        "id": 13,
+        "name": "running on"
+      },
+      {
+        "id": 14,
+        "name": "crossing"
+      },
+      {
+        "id": 15,
+        "name": "standing on"
+      },
+      {
+        "id": 16,
+        "name": "lying on"
+      },
+      {
+        "id": 17,
+        "name": "sitting on"
+      },
+      {
+        "id": 18,
+        "name": "flying over"
+      },
+      {
+        "id": 19,
+        "name": "jumping over"
+      },
+      {
+        "id": 20,
+        "name": "jumping from"
+      },
+      {
+        "id": 21,
+        "name": "wearing"
+      },
+      {
+        "id": 22,
+        "name": "holding"
+      },
+      {
+        "id": 23,
+        "name": "carrying"
+      },
+      {
+        "id": 24,
+        "name": "looking at"
+      },
+      {
+        "id": 25,
+        "name": "guiding"
+      },
+      {
+        "id": 26,
+        "name": "kissing"
+      },
+      {
+        "id": 27,
+        "name": "eating"
+      },
+      {
+        "id": 28,
+        "name": "drinking"
+      },
+      {
+        "id": 29,
+        "name": "feeding"
+      },
+      {
+        "id": 30,
+        "name": "biting"
+      },
+      {
+        "id": 31,
+        "name": "catching"
+      },
+      {
+        "id": 32,
+        "name": "picking"
+      },
+      {
+        "id": 33,
+        "name": "playing with"
+      },
+      {
+        "id": 34,
+        "name": "chasing"
+      },
+      {
+        "id": 35,
+        "name": "climbing"
+      },
+      {
+        "id": 36,
+        "name": "cleaning"
+      },
+      {
+        "id": 37,
+        "name": "playing"
+      },
+      {
+        "id": 38,
+        "name": "touching"
+      },
+      {
+        "id": 39,
+        "name": "pushing"
+      },
+      {
+        "id": 40,
+        "name": "pulling"
+      },
+      {
+        "id": 41,
+        "name": "opening"
+      },
+      {
+        "id": 42,
+        "name": "cooking"
+      },
+      {
+        "id": 43,
+        "name": "talking to"
+      },
+      {
+        "id": 44,
+        "name": "throwing"
+      },
+      {
+        "id": 45,
+        "name": "slicing"
+      },
+      {
+        "id": 46,
+        "name": "driving"
+      },
+      {
+        "id": 47,
+        "name": "riding"
+      },
+      {
+        "id": 48,
+        "name": "parked on"
+      },
+      {
+        "id": 49,
+        "name": "driving on"
+      },
+      {
+        "id": 50,
+        "name": "about to hit"
+      },
+      {
+        "id": 51,
+        "name": "kicking"
+      },
+      {
+        "id": 52,
+        "name": "swinging"
+      },
+      {
+        "id": 53,
+        "name": "entering"
+      },
+      {
+        "id": 54,
+        "name": "exiting"
+      },
+      {
+        "id": 55,
+        "name": "enclosing"
+      },
+      {
+        "id": 56,
+        "name": "leaning on"
+      }
+    ]
+  },
+  "IndoorVG": {
+    "source": "datasets/IndoorVG/IndoorVG_coco_format/categories.json (upstream: https://huggingface.co/datasets/maelic/IndoorVG-coco-format/raw/main/categories.json, authored by Neau et al., BMVC 2025)",
+    "predicate_count": 37,
+    "canonical_status": "SOURCE_TO_BE_ALIGNED",
+    "predicates": [
+      {
+        "id": 1,
+        "name": "above"
+      },
+      {
+        "id": 2,
+        "name": "against"
+      },
+      {
+        "id": 3,
+        "name": "at"
+      },
+      {
+        "id": 4,
+        "name": "attached to"
+      },
+      {
+        "id": 5,
+        "name": "behind"
+      },
+      {
+        "id": 6,
+        "name": "between"
+      },
+      {
+        "id": 7,
+        "name": "carrying"
+      },
+      {
+        "id": 8,
+        "name": "covering"
+      },
+      {
+        "id": 9,
+        "name": "cutting"
+      },
+      {
+        "id": 10,
+        "name": "drinking"
+      },
+      {
+        "id": 11,
+        "name": "eating"
+      },
+      {
+        "id": 12,
+        "name": "filled with"
+      },
+      {
+        "id": 13,
+        "name": "for"
+      },
+      {
+        "id": 14,
+        "name": "hanging from"
+      },
+      {
+        "id": 15,
+        "name": "has"
+      },
+      {
+        "id": 16,
+        "name": "holding"
+      },
+      {
+        "id": 17,
+        "name": "in"
+      },
+      {
+        "id": 18,
+        "name": "in front of"
+      },
+      {
+        "id": 19,
+        "name": "laying on"
+      },
+      {
+        "id": 20,
+        "name": "looking at"
+      },
+      {
+        "id": 21,
+        "name": "lying on"
+      },
+      {
+        "id": 22,
+        "name": "mounted on"
+      },
+      {
+        "id": 23,
+        "name": "near"
+      },
+      {
+        "id": 24,
+        "name": "of"
+      },
+      {
+        "id": 25,
+        "name": "on"
+      },
+      {
+        "id": 26,
+        "name": "playing with"
+      },
+      {
+        "id": 27,
+        "name": "reading"
+      },
+      {
+        "id": 28,
+        "name": "sitting at"
+      },
+      {
+        "id": 29,
+        "name": "sitting on"
+      },
+      {
+        "id": 30,
+        "name": "standing on"
+      },
+      {
+        "id": 31,
+        "name": "taking"
+      },
+      {
+        "id": 32,
+        "name": "talking on"
+      },
+      {
+        "id": 33,
+        "name": "under"
+      },
+      {
+        "id": 34,
+        "name": "using"
+      },
+      {
+        "id": 35,
+        "name": "watching"
+      },
+      {
+        "id": 36,
+        "name": "wearing"
+      },
+      {
+        "id": 37,
+        "name": "with"
+      }
+    ]
+  },
+  "OpenImagesV6": {
+    "source": "datasets/OpenImages/metadata/oidv6-relationships-description.csv (official Google Open Images V6 metadata: https://storage.googleapis.com/openimages/v6/oidv6-relationships-description.csv)",
+    "predicate_count": 31,
+    "canonical_status": "SOURCE_TO_BE_ALIGNED",
+    "distinct_relationship_triplets_count": 1466,
+    "distinct_attribute_classes_count": 15,
+    "predicates": [
+      {
+        "id": 1,
+        "identifier": "at",
+        "name": "at"
+      },
+      {
+        "id": 2,
+        "identifier": "holds",
+        "name": "holds"
+      },
+      {
+        "id": 3,
+        "identifier": "wears",
+        "name": "wears"
+      },
+      {
+        "id": 4,
+        "identifier": "surf",
+        "name": "surf"
+      },
+      {
+        "id": 5,
+        "identifier": "hang",
+        "name": "hang"
+      },
+      {
+        "id": 6,
+        "identifier": "drink",
+        "name": "drink"
+      },
+      {
+        "id": 7,
+        "identifier": "holding_hands",
+        "name": "holding hands"
+      },
+      {
+        "id": 8,
+        "identifier": "on",
+        "name": "on"
+      },
+      {
+        "id": 9,
+        "identifier": "ride",
+        "name": "ride"
+      },
+      {
+        "id": 10,
+        "identifier": "dance",
+        "name": "dance"
+      },
+      {
+        "id": 11,
+        "identifier": "skateboard",
+        "name": "skateboard"
+      },
+      {
+        "id": 12,
+        "identifier": "catch",
+        "name": "catch"
+      },
+      {
+        "id": 13,
+        "identifier": "highfive",
+        "name": "highfive"
+      },
+      {
+        "id": 14,
+        "identifier": "inside_of",
+        "name": "inside of"
+      },
+      {
+        "id": 15,
+        "identifier": "eat",
+        "name": "eat"
+      },
+      {
+        "id": 16,
+        "identifier": "cut",
+        "name": "cut"
+      },
+      {
+        "id": 17,
+        "identifier": "contain",
+        "name": "contain"
+      },
+      {
+        "id": 18,
+        "identifier": "handshake",
+        "name": "handshake"
+      },
+      {
+        "id": 19,
+        "identifier": "kiss",
+        "name": "kiss"
+      },
+      {
+        "id": 20,
+        "identifier": "talk_on_phone",
+        "name": "talk on phone"
+      },
+      {
+        "id": 21,
+        "identifier": "interacts_with",
+        "name": "interacts with"
+      },
+      {
+        "id": 22,
+        "identifier": "under",
+        "name": "under"
+      },
+      {
+        "id": 23,
+        "identifier": "hug",
+        "name": "hug"
+      },
+      {
+        "id": 24,
+        "identifier": "throw",
+        "name": "throw"
+      },
+      {
+        "id": 25,
+        "identifier": "hits",
+        "name": "hits"
+      },
+      {
+        "id": 26,
+        "identifier": "snowboard",
+        "name": "snowboard"
+      },
+      {
+        "id": 27,
+        "identifier": "is",
+        "name": "is"
+      },
+      {
+        "id": 28,
+        "identifier": "kick",
+        "name": "kick"
+      },
+      {
+        "id": 29,
+        "identifier": "ski",
+        "name": "ski"
+      },
+      {
+        "id": 30,
+        "identifier": "plays",
+        "name": "plays"
+      },
+      {
+        "id": 31,
+        "identifier": "read",
+        "name": "read"
+      }
+    ]
+  }
+}

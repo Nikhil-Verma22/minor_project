@@ -1,0 +1,72 @@
+{
+  "VG150": {
+    "strict_4way": {
+      "output_file": "VG150_200_strict.coco.json",
+      "total_source_relations": 1083,
+      "retained": 604,
+      "retained_pct": 55.77,
+      "exact": 596,
+      "semantic_equivalent": 8,
+      "semantic_generalization": 0,
+      "dropped": 479,
+      "dropped_pct": 44.23
+    },
+    "extended_4way": {
+      "output_file": "VG150_200_extended.coco.json",
+      "total_source_relations": 1083,
+      "retained": 605,
+      "retained_pct": 55.86,
+      "exact": 597,
+      "semantic_equivalent": 8,
+      "semantic_generalization": 0,
+      "dropped": 478,
+      "dropped_pct": 44.14
+    },
+    "tri_dataset": {
+      "output_file": "VG150_200_tri_dataset.coco.json",
+      "total_source_relations": 1083,
+      "retained": 873,
+      "retained_pct": 80.61,
+      "exact": 865,
+      "semantic_equivalent": 8,
+      "semantic_generalization": 0,
+      "dropped": 210,
+      "dropped_pct": 19.39
+    }
+  },
+  "PSG": {
+    "strict_4way": {
+      "output_file": "PSG_200_strict.coco.json",
+      "total_source_relations": 1385,
+      "retained": 520,
+      "retained_pct": 37.55,
+      "exact": 520,
+      "semantic_equivalent": 0,
+      "semantic_generalization": 0,
+      "dropped": 865,
+      "dropped_pct": 62.45
+    },
+    "extended_4way": {
+      "output_file": "PSG_200_extended.coco.json",
+      "total_source_relations": 1385,
+      "retained": 575,
+      "retained_pct": 41.52,
+      "exact": 573,
+      "semantic_equivalent": 0,
+      "semantic_generalization": 2,
+      "dropped": 810,
+      "dropped_pct": 58.48
+    },
+    "tri_dataset": {
+      "output_file": "PSG_200_tri_dataset.coco.json",
+      "total_source_relations": 1385,
+      "retained": 1050,
+      "retained_pct": 75.81,
+      "exact": 870,
+      "semantic_equivalent": 7,
+      "semantic_generalization": 173,
+      "dropped": 335,
+      "dropped_pct": 24.19
+    }
+  }
+}

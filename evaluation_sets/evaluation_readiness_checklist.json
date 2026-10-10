@@ -1,0 +1,189 @@
+{
+  "readiness_metadata": {
+    "title": "Final Evaluation Readiness Checklist & Protocol Resolution",
+    "audit_timestamp": "2026-10-08T23:48:35.868698+00:00",
+    "repository": "/Users/shivanshkaushik/Developer/SGG-Benchmark",
+    "commit_hash": "a6642012e66047c3544bed8784bbf9acdc87411b",
+    "evaluation_status": "READY_FOR_EVALUATION_WITH_REQUIRED_PIPELINE_ADAPTERS",
+    "full_benchmarking_executed": false
+  },
+  "prerequisites_resolution": {
+    "prerequisite_1_evaluation_mode": {
+      "decision": "NATIVE_DATASET_SGDet_AND_STANDARDIZED_PredCls",
+      "onnx_models": {
+        "support_predcls": false,
+        "support_sgcls": false,
+        "support_sgdet": true,
+        "limitation": "ONNX graphs (e.g. react_pp_yolo12m.onnx) have a fixed monolithic input [1, 3, 640, 640] and bake detector NMS into graph; no input nodes exist for ground-truth boxes or labels."
+      },
+      "pytorch_models": {
+        "support_predcls": true,
+        "support_sgcls": true,
+        "support_sgdet": true,
+        "condition": "Supported via GeneralizedYOLO when cfg.model.roi_relation_head.use_gt_box=True and use_gt_object_label=True.",
+        "limitation": "Cross-dataset PredCls requires object class index remapping because model object embeddings are sized to native dataset vocabularies (e.g. PSG 134 vs VG150 151 classes)."
+      },
+      "cross_dataset_validity": {
+        "sgdet_cross_dataset": "UNSUPPORTED (Disjoint object vocabularies: VG150 150 classes, PSG 133, IndoorVG 84, OpenImages 75)",
+        "predcls_cross_dataset": "SUPPORTED only if ground-truth object labels are mapped to the evaluated model's embedding vocabulary or evaluated in class-agnostic predicate mode."
+      }
+    },
+    "prerequisite_2_ontology_projection": {
+      "decision": "TWO_STAGE_DYNAMIC_LOGIT_PROJECTION",
+      "policy": "Never map prediction indices assuming identity mapping (index i != dataset ID i). Use dataset-specific lookup from evaluation_ontology.json to canonical predicate name, then map to 1-indexed view ontology ID.",
+      "view_sizes": {
+        "strict_core_4way": 6,
+        "extended_core_4way": 8,
+        "tri_dataset_core": 20
+      },
+      "directionality": "100% endpoint preserved. Open Images inside_of -> in (contained->container), contain -> has (container->content). Redundant unmapped predictions filtered without endpoint reversal."
+    },
+    "prerequisite_3_empty_images_policy": {
+      "decision": "ELIGIBLE_IMAGES_PRIMARY_WITH_DUAL_REPORTING",
+      "primary_metric": "Eligible images only (filter_empty_gt=True). Recall@K is averaged strictly over images containing at least one ground-truth relationship in the evaluated vocabulary view.",
+      "secondary_metric": "All 200 images penalized (filter_empty_gt=False). Images with 0 GT relations receive Recall=0.0 and are included in the 200-image denominator.",
+      "eligible_counts": {
+        "strict_core_6": {
+          "VG150": {
+            "eligible": 141,
+            "empty": 59,
+            "total": 200,
+            "gt_rels": 604
+          },
+          "PSG": {
+            "eligible": 173,
+            "empty": 27,
+            "total": 200,
+            "gt_rels": 520
+          },
+          "IndoorVG": {
+            "eligible": 184,
+            "empty": 16,
+            "total": 200,
+            "gt_rels": 1003
+          },
+          "OpenImages": {
+            "eligible": 42,
+            "empty": 158,
+            "total": 200,
+            "gt_rels": 84
+          },
+          "total_eligible": 540,
+          "total_empty": 260,
+          "total_images": 800
+        },
+        "extended_core_8": {
+          "VG150": {
+            "eligible": 142,
+            "empty": 58,
+            "total": 200,
+            "gt_rels": 605
+          },
+          "PSG": {
+            "eligible": 176,
+            "empty": 24,
+            "total": 200,
+            "gt_rels": 575
+          },
+          "IndoorVG": {
+            "eligible": 184,
+            "empty": 16,
+            "total": 200,
+            "gt_rels": 1004
+          },
+          "OpenImages": {
+            "eligible": 42,
+            "empty": 158,
+            "total": 200,
+            "gt_rels": 88
+          },
+          "total_eligible": 544,
+          "total_empty": 256,
+          "total_images": 800
+        },
+        "tri_dataset_core_20": {
+          "VG150": {
+            "eligible": 160,
+            "empty": 40,
+            "total": 200,
+            "gt_rels": 873
+          },
+          "PSG": {
+            "eligible": 198,
+            "empty": 2,
+            "total": 200,
+            "gt_rels": 1050
+          },
+          "IndoorVG": {
+            "eligible": 197,
+            "empty": 3,
+            "total": 200,
+            "gt_rels": 1411
+          },
+          "OpenImages": {
+            "eligible": 55,
+            "empty": 145,
+            "total": 200,
+            "gt_rels": 142
+          },
+          "total_eligible": 710,
+          "total_empty": 90,
+          "total_images": 800
+        }
+      }
+    },
+    "prerequisite_4_duplicate_triplets_policy": {
+      "decision": "SET_UNION_GROUNDTRUTH_MATCHING",
+      "ground_truth_matching": "Standard union matching (reduce(np.union1d, pred_to_gt[:k])). A single prediction matching multiple identical ground-truth triplets marks those triplets as covered. Denominator is total ground-truth instances.",
+      "prediction_deduplication": "Evaluate under standard Graph Constraint (top-1 relation per pair) and No Graph Constraint (multiple relations per pair allowed; duplicate identical triplets waste top-k budget).",
+      "gt_duplicates_recorded": {
+        "IndoorVG": 335,
+        "VG150": 148,
+        "PSG": 43,
+        "OpenImages": 0
+      }
+    }
+  },
+  "evaluation_protocol_verifications": {
+    "recall_and_mean_recall": {
+      "status": "VERIFIED",
+      "implementation": "sgg_benchmark/data/datasets/evaluation/sgg_metrics.py (SGRecall and SGMeanRecall)",
+      "mean_recall_rule": "Classes with 0 ground-truth instances in the evaluated subset are excluded from the macro-average denominator, preventing artificial deflation."
+    },
+    "latency_and_memory": {
+      "status": "VERIFIED",
+      "implementation": "tools/evaluate.py (benchmark_latency_pytorch and benchmark_latency_onnx)",
+      "rules": "10 warmup runs, batch size 1, CUDA event timing with torch.cuda.synchronize(), peak RSS memory via resource.getrusage(resource.RUSAGE_SELF).ru_maxrss."
+    },
+    "data_familiarity_disclosures": {
+      "indoorvg_leakage": "100% of IndoorVG_200 images (200/200) exist in VG150 training set. Models trained on VG150 must be labeled as 'Prior Training Exposure' when evaluated on IndoorVG_200.",
+      "native_vs_cross": "Disclosed across all tables: Native (trained on dataset), Familiar/Overlapping (VG150 on IndoorVG), Cross-Dataset (unseen distribution)."
+    }
+  },
+  "required_code_modifications": [
+    {
+      "file": "tools/evaluate.py",
+      "function": "build_pred_dict / main / _run_single",
+      "modification_needed": "Add prediction ontology projection function that maps raw model predicted predicate labels into normalized evaluation IDs (1..6, 1..8, 1..20) using evaluation_ontology.json.",
+      "severity": "CRITICAL"
+    },
+    {
+      "file": "tools/evaluate.py",
+      "function": "_run_single / _evaluate_pytorch",
+      "modification_needed": "Add --task argument (predcls, sgcls, sgdet) to support PredCls evaluation for PyTorch checkpoints (currently hardcoded to forward(img_list) without targets).",
+      "severity": "CRITICAL"
+    },
+    {
+      "file": "sgg_benchmark/data/datasets/evaluation/sgg_eval.py",
+      "function": "do_sgg_evaluation",
+      "modification_needed": "Support dynamic num_rel_category matching the normalized evaluation view (6, 8, 20) instead of relying strictly on cfg.model.roi_relation_head.num_classes.",
+      "severity": "HIGH"
+    },
+    {
+      "file": "sgg_benchmark/data/datasets/evaluation/sgg_metrics.py",
+      "function": "SGRecall.calculate",
+      "modification_needed": "Add support for filter_empty_gt flag to optionally exclude images with len(gt_rels) == 0 from the Recall@K average denominator.",
+      "severity": "MEDIUM"
+    }
+  ]
+}

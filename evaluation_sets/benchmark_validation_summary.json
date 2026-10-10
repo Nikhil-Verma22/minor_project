@@ -1,0 +1,169 @@
+{
+  "VG150": {
+    "txt_ids_count": 200,
+    "valid_images_count": 200,
+    "metadata_images": 200,
+    "total_gt_objects": 2320,
+    "total_gt_relations": 1083,
+    "views": {
+      "strict": {
+        "file": "VG150_200_strict.coco.json",
+        "retained": 604,
+        "dropped": 479,
+        "retained_pct": 55.77,
+        "mapping_types": {
+          "EXACT": 596,
+          "SEMANTIC_EQUIVALENT": 8
+        },
+        "wears_normalized_count": 8
+      },
+      "extended": {
+        "file": "VG150_200_extended.coco.json",
+        "retained": 605,
+        "dropped": 478,
+        "retained_pct": 55.86,
+        "mapping_types": {
+          "EXACT": 597,
+          "SEMANTIC_EQUIVALENT": 8
+        },
+        "wears_normalized_count": 8
+      },
+      "tri_dataset": {
+        "file": "VG150_200_tri_dataset.coco.json",
+        "retained": 873,
+        "dropped": 210,
+        "retained_pct": 80.61,
+        "mapping_types": {
+          "EXACT": 865,
+          "SEMANTIC_EQUIVALENT": 8
+        },
+        "wears_normalized_count": 8
+      }
+    }
+  },
+  "PSG": {
+    "txt_ids_count": 200,
+    "valid_images_count": 200,
+    "metadata_images": 200,
+    "total_gt_objects": 3019,
+    "total_gt_relations": 1385,
+    "views": {
+      "strict": {
+        "file": "PSG_200_strict.coco.json",
+        "retained": 520,
+        "dropped": 865,
+        "retained_pct": 37.55,
+        "mapping_types": {
+          "EXACT": 520
+        },
+        "wears_normalized_count": 0
+      },
+      "extended": {
+        "file": "PSG_200_extended.coco.json",
+        "retained": 575,
+        "dropped": 810,
+        "retained_pct": 41.52,
+        "mapping_types": {
+          "EXACT": 573,
+          "ACCEPTABLE_SEMANTIC_GENERALIZATION": 2
+        },
+        "wears_normalized_count": 0
+      },
+      "tri_dataset": {
+        "file": "PSG_200_tri_dataset.coco.json",
+        "retained": 1050,
+        "dropped": 335,
+        "retained_pct": 75.81,
+        "mapping_types": {
+          "EXACT": 870,
+          "ACCEPTABLE_SEMANTIC_GENERALIZATION": 173,
+          "SEMANTIC_EQUIVALENT": 7
+        },
+        "wears_normalized_count": 0
+      }
+    }
+  },
+  "IndoorVG": {
+    "txt_ids_count": 200,
+    "valid_images_count": 200,
+    "metadata_images": 200,
+    "total_gt_objects": 3118,
+    "total_gt_relations": 1672,
+    "views": {
+      "strict": {
+        "file": "IndoorVG_200_strict.coco.json",
+        "retained": 1003,
+        "dropped": 669,
+        "retained_pct": 59.99,
+        "mapping_types": {
+          "EXACT": 1003
+        },
+        "wears_normalized_count": 0
+      },
+      "extended": {
+        "file": "IndoorVG_200_extended.coco.json",
+        "retained": 1004,
+        "dropped": 668,
+        "retained_pct": 60.05,
+        "mapping_types": {
+          "EXACT": 1004
+        },
+        "wears_normalized_count": 0
+      },
+      "tri_dataset": {
+        "file": "IndoorVG_200_tri_dataset.coco.json",
+        "retained": 1411,
+        "dropped": 261,
+        "retained_pct": 84.39,
+        "mapping_types": {
+          "EXACT": 1403,
+          "ACCEPTABLE_SEMANTIC_GENERALIZATION": 8
+        },
+        "wears_normalized_count": 0
+      }
+    }
+  },
+  "OpenImages": {
+    "txt_ids_count": 200,
+    "valid_images_count": 200,
+    "metadata_images": 200,
+    "total_gt_objects": 1486,
+    "total_gt_relations": 866,
+    "views": {
+      "strict": {
+        "file": "OpenImages_200_strict.coco.json",
+        "retained": 84,
+        "dropped": 782,
+        "retained_pct": 9.7,
+        "mapping_types": {
+          "SEMANTIC_EQUIVALENT": 72,
+          "EXACT": 12
+        },
+        "wears_normalized_count": 47
+      },
+      "extended": {
+        "file": "OpenImages_200_extended.coco.json",
+        "retained": 88,
+        "dropped": 778,
+        "retained_pct": 10.16,
+        "mapping_types": {
+          "SEMANTIC_EQUIVALENT": 76,
+          "EXACT": 12
+        },
+        "wears_normalized_count": 47
+      },
+      "tri_dataset": {
+        "file": "OpenImages_200_tri_dataset.coco.json",
+        "retained": 142,
+        "dropped": 724,
+        "retained_pct": 16.4,
+        "mapping_types": {
+          "SEMANTIC_EQUIVALENT": 90,
+          "EXACT": 34,
+          "ACCEPTABLE_SEMANTIC_GENERALIZATION": 18
+        },
+        "wears_normalized_count": 47
+      }
+    }
+  }
+}
