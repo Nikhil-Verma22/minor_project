@@ -1,0 +1,19 @@
+{
+  "benchmark": "Fast Contextual SGG Benchmark",
+  "variants_evaluated": [
+    "C-SGG",
+    "CV-SGG"
+  ],
+  "max_images": 200,
+  "device": "cpu",
+  "hardware": "Intel(R) Core(TM) Ultra 5 125H (18 threads)",
+  "views": [
+    "strict",
+    "extended",
+    "tri_dataset",
+    "native"
+  ],
+  "dataset": "Visual Genome (VG150_200)",
+  "cv_filter_k": 150,
+  "timestamp": "2026-10-10 22:36:41"
+}

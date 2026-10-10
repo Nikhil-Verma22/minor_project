@@ -1,0 +1,98 @@
+2026-10-10 22:18:55,468 [INFO] ================================================================================
+2026-10-10 22:18:55,468 [INFO] Starting Fast Contextual SGG Benchmark Pipeline
+2026-10-10 22:18:55,468 [INFO] Variants: ['C-SGG', 'CV-SGG'] | Max Images: 3 | Device: cpu
+2026-10-10 22:18:55,469 [INFO] ================================================================================
+2026-10-10 22:20:02,972 [INFO] ================================================================================
+2026-10-10 22:20:02,972 [INFO] Starting Fast Contextual SGG Benchmark Pipeline
+2026-10-10 22:20:02,972 [INFO] Variants: ['C-SGG', 'CV-SGG'] | Max Images: 3 | Device: cpu
+2026-10-10 22:20:02,973 [INFO] ================================================================================
+2026-10-10 22:20:02,990 [INFO] Loaded Visual Genome evaluation dataset: 200 images
+2026-10-10 22:20:02,990 [INFO] --------------------------------------------------------------------------------
+2026-10-10 22:20:02,990 [INFO] BEGINNING BENCHMARK FOR VARIANT: C-SGG
+2026-10-10 22:20:02,990 [INFO] --------------------------------------------------------------------------------
+2026-10-10 22:20:03,686 [INFO] Running C-SGG inference across 3 images...
+2026-10-10 22:20:04,752 [INFO] [C-SGG] Processed 3/3 images | E2E: 354.3 ms (Det: 345.1 ms, Ctx: 4.5 ms, Vis: 0.0 ms) | RAM: 900.6 MB
+2026-10-10 22:20:04,755 [INFO] Saved C-SGG predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_VG150_c-sgg_smoke.pt
+2026-10-10 22:20:04,755 [INFO] Computing detection mAP@50...
+2026-10-10 22:20:04,775 [INFO] [C-SGG] Object Detection: mAP@50 = 0.4056 | F1@50 = 0.4674
+2026-10-10 22:20:04,775 [INFO] [C-SGG] Evaluating on ontology view: strict
+2026-10-10 22:20:04,798 [INFO] [C-SGG | strict] R@20: 0.0000 | R@50: 0.1000 | R@100: 0.1000 | mR@20: 0.0000 | mR@50: 0.1000 | mR@100: 0.1000 | R@100 (All 200): 0.0667
+2026-10-10 22:20:04,799 [INFO] [C-SGG] Evaluating on ontology view: extended
+2026-10-10 22:20:04,826 [INFO] [C-SGG | extended] R@20: 0.0000 | R@50: 0.0000 | R@100: 0.0000 | mR@20: 0.0000 | mR@50: 0.0000 | mR@100: 0.0000 | R@100 (All 200): 0.0000
+2026-10-10 22:20:04,826 [INFO] [C-SGG] Evaluating on ontology view: tri_dataset
+2026-10-10 22:20:04,856 [INFO] [C-SGG | tri_dataset] R@20: 0.0000 | R@50: 0.0000 | R@100: 0.0000 | mR@20: 0.0000 | mR@50: 0.0000 | mR@100: 0.0000 | R@100 (All 200): 0.0000
+2026-10-10 22:20:04,856 [INFO] [C-SGG] Evaluating on ontology view: native
+2026-10-10 22:20:04,883 [INFO] [C-SGG | native] R@20: 0.2381 | R@50: 0.2381 | R@100: 0.2381 | mR@20: 0.0667 | mR@50: 0.0667 | mR@100: 0.0667 | R@100 (All 200): 0.1587
+2026-10-10 22:20:04,884 [INFO] --------------------------------------------------------------------------------
+2026-10-10 22:20:04,884 [INFO] BEGINNING BENCHMARK FOR VARIANT: CV-SGG
+2026-10-10 22:20:04,884 [INFO] --------------------------------------------------------------------------------
+2026-10-10 22:20:05,175 [INFO] Running CV-SGG inference across 3 images...
+2026-10-10 22:20:07,671 [INFO] [CV-SGG] Processed 3/3 images | E2E: 829.6 ms (Det: 331.0 ms, Ctx: 4.7 ms, Vis: 488.8 ms) | RAM: 2122.4 MB
+2026-10-10 22:20:07,672 [INFO] Saved CV-SGG predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_VG150_cv-sgg_smoke.pt
+2026-10-10 22:20:07,672 [INFO] Computing detection mAP@50...
+2026-10-10 22:20:07,693 [INFO] [CV-SGG] Object Detection: mAP@50 = 0.4056 | F1@50 = 0.4674
+2026-10-10 22:20:07,693 [INFO] [CV-SGG] Evaluating on ontology view: strict
+2026-10-10 22:20:07,727 [INFO] [CV-SGG | strict] R@20: 0.1000 | R@50: 0.1000 | R@100: 0.1000 | mR@20: 0.1000 | mR@50: 0.1000 | mR@100: 0.1000 | R@100 (All 200): 0.0667
+2026-10-10 22:20:07,727 [INFO] [CV-SGG] Evaluating on ontology view: extended
+2026-10-10 22:20:07,759 [INFO] [CV-SGG | extended] R@20: 0.0000 | R@50: 0.0000 | R@100: 0.0000 | mR@20: 0.0000 | mR@50: 0.0000 | mR@100: 0.0000 | R@100 (All 200): 0.0000
+2026-10-10 22:20:07,759 [INFO] [CV-SGG] Evaluating on ontology view: tri_dataset
+2026-10-10 22:20:07,784 [INFO] [CV-SGG | tri_dataset] R@20: 0.0000 | R@50: 0.0000 | R@100: 0.0000 | mR@20: 0.0000 | mR@50: 0.0000 | mR@100: 0.0000 | R@100 (All 200): 0.0000
+2026-10-10 22:20:07,785 [INFO] [CV-SGG] Evaluating on ontology view: native
+2026-10-10 22:20:07,807 [INFO] [CV-SGG | native] R@20: 0.2738 | R@50: 0.2738 | R@100: 0.2738 | mR@20: 0.0792 | mR@50: 0.0792 | mR@100: 0.0792 | R@100 (All 200): 0.1825
+2026-10-10 22:20:07,811 [INFO] Saved complete benchmark results to d:/Minor\results/FastContextualSGG\metrics.json
+2026-10-10 22:20:07,811 [INFO] Saved metrics CSV summary to d:/Minor\results/FastContextualSGG\metrics.csv
+2026-10-10 22:20:07,812 [INFO] Benchmark execution successfully complete!
+2026-10-10 22:20:20,798 [INFO] ================================================================================
+2026-10-10 22:20:20,798 [INFO] Starting Fast Contextual SGG Benchmark Pipeline
+2026-10-10 22:20:20,798 [INFO] Variants: ['C-SGG', 'CV-SGG'] | Max Images: 200 | Device: cpu
+2026-10-10 22:20:20,798 [INFO] ================================================================================
+2026-10-10 22:20:20,813 [INFO] Loaded Visual Genome evaluation dataset: 200 images
+2026-10-10 22:20:20,814 [INFO] --------------------------------------------------------------------------------
+2026-10-10 22:20:20,814 [INFO] BEGINNING BENCHMARK FOR VARIANT: C-SGG
+2026-10-10 22:20:20,814 [INFO] --------------------------------------------------------------------------------
+2026-10-10 22:20:21,503 [INFO] Running C-SGG inference across 200 images...
+2026-10-10 22:20:29,374 [INFO] [C-SGG] Processed 25/200 images | E2E: 314.6 ms (Det: 305.3 ms, Ctx: 4.8 ms, Vis: 0.0 ms) | RAM: 943.7 MB
+2026-10-10 22:20:37,296 [INFO] [C-SGG] Processed 50/200 images | E2E: 315.6 ms (Det: 306.0 ms, Ctx: 4.9 ms, Vis: 0.0 ms) | RAM: 943.0 MB
+2026-10-10 22:20:45,551 [INFO] [C-SGG] Processed 75/200 images | E2E: 320.3 ms (Det: 310.3 ms, Ctx: 5.1 ms, Vis: 0.0 ms) | RAM: 940.1 MB
+2026-10-10 22:20:53,751 [INFO] [C-SGG] Processed 100/200 images | E2E: 322.1 ms (Det: 312.1 ms, Ctx: 5.1 ms, Vis: 0.0 ms) | RAM: 945.5 MB
+2026-10-10 22:21:02,630 [INFO] [C-SGG] Processed 125/200 images | E2E: 328.6 ms (Det: 318.8 ms, Ctx: 5.0 ms, Vis: 0.0 ms) | RAM: 941.2 MB
+2026-10-10 22:21:11,775 [INFO] [C-SGG] Processed 150/200 images | E2E: 334.8 ms (Det: 324.9 ms, Ctx: 4.9 ms, Vis: 0.0 ms) | RAM: 958.9 MB
+2026-10-10 22:21:21,561 [INFO] [C-SGG] Processed 175/200 images | E2E: 342.8 ms (Det: 333.0 ms, Ctx: 4.9 ms, Vis: 0.0 ms) | RAM: 962.3 MB
+2026-10-10 22:21:31,657 [INFO] [C-SGG] Processed 200/200 images | E2E: 350.3 ms (Det: 340.4 ms, Ctx: 5.0 ms, Vis: 0.0 ms) | RAM: 935.3 MB
+2026-10-10 22:21:31,708 [INFO] Saved C-SGG predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_VG150_c-sgg_full.pt
+2026-10-10 22:21:31,708 [INFO] Computing detection mAP@50...
+2026-10-10 22:21:32,654 [INFO] [C-SGG] Object Detection: mAP@50 = 0.3419 | F1@50 = 0.4137
+2026-10-10 22:21:32,654 [INFO] [C-SGG] Evaluating on ontology view: strict
+2026-10-10 22:21:32,898 [INFO] [C-SGG | strict] R@20: 0.0080 | R@50: 0.0109 | R@100: 0.0358 | mR@20: 0.0020 | mR@50: 0.0026 | mR@100: 0.0115 | R@100 (All 200): 0.0252
+2026-10-10 22:21:32,898 [INFO] [C-SGG] Evaluating on ontology view: extended
+2026-10-10 22:21:33,122 [INFO] [C-SGG | extended] R@20: 0.0070 | R@50: 0.0080 | R@100: 0.0094 | mR@20: 0.0012 | mR@50: 0.0017 | mR@100: 0.0023 | R@100 (All 200): 0.0067
+2026-10-10 22:21:33,122 [INFO] [C-SGG] Evaluating on ontology view: tri_dataset
+2026-10-10 22:21:33,397 [INFO] [C-SGG | tri_dataset] R@20: 0.0031 | R@50: 0.0038 | R@100: 0.0051 | mR@20: 0.0005 | mR@50: 0.0007 | mR@100: 0.0009 | R@100 (All 200): 0.0041
+2026-10-10 22:21:33,397 [INFO] [C-SGG] Evaluating on ontology view: native
+2026-10-10 22:21:33,782 [INFO] [C-SGG | native] R@20: 0.1035 | R@50: 0.1878 | R@100: 0.2485 | mR@20: 0.0953 | mR@50: 0.1357 | mR@100: 0.1533 | R@100 (All 200): 0.2162
+2026-10-10 22:21:33,782 [INFO] --------------------------------------------------------------------------------
+2026-10-10 22:21:33,782 [INFO] BEGINNING BENCHMARK FOR VARIANT: CV-SGG
+2026-10-10 22:21:33,783 [INFO] --------------------------------------------------------------------------------
+2026-10-10 22:21:34,231 [INFO] Running CV-SGG inference across 200 images...
+2026-10-10 22:26:04,799 [INFO] [CV-SGG] Processed 25/200 images | E2E: 10820.9 ms (Det: 375.2 ms, Ctx: 5.4 ms, Vis: 10435.3 ms) | RAM: 2955.9 MB
+2026-10-10 22:27:20,412 [INFO] [CV-SGG] Processed 50/200 images | E2E: 6921.7 ms (Det: 379.6 ms, Ctx: 5.4 ms, Vis: 6531.8 ms) | RAM: 2933.6 MB
+2026-10-10 22:28:50,885 [INFO] [CV-SGG] Processed 75/200 images | E2E: 5819.8 ms (Det: 408.9 ms, Ctx: 6.3 ms, Vis: 5399.0 ms) | RAM: 2262.3 MB
+2026-10-10 22:30:20,426 [INFO] [CV-SGG] Processed 100/200 images | E2E: 5259.7 ms (Det: 415.9 ms, Ctx: 6.2 ms, Vis: 4831.7 ms) | RAM: 2273.8 MB
+2026-10-10 22:31:54,258 [INFO] [CV-SGG] Processed 125/200 images | E2E: 4958.0 ms (Det: 423.6 ms, Ctx: 6.1 ms, Vis: 4522.2 ms) | RAM: 2268.0 MB
+2026-10-10 22:33:28,818 [INFO] [CV-SGG] Processed 150/200 images | E2E: 4761.7 ms (Det: 432.4 ms, Ctx: 6.1 ms, Vis: 4316.9 ms) | RAM: 2269.4 MB
+2026-10-10 22:35:04,213 [INFO] [CV-SGG] Processed 175/200 images | E2E: 4626.2 ms (Det: 436.5 ms, Ctx: 6.1 ms, Vis: 4177.2 ms) | RAM: 2283.2 MB
+2026-10-10 22:36:38,000 [INFO] [CV-SGG] Processed 200/200 images | E2E: 4516.6 ms (Det: 439.2 ms, Ctx: 6.2 ms, Vis: 4064.7 ms) | RAM: 2271.9 MB
+2026-10-10 22:36:38,048 [INFO] Saved CV-SGG predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_VG150_cv-sgg_full.pt
+2026-10-10 22:36:38,072 [INFO] Computing detection mAP@50...
+2026-10-10 22:36:39,186 [INFO] [CV-SGG] Object Detection: mAP@50 = 0.3419 | F1@50 = 0.4137
+2026-10-10 22:36:39,186 [INFO] [CV-SGG] Evaluating on ontology view: strict
+2026-10-10 22:36:39,578 [INFO] [CV-SGG | strict] R@20: 0.0071 | R@50: 0.0113 | R@100: 0.0203 | mR@20: 0.0014 | mR@50: 0.0034 | mR@100: 0.0064 | R@100 (All 200): 0.0143
+2026-10-10 22:36:39,578 [INFO] [CV-SGG] Evaluating on ontology view: extended
+2026-10-10 22:36:39,924 [INFO] [CV-SGG | extended] R@20: 0.0070 | R@50: 0.0070 | R@100: 0.0070 | mR@20: 0.0012 | mR@50: 0.0012 | mR@100: 0.0012 | R@100 (All 200): 0.0050
+2026-10-10 22:36:39,925 [INFO] [CV-SGG] Evaluating on ontology view: tri_dataset
+2026-10-10 22:36:40,384 [INFO] [CV-SGG | tri_dataset] R@20: 0.0031 | R@50: 0.0031 | R@100: 0.0031 | mR@20: 0.0005 | mR@50: 0.0005 | mR@100: 0.0005 | R@100 (All 200): 0.0025
+2026-10-10 22:36:40,385 [INFO] [CV-SGG] Evaluating on ontology view: native
+2026-10-10 22:36:41,003 [INFO] [CV-SGG | native] R@20: 0.0894 | R@50: 0.1643 | R@100: 0.2412 | mR@20: 0.0850 | mR@50: 0.1173 | mR@100: 0.1384 | R@100 (All 200): 0.2098
+2026-10-10 22:36:41,006 [INFO] Saved complete benchmark results to d:/Minor\results/FastContextualSGG\metrics.json
+2026-10-10 22:36:41,007 [INFO] Saved metrics CSV summary to d:/Minor\results/FastContextualSGG\metrics.csv
+2026-10-10 22:36:41,007 [INFO] Benchmark execution successfully complete!

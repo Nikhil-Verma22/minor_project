@@ -1,0 +1,36 @@
+{
+  "benchmark": "REACT Pretrained Evaluation",
+  "hardware": {
+    "cpu": "Intel(R) Core(TM) Ultra 5 125H",
+    "logical_processors": 18,
+    "device": "cpu"
+  },
+  "software": {
+    "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.8.0+cpu",
+    "ultralytics": "8.3.250"
+  },
+  "input_resolution": [
+    640,
+    640
+  ],
+  "batch_size": 1,
+  "mode": "full_evaluation",
+  "supported_datasets": [
+    "PSG",
+    "VG150"
+  ],
+  "evaluated_views": [
+    "strict",
+    "extended",
+    "tri_dataset",
+    "native"
+  ],
+  "metrics_evaluated": [
+    "SGDet Recall@20/50/100 (Eligible Images)",
+    "SGDet Recall@20/50/100 (All 200 Images Sensitivity)",
+    "SGDet mean Recall@20/50/100",
+    "Per-predicate Recall@100",
+    "Object Detection mAP@50"
+  ]
+}

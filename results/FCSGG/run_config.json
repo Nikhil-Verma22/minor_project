@@ -1,0 +1,23 @@
+{
+  "model": "FCSGG",
+  "checkpoint": "d:/Minor\\checkpoints/FCSGG/HRNetW32-1S.pth",
+  "config": "model_repos/fcsgg/configs/FCSGG_HRNet_W32_2xDownRAF_512x512_MS.yaml",
+  "device": "cpu",
+  "hardware": "Intel(R) Core(TM) Ultra 5 125H (18 threads)",
+  "os": "Windows 11",
+  "timestamp": "2026-10-10 21:36:57",
+  "mode": "FULL_EVALUATION",
+  "max_images": 200,
+  "views": [
+    "strict",
+    "extended",
+    "tri_dataset",
+    "native"
+  ],
+  "profile": {
+    "mean_forward_latency_ms": 1271.6541779997715,
+    "mean_e2e_latency_ms": 1277.1125849999953,
+    "fps": 0.7830163227152003,
+    "peak_rss_mb": 3160.6328125
+  }
+}
