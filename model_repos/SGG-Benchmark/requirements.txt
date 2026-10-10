@@ -1,0 +1,32 @@
+ninja
+cython
+matplotlib
+tqdm
+torchtext
+pandas
+scipy
+opencv-python
+loguru
+wandb
+pycocotools
+h5py
+networkx
+sentence-transformers
+ultralytics
+dill
+calflops
+datasets
+huggingface_hub
+seaborn
+
+# Additional requirements for Hydra + OmegaConf configuration system
+hydra-core>=1.3.0        # Configuration management framework
+omegaconf>=2.3.0         # Configuration container with validation
+
+# Optional but recommended
+rich>=10.0.0             # Better console output for Hydra
+colorlog>=6.0.0          # Colored logging
+
+# For type checking (development)
+mypy>=0.900              # Static type checker
+types-PyYAML>=6.0.0      # Type stubs for PyYAML
