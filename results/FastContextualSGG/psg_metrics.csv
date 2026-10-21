@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+Fast Contextual SGG,PSG,32.24%,35.98%,21.82%,24.37%,62.81%,59.48%,568.5 ms (1.76 FPS)

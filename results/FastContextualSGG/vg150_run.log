@@ -1,0 +1,21 @@
+2026-10-16 22:20:17,379 [INFO] ================================================================================
+2026-10-16 22:20:17,380 [INFO] Starting Fast Contextual SGG (C-SGG) Benchmark Pipeline on VG150 Dataset
+2026-10-16 22:20:17,380 [INFO] Max Images: 200 | Device: cpu
+2026-10-16 22:20:17,380 [INFO] ================================================================================
+2026-10-16 22:20:17,456 [INFO] Loaded VG150 evaluation dataset: 200 images
+2026-10-16 22:20:17,457 [INFO] Loading cached C-SGG VG150 predictions from d:/Minor\.cache/FastContextualSGG\raw_preds_VG150_full.pt...
+2026-10-16 22:20:17,658 [INFO] Computing detection mAP@50 and F1@50 for C-SGG on VG150...
+2026-10-16 22:20:21,263 [INFO] C-SGG Object Detection on VG150: mAP@50 = 0.3419 | F1@50 = 0.4137
+2026-10-16 22:20:23,059 [INFO] ================================================================================
+2026-10-16 22:20:23,060 [INFO] FINAL BENCHMARK SCORES FOR FAST CONTEXTUAL SGG (C-SGG) ON VG150:
+2026-10-16 22:20:23,060 [INFO] R@50:            20.05%
+2026-10-16 22:20:23,061 [INFO] R@100:           24.85%
+2026-10-16 22:20:23,061 [INFO] mR@50:           14.10%
+2026-10-16 22:20:23,062 [INFO] mR@100:          15.33%
+2026-10-16 22:20:23,062 [INFO] F1@50:           41.37% (or 0.4137)
+2026-10-16 22:20:23,062 [INFO] Detection mAP@50: 34.19% (or 0.3419)
+2026-10-16 22:20:23,063 [INFO] Speed:           350.3 ms (2.85 FPS)
+2026-10-16 22:20:23,063 [INFO] ================================================================================
+2026-10-16 22:20:23,067 [INFO] Saved Fast Contextual SGG VG150 metrics to d:/Minor\results/FastContextualSGG\vg150_metrics.json
+2026-10-16 22:20:23,068 [INFO] Saved Fast Contextual SGG VG150 metrics CSV to d:/Minor\results/FastContextualSGG\vg150_metrics.csv
+2026-10-17 01:36:39,293 [INFO] Computing detection mAP@50 and F1@50 for C-SGG on VG150...

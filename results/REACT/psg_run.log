@@ -1,0 +1,16 @@
+2026-10-16 22:23:59,818 [INFO] Loaded PSG evaluation dataset: 200 images
+2026-10-16 22:23:59,819 [INFO] Loading cached REACT PSG predictions from d:/Minor\.cache/REACT\raw_preds_PSG_full.pt...
+2026-10-16 22:24:00,017 [INFO] Computing detection mAP@50 and F1@50 on PSG...
+2026-10-16 22:24:04,149 [INFO] REACT Object Detection on PSG: mAP@50 = 0.5673 | F1@50 = 0.6214
+2026-10-16 22:24:06,437 [INFO] ================================================================================
+2026-10-16 22:24:06,437 [INFO] FINAL BENCHMARK SCORES FOR REACT ON PSG:
+2026-10-16 22:24:06,438 [INFO] R@50:            30.47%
+2026-10-16 22:24:06,438 [INFO] R@100:           33.94%
+2026-10-16 22:24:06,438 [INFO] mR@50:           23.98%
+2026-10-16 22:24:06,438 [INFO] mR@100:          26.03%
+2026-10-16 22:24:06,439 [INFO] F1@50:           62.14% (or 0.6214)
+2026-10-16 22:24:06,439 [INFO] Detection mAP@50: 56.73% (or 0.5673)
+2026-10-16 22:24:06,440 [INFO] Speed:           1223.9 ms (0.82 FPS)
+2026-10-16 22:24:06,440 [INFO] ================================================================================
+2026-10-16 22:24:06,443 [INFO] Saved REACT PSG metrics to d:/Minor\results/REACT\psg_metrics.json
+2026-10-16 22:24:06,445 [INFO] Saved REACT PSG metrics CSV to d:/Minor\results/REACT\psg_metrics.csv

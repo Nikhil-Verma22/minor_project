@@ -1,0 +1,21 @@
+2026-10-16 22:15:04,991 [INFO] ================================================================================
+2026-10-16 22:15:04,993 [INFO] Starting Fully Convolutional SGG (FCSGG) Benchmark Pipeline on VG150 Dataset
+2026-10-16 22:15:04,993 [INFO] Max Images: 200 | Device: cpu
+2026-10-16 22:15:04,993 [INFO] ================================================================================
+2026-10-16 22:15:05,068 [INFO] Loaded VG150 evaluation dataset: 200 images
+2026-10-16 22:15:05,069 [INFO] Loading cached FCSGG VG150 predictions from d:/Minor\.cache/FCSGG\raw_preds_VG150_full.pt...
+2026-10-16 22:15:05,281 [INFO] Computing detection mAP@50 and F1@50 for FCSGG on VG150...
+2026-10-16 22:15:11,440 [INFO] FCSGG Object Detection on VG150: mAP@50 = 0.2253 | F1@50 = 0.3162
+2026-10-16 22:15:12,884 [INFO] ================================================================================
+2026-10-16 22:15:12,884 [INFO] FINAL BENCHMARK SCORES FOR FCSGG ON VG150:
+2026-10-16 22:15:12,885 [INFO] R@50:            9.08%
+2026-10-16 22:15:12,885 [INFO] R@100:           12.23%
+2026-10-16 22:15:12,885 [INFO] mR@50:           2.62%
+2026-10-16 22:15:12,885 [INFO] mR@100:          3.26%
+2026-10-16 22:15:12,885 [INFO] F1@50:           31.62% (or 0.3162)
+2026-10-16 22:15:12,885 [INFO] Detection mAP@50: 22.53% (or 0.2253)
+2026-10-16 22:15:12,885 [INFO] Speed:           1277.1 ms (0.78 FPS)
+2026-10-16 22:15:12,885 [INFO] ================================================================================
+2026-10-16 22:15:12,891 [INFO] Saved FCSGG VG150 metrics to d:/Minor\results/FCSGG\vg150_metrics.json
+2026-10-16 22:15:12,894 [INFO] Saved FCSGG VG150 metrics CSV to d:/Minor\results/FCSGG\vg150_metrics.csv
+2026-10-17 02:16:08,091 [INFO] Computing detection mAP@50 and F1@50 for FCSGG on VG150...

@@ -2,7 +2,7 @@
 
 **Research Project**: *Object Retrieval in Dynamic Workspace Environments*  
 **Workspace Root**: `d:/Minor`  
-**Host Platform**: Intel(R) Core(TM) Ultra 5 125H (14 cores / 18 threads), 32 GB RAM, Windows 11  
+**Host Platform**: Intel(R) Core(TM) Ultra 5 125H (14 cores / 18 threads), 16 GB RAM (15.61 GB visible), Windows 11  
 **Software Stack**: Python 3.13.7, PyTorch 2.8.0+cpu, ONNX Runtime 1.27.0, torchvision 0.23.0, OpenCV 4.11.0, pycocotools 2.0.8  
 **Scope**: Complete benchmark consolidation containing all four evaluated SGG models across Visual Genome (VG150) and Panoptic Scene Graph (PSG):
 1. **REACT** (PyTorch YOLOv8m on PSG & VG150)
@@ -48,16 +48,29 @@ All evaluations were executed on the same physical host hardware and tested agai
 
 # Master Cross-Model Performance & Latency Matrix
 
-### Complete SGDet Benchmark Results on 200 Frozen Images
+### Consolidated 16-Combination Benchmark Matrix (4 Models × 4 Datasets)
 
-| Model Architecture | Evaluated Variant | Target Dataset | Backbone / Detector | Native R@50 (Elig.) | Native R@100 (Elig.) | Native mR@100 | Strict R@100 (Elig.) | Det mAP@50 | E2E Latency (ms) | Throughput (FPS) | Peak RAM (MB) |
-| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **REACT** | PyTorch SGDet | **PSG** | YOLOv8m | 30.47% | 33.94% | 26.03% | **54.44%** | 0.5673 | 1,223.9 ms | 0.82 FPS | 3,798.7 MB |
-| **REACT++** | ONNX SGDet | **PSG** | YOLO12m | **35.98%** | **37.79%** | 23.76% | 33.51% | **0.5951** | **548.0 ms** | **1.82 FPS** | **789.3 MB** |
-| **REACT** | PyTorch SGDet | **VG150** | YOLOv8m | 24.55% | 27.77% | 18.28% | 0.96% | **0.3758** | 701.8 ms | 1.42 FPS | 3,506.2 MB |
-| **FCSGG** | CenterNet / RAF | **VG150** | HRNetW32-1S | 9.68% | 12.23% | 3.26% | 2.62% | 0.2253 | 1,277.1 ms | 0.78 FPS | 3,160.6 MB |
-| **C-SGG** | Context-Only | **VG150** | YOLOv5l + CKN | 18.78% | 24.85% | **15.33%** | 3.58% | 0.3419 | **350.3 ms** | **2.85 FPS** | **935.3 MB** |
-| **CV-SGG** | Context + Visual | **VG150** | YOLOv5l + CKN + VDN | 16.43% | 24.12% | 13.84% | 2.03% | 0.3419 | 4,516.6 ms | 0.22 FPS | 2,271.9 MB |
+Standardized Task: **Scene Graph Detection (`SGDet`)** on 200 frozen evaluation images per dataset.  
+All metrics strictly evaluate directed relationship triplets $(s, p, o)$ requiring $\text{IoU} \ge 0.5$ on both subject and object bounding boxes simultaneously.
+
+| Model Architecture | Evaluated Variant | Target Dataset | Regime | Status | R@50 | R@100 | mR@50 | mR@100 | Det. H(AP,AR)@50 | Harmonic Recall H(R,mR)@50 [Supp] | Det. mAP@50 | Speed |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **REACT** | PyTorch YOLOv8m | **PSG** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 30.47% | 33.94% | 23.98% | 26.03% | 62.14% | 26.84% | 56.73% | 1,223.9 ms (0.82 FPS) |
+| **REACT** | PyTorch YOLOv8m | **VG150** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 24.55% | 27.77% | 16.61% | 18.28% | 45.46% | 19.81% | 37.58% | 701.8 ms (1.42 FPS) |
+| **REACT** | ONNX YOLOv8m (Native) | **IndoorVG** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 31.08% | 36.58% | 26.48% | 29.65% | 57.98% | 28.60% | 49.31% | 724.8 ms (1.38 FPS) |
+| **REACT** | PyTorch YOLOv8m | **OpenImages V6** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 1.78% | 1.90% | 10.76% | 12.05% | 21.53% | 3.05% | 17.51% | 1,184.2 ms (0.84 FPS) |
+| **REACT++** | ONNX YOLO12m | **PSG** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 35.98% | 37.79% | 23.20% | 23.76% | 62.84% | 28.21% | 59.51% | 548.0 ms (1.82 FPS) |
+| **REACT++** | ONNX YOLO12m | **VG150** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 23.54% | 25.56% | 16.57% | 18.48% | 46.68% | 19.45% | 37.43% | 744.0 ms (1.34 FPS) |
+| **REACT++** | ONNX YOLO12m | **IndoorVG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 13.64% | 16.02% | 12.69% | 14.07% | 26.88% | 13.15% | 21.50% | 2,450.7 ms (0.41 FPS) |
+| **REACT++** | ONNX YOLO12m | **OpenImages V6** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 2.12% | 2.24% | 13.22% | 14.11% | 22.77% | 3.66% | 17.91% | 599.3 ms (1.67 FPS) |
+| **FCSGG** | CenterNet / RAF | **PSG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 4.39% | 5.10% | 1.10% | 1.40% | 21.23% | 1.76% | 17.45% | 1,722.3 ms (0.58 FPS) |
+| **FCSGG** | CenterNet / RAF | **VG150** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 9.08% | 12.23% | 2.62% | 3.26% | 31.62% | 4.06% | 22.53% | 1,277.1 ms (0.78 FPS) |
+| **FCSGG** | CenterNet / RAF | **IndoorVG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 7.97% | 9.15% | 3.97% | 4.36% | 17.66% | 5.30% | 12.64% | 2,263.9 ms (0.44 FPS) |
+| **FCSGG** | CenterNet / RAF | **OpenImages V6** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 0.80% | 0.80% | 3.72% | 3.72% | 16.90% | 1.32% | 12.31% | 2,324.0 ms (0.43 FPS) |
+| **Fast Contextual SGG** | C-SGG (YOLO12m + CKN) | **PSG** | Hybrid Adaptation | **VERIFIED_FROM_RAW_CACHE** | 32.24% | 35.98% | 21.82% | 24.37% | 62.81% | 26.03% | 59.48% | 568.5 ms (1.76 FPS) |
+| **Fast Contextual SGG** | C-SGG (YOLOv5l + CKN) | **VG150** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 20.05% | 24.85% | 14.10% | 15.33% | 41.37% | 16.56% | 34.19% | 350.3 ms (2.85 FPS) |
+| **Fast Contextual SGG** | C-SGG (YOLOv5l + CKN) | **IndoorVG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 12.15% | 15.22% | 10.81% | 13.03% | 20.88% | 11.44% | 16.56% | 734.0 ms (1.36 FPS) |
+| **Fast Contextual SGG** | C-SGG (YOLOv5l + CKN OID) | **OpenImages V6** | Hybrid Adaptation | **VERIFIED_FROM_RAW_CACHE** | 2.45% | 2.45% | 24.03% | 24.03% | 17.08% | 4.44% | 12.81% | 655.0 ms (1.53 FPS) |
 
 ---
 
@@ -658,7 +671,9 @@ All evaluations were executed on the frozen 200-image Visual Genome dataset unde
 | **Strict** (6 preds) | 141 / 200 | 0.80% | 1.09% | 3.58% | 2.52% | 0.20% | 0.26% | 1.15% | 0.3419 | 0.4137 |
 | **Extended** (8 preds) | 142 / 200 | 0.70% | 0.80% | 0.94% | 0.67% | 0.12% | 0.17% | 0.23% | 0.3419 | 0.4137 |
 | **Tri-Dataset** (20 preds)| 160 / 200 | 0.31% | 0.38% | 0.51% | 0.41% | 0.05% | 0.07% | 0.09% | 0.3419 | 0.4137 |
-| **Native** (50 preds) | 174 / 200 | **10.35%**| **18.78%**| **24.85%**| **21.62%** | **9.53%**| **13.57%**| **15.33%**| **0.3419** | **0.4137** |
+| **Native** (50 preds) | 174 / 200 | **10.35%**| **20.05%**| **24.85%**| **21.62%** | **9.53%**| **14.10%**| **15.33%**| **0.3419** | **0.4137** |
+
+*Note on R@50*: In the finalized standardized benchmark runner, candidate triplets are ranked via unified confidence $S = s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}}$, producing R@50 = 20.05% and mR@50 = 14.10% (as recorded in `results/FastContextualSGG/vg150_metrics.json`), compared to 18.78% / 13.57% under exploratory predicate-only ranking.
 
 #### 2.2 CV-SGG (Contextual Filtering + Visual Verification)
 
@@ -699,14 +714,18 @@ Comparing Fast Contextual SGG against prior benchmarks evaluated in the Minor wo
 
 | Model / Variant | Backbone / Detector | Native R@50 | Native R@100 | Native mR@100 | Det mAP@50 | E2E Latency (ms) | Throughput (FPS) | Peak RAM (MB) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **C-SGG** | YOLOv5l + CKN (MLP) | **18.78%** | **24.85%** | **15.33%** | 0.3419 | **350.3 ms** | **2.85** | **935.3** |
+| **C-SGG** | YOLOv5l + CKN (MLP) | **20.05%** | **24.85%** | **15.33%** | 0.3419 | **350.3 ms** | **2.85** | **935.3** |
 | **CV-SGG** | YOLOv5l + CKN + VDN | **16.43%** | **24.12%** | **13.84%** | 0.3419 | **4,516.6 ms** | **0.22** | 2,271.9 |
-| **FCSGG** | HRNetW32-1S (CenterNet)| 20.37% | 23.36% | 11.08% | 0.2818 | 1,277.1 ms | 0.78 | 3,160.6 |
-| **REACT** | YOLOv8m (PyTorch) | 8.87% | 12.35% | 7.91% | 0.3204 | 485.6 ms | 2.06 | 1,420.0 |
+| **REACT** | YOLOv8m (PyTorch) | **24.55%** | **27.77%** | **18.28%** | 0.3758 | 701.8 ms | 1.42 | 3,506.2 |
+| **REACT++** | YOLO12m (ONNX) | 23.54% | 25.56% | 18.48% | **0.3743** | 744.0 ms | 1.34 | **789.3** |
+| **FCSGG** | HRNetW32-1S (CenterNet)| 9.08% | 12.23% | 3.26% | 0.2253 | 1,277.1 ms | 0.78 | 3,160.6 |
+
+*Reconciliation Note*: Historical early notes listed C-SGG at 18.78% R@50 and FCSGG at 20.37% R@50. The discrepancy arose because early exploratory runs ranked candidates strictly by predicate logit probability ($s_{\text{pred}}$) without detector box confidence weighting, whereas the standardized benchmark protocol enforces the official unified triplet score $S = s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{pred}}$, which elevated well-localized pairs into top-50 (yielding 20.05% R@50). At $K=100$, both converge to identical 24.85% R@100 and 15.33% mR@100. FCSGG's 20.37% reflected early PredCls (oracle box) testing, whereas the verified SGDet (unconstrained detection) benchmark achieves 9.08% R@50 bounded by CenterNet's 22.53% detection mAP.
 
 #### Insights:
-- **C-SGG achieves the highest Native Mean Recall (15.33%)** among all evaluated models in the benchmark, while also delivering the fastest inference speed (350.3 ms E2E, 2.85 FPS on CPU).
-- **YOLOv5l detector strength**: Achieved mAP@50 of 0.3419, surpassing CenterNet/HRNetW32 (0.2818) and YOLOv8m (0.3204).
+- **C-SGG achieves the fastest inference speed (350.3 ms E2E, 2.85 FPS on CPU)** among all evaluated models in the benchmark, while maintaining high competitive recall (20.05% R@50, 24.85% R@100, 15.33% mR@100).
+- **YOLOv8m / YOLO12m detector strength**: REACT models achieve 37.58% and 37.43% mAP@50, boosting downstream relationship recovery to 24.55% and 23.54% R@50.
+- **CenterNet Bottleneck**: FCSGG's anchor-free CenterNet detector achieved 22.53% mAP@50, which strictly constrains downstream relation recall to 9.08% R@50.
 - **C-SGG vs CV-SGG Tradeoff**: In the presence of object bounding box localization noise from online detection, CKN's contextual priors alone generalize better to candidate recall than VDN's visual verification, which penalizes imperfect bounding box crops.
 
 ---

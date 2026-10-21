@@ -1,0 +1,59 @@
+2026-10-13 01:22:51,204 [INFO] ================================================================================
+2026-10-13 01:22:51,205 [INFO] Starting REACT++ (YOLO12m ONNX) Benchmark Pipeline on OpenImages V6 Dataset
+2026-10-13 01:22:51,205 [INFO] Model: d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx | Max Images: 3
+2026-10-13 01:22:51,205 [INFO] ================================================================================
+2026-10-13 01:22:51,235 [INFO] Loaded OpenImages V6 evaluation dataset: 200 images
+2026-10-13 01:22:51,251 [INFO] Initialized ontology mappings: 50 object classes, 19 predicates
+2026-10-13 01:22:51,251 [INFO] Loading ONNX session from d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx...
+2026-10-13 01:22:52,932 [INFO] ONNX session initialized successfully. Input: input
+2026-10-13 01:22:52,932 [INFO] Warming up ONNX model (3 iterations)...
+2026-10-13 01:22:53,902 [INFO] Running REACT++ (YOLO12m ONNX) inference across 3 OpenImages images...
+2026-10-13 01:22:55,575 [INFO] [REACT++] Processed   3/  3 images | E2E: 557.4 ms (Fwd: 536.7 ms) | RAM: 785.8 MB
+2026-10-13 01:22:55,594 [INFO] Saved REACT++ OpenImages predictions and profile to d:/Minor\.cache/REACTPP\raw_preds_OpenImages_reactpp_smoke.pt
+2026-10-13 01:22:55,666 [INFO] Computing detection mAP@50 and F1@50 for REACT++ on OpenImages V6...
+2026-10-13 01:22:55,687 [INFO] REACT++ Object Detection on OpenImages V6: mAP@50 = 0.2590 | F1@50 = 0.2717
+2026-10-13 01:22:55,694 [INFO] ================================================================================
+2026-10-13 01:22:55,694 [INFO] FINAL BENCHMARK SCORES FOR REACT++ ON OPENIMAGES V6:
+2026-10-13 01:22:55,694 [INFO] R@50:            0.00%
+2026-10-13 01:22:55,694 [INFO] R@100:           0.00%
+2026-10-13 01:22:55,694 [INFO] mR@50:           0.00%
+2026-10-13 01:22:55,694 [INFO] mR@100:          0.00%
+2026-10-13 01:22:55,694 [INFO] F1@50:           27.17% (or 0.2717)
+2026-10-13 01:22:55,695 [INFO] Detection mAP@50: 25.90% (or 0.2590)
+2026-10-13 01:22:55,695 [INFO] Speed:           557.4 ms (1.79 FPS)
+2026-10-13 01:22:55,695 [INFO] ================================================================================
+2026-10-13 01:22:55,696 [INFO] Saved REACT++ OpenImages metrics to d:/Minor\results/REACTPP\openimages_metrics.json
+2026-10-13 01:22:55,697 [INFO] Saved REACT++ OpenImages metrics CSV to d:/Minor\results/REACTPP\openimages_metrics.csv
+2026-10-13 01:23:11,593 [INFO] ================================================================================
+2026-10-13 01:23:11,594 [INFO] Starting REACT++ (YOLO12m ONNX) Benchmark Pipeline on OpenImages V6 Dataset
+2026-10-13 01:23:11,594 [INFO] Model: d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx | Max Images: 200
+2026-10-13 01:23:11,594 [INFO] ================================================================================
+2026-10-13 01:23:11,621 [INFO] Loaded OpenImages V6 evaluation dataset: 200 images
+2026-10-13 01:23:11,644 [INFO] Initialized ontology mappings: 50 object classes, 19 predicates
+2026-10-13 01:23:11,644 [INFO] Loading ONNX session from d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx...
+2026-10-13 01:23:13,307 [INFO] ONNX session initialized successfully. Input: input
+2026-10-13 01:23:13,307 [INFO] Warming up ONNX model (3 iterations)...
+2026-10-13 01:23:14,206 [INFO] Running REACT++ (YOLO12m ONNX) inference across 200 OpenImages images...
+2026-10-13 01:23:28,021 [INFO] [REACT++] Processed  25/200 images | E2E: 552.5 ms (Fwd: 534.1 ms) | RAM: 802.3 MB
+2026-10-13 01:23:41,981 [INFO] [REACT++] Processed  50/200 images | E2E: 558.3 ms (Fwd: 537.8 ms) | RAM: 805.3 MB
+2026-10-13 01:23:56,882 [INFO] [REACT++] Processed  75/200 images | E2E: 596.0 ms (Fwd: 573.0 ms) | RAM: 808.2 MB
+2026-10-13 01:24:11,883 [INFO] [REACT++] Processed 100/200 images | E2E: 599.9 ms (Fwd: 578.5 ms) | RAM: 808.9 MB
+2026-10-13 01:24:28,014 [INFO] [REACT++] Processed 125/200 images | E2E: 645.1 ms (Fwd: 622.2 ms) | RAM: 809.8 MB
+2026-10-13 01:24:43,409 [INFO] [REACT++] Processed 150/200 images | E2E: 615.7 ms (Fwd: 593.5 ms) | RAM: 810.7 MB
+2026-10-13 01:24:58,249 [INFO] [REACT++] Processed 175/200 images | E2E: 593.5 ms (Fwd: 570.8 ms) | RAM: 811.8 MB
+2026-10-13 01:25:14,081 [INFO] [REACT++] Processed 200/200 images | E2E: 633.1 ms (Fwd: 612.6 ms) | RAM: 813.6 MB
+2026-10-13 01:25:14,178 [INFO] Saved REACT++ OpenImages predictions and profile to d:/Minor\.cache/REACTPP\raw_preds_OpenImages_reactpp_full.pt
+2026-10-13 01:25:14,241 [INFO] Computing detection mAP@50 and F1@50 for REACT++ on OpenImages V6...
+2026-10-13 01:25:15,132 [INFO] REACT++ Object Detection on OpenImages V6: mAP@50 = 0.1791 | F1@50 = 0.2277
+2026-10-13 01:25:15,616 [INFO] ================================================================================
+2026-10-13 01:25:15,616 [INFO] FINAL BENCHMARK SCORES FOR REACT++ ON OPENIMAGES V6:
+2026-10-13 01:25:15,617 [INFO] R@50:            2.12%
+2026-10-13 01:25:15,617 [INFO] R@100:           2.24%
+2026-10-13 01:25:15,617 [INFO] mR@50:           13.22%
+2026-10-13 01:25:15,617 [INFO] mR@100:          14.11%
+2026-10-13 01:25:15,617 [INFO] F1@50:           22.77% (or 0.2277)
+2026-10-13 01:25:15,617 [INFO] Detection mAP@50: 17.91% (or 0.1791)
+2026-10-13 01:25:15,617 [INFO] Speed:           599.3 ms (1.67 FPS)
+2026-10-13 01:25:15,617 [INFO] ================================================================================
+2026-10-13 01:25:15,618 [INFO] Saved REACT++ OpenImages metrics to d:/Minor\results/REACTPP\openimages_metrics.json
+2026-10-13 01:25:15,619 [INFO] Saved REACT++ OpenImages metrics CSV to d:/Minor\results/REACTPP\openimages_metrics.csv

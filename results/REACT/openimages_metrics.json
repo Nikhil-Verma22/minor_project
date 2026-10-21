@@ -1,0 +1,169 @@
+{
+  "model": "REACT",
+  "variant": "PyTorch YOLOv8m SGDet",
+  "dataset": "OpenImages V6",
+  "num_images": 200,
+  "scores": {
+    "R@50": 0.017791666666666664,
+    "R@100": 0.01895833333333333,
+    "mR@50": 0.10763947590870668,
+    "mR@100": 0.1204599887292195,
+    "F1@50": 0.2153190970046869,
+    "Detection_mAP@50": 0.1751084004700984,
+    "Speed_latency_ms": 1184.1885189997265,
+    "Speed_fps": 0.8444601378543098,
+    "Speed": "1184.2 ms (0.84 FPS)"
+  },
+  "profile": {
+    "model": "REACT (PyTorch YOLOv8m)",
+    "mean_fwd_latency_ms": 1167.3468964997664,
+    "mean_e2e_latency_ms": 1184.1885189997265,
+    "fps": 0.8444601378543098,
+    "peak_rss_mb": 2564.83203125,
+    "mean_candidate_pairs": 100.0
+  },
+  "sgg_metrics": {
+    "total_images": 200,
+    "eligible_images": 200,
+    "empty_images": 0,
+    "total_gt_relations": 866,
+    "recalls_eligible": {
+      "R@50": 0.017791666666666664,
+      "R@100": 0.01895833333333333
+    },
+    "recalls_all_200": {
+      "R@50_all200": 0.017791666666666664,
+      "R@100_all200": 0.01895833333333333
+    },
+    "mean_recalls": {
+      "mR@50": 0.10763947590870668,
+      "mR@100": 0.1204599887292195
+    },
+    "per_predicate_recall_100": {
+      "at": {
+        "recall": 0.5922619047619048,
+        "gt_count": 22
+      },
+      "holds": {
+        "recall": 0.11538461538461539,
+        "gt_count": 18
+      },
+      "wears": {
+        "recall": 0.1,
+        "gt_count": 47
+      },
+      "surf": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "hang": {
+        "recall": 0.5,
+        "gt_count": 3
+      },
+      "drink": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "holding_hands": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "on": {
+        "recall": 0.125,
+        "gt_count": 12
+      },
+      "ride": {
+        "recall": 0.13333333333333333,
+        "gt_count": 14
+      },
+      "dance": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "skateboard": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "catch": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "highfive": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "inside_of": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "eat": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "cut": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "contain": {
+        "recall": 0.0,
+        "gt_count": 18
+      },
+      "handshake": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "kiss": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "talk_on_phone": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "interacts_with": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "under": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "hug": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "throw": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "hits": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "snowboard": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "is": {
+        "recall": 0.0,
+        "gt_count": 720
+      },
+      "kick": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "ski": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "plays": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "read": {
+        "recall": null,
+        "gt_count": 0
+      }
+    }
+  }
+}

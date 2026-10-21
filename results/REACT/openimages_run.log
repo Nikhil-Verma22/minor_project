@@ -1,0 +1,57 @@
+2026-10-13 01:41:35,119 [INFO] ================================================================================
+2026-10-13 01:41:35,119 [INFO] Starting REACT (PyTorch YOLOv8m) Benchmark Pipeline on OpenImages V6 Dataset
+2026-10-13 01:41:35,119 [INFO] Device: cpu | Max Images: 3
+2026-10-13 01:41:35,119 [INFO] ================================================================================
+2026-10-13 01:41:35,145 [INFO] Loaded OpenImages V6 evaluation dataset: 200 images
+2026-10-13 01:41:35,166 [INFO] Initialized ontology mappings: 50 object classes, 19 predicates
+2026-10-13 01:41:35,166 [INFO] Building PyTorch REACT model (YOLOv8m + Context-guided Transformers) on cpu...
+2026-10-13 01:41:36,389 [INFO] Loading weights from d:/Minor\checkpoints/REACT/react_VG150\best_model_epoch_9.pth...
+2026-10-13 01:41:36,795 [INFO] Running PyTorch REACT inference across 3 OpenImages images...
+2026-10-13 01:41:40,898 [INFO] [REACT] Processed   3/  3 images | E2E: 1367.4 ms (Fwd: 1349.1 ms) | RAM: 2381.8 MB
+2026-10-13 01:41:40,904 [INFO] Saved REACT OpenImages predictions and profile to d:/Minor\.cache/REACT\raw_preds_OpenImages_react_smoke.pt
+2026-10-13 01:41:40,904 [INFO] Computing detection mAP@50 and F1@50 for REACT on OpenImages V6...
+2026-10-13 01:41:40,961 [INFO] REACT Object Detection on OpenImages V6: mAP@50 = 0.2150 | F1@50 = 0.2146
+2026-10-13 01:41:40,976 [INFO] ================================================================================
+2026-10-13 01:41:40,976 [INFO] FINAL BENCHMARK SCORES FOR REACT ON OPENIMAGES V6:
+2026-10-13 01:41:40,976 [INFO] R@50:            0.00%
+2026-10-13 01:41:40,976 [INFO] R@100:           0.00%
+2026-10-13 01:41:40,976 [INFO] mR@50:           0.00%
+2026-10-13 01:41:40,977 [INFO] mR@100:          0.00%
+2026-10-13 01:41:40,977 [INFO] F1@50:           21.46% (or 0.2146)
+2026-10-13 01:41:40,977 [INFO] Detection mAP@50: 21.50% (or 0.2150)
+2026-10-13 01:41:40,977 [INFO] Speed:           1367.4 ms (0.73 FPS)
+2026-10-13 01:41:40,977 [INFO] ================================================================================
+2026-10-13 01:41:40,978 [INFO] Saved REACT OpenImages metrics to d:/Minor\results/REACT\openimages_metrics.json
+2026-10-13 01:41:40,979 [INFO] Saved REACT OpenImages metrics CSV to d:/Minor\results/REACT\openimages_metrics.csv
+2026-10-13 01:41:57,855 [INFO] ================================================================================
+2026-10-13 01:41:57,855 [INFO] Starting REACT (PyTorch YOLOv8m) Benchmark Pipeline on OpenImages V6 Dataset
+2026-10-13 01:41:57,855 [INFO] Device: cpu | Max Images: 200
+2026-10-13 01:41:57,855 [INFO] ================================================================================
+2026-10-13 01:41:57,887 [INFO] Loaded OpenImages V6 evaluation dataset: 200 images
+2026-10-13 01:41:57,911 [INFO] Initialized ontology mappings: 50 object classes, 19 predicates
+2026-10-13 01:41:57,912 [INFO] Building PyTorch REACT model (YOLOv8m + Context-guided Transformers) on cpu...
+2026-10-13 01:41:58,897 [INFO] Loading weights from d:/Minor\checkpoints/REACT/react_VG150\best_model_epoch_9.pth...
+2026-10-13 01:41:59,317 [INFO] Running PyTorch REACT inference across 200 OpenImages images...
+2026-10-13 01:42:29,444 [INFO] [REACT] Processed  25/200 images | E2E: 1204.6 ms (Fwd: 1188.0 ms) | RAM: 2240.7 MB
+2026-10-13 01:42:58,755 [INFO] [REACT] Processed  50/200 images | E2E: 1172.2 ms (Fwd: 1156.1 ms) | RAM: 2306.4 MB
+2026-10-13 01:43:27,567 [INFO] [REACT] Processed  75/200 images | E2E: 1152.4 ms (Fwd: 1134.1 ms) | RAM: 2497.0 MB
+2026-10-13 01:43:55,601 [INFO] [REACT] Processed 100/200 images | E2E: 1121.3 ms (Fwd: 1105.3 ms) | RAM: 2411.7 MB
+2026-10-13 01:44:25,952 [INFO] [REACT] Processed 125/200 images | E2E: 1213.9 ms (Fwd: 1197.3 ms) | RAM: 2589.0 MB
+2026-10-13 01:44:55,291 [INFO] [REACT] Processed 150/200 images | E2E: 1173.5 ms (Fwd: 1156.8 ms) | RAM: 2522.7 MB
+2026-10-13 01:45:23,877 [INFO] [REACT] Processed 175/200 images | E2E: 1143.4 ms (Fwd: 1126.0 ms) | RAM: 2627.5 MB
+2026-10-13 01:45:56,181 [INFO] [REACT] Processed 200/200 images | E2E: 1292.1 ms (Fwd: 1275.1 ms) | RAM: 2564.8 MB
+2026-10-13 01:45:56,333 [INFO] Saved REACT OpenImages predictions and profile to d:/Minor\.cache/REACT\raw_preds_OpenImages_react_full.pt
+2026-10-13 01:45:56,339 [INFO] Computing detection mAP@50 and F1@50 for REACT on OpenImages V6...
+2026-10-13 01:45:58,008 [INFO] REACT Object Detection on OpenImages V6: mAP@50 = 0.1751 | F1@50 = 0.2153
+2026-10-13 01:45:58,521 [INFO] ================================================================================
+2026-10-13 01:45:58,521 [INFO] FINAL BENCHMARK SCORES FOR REACT ON OPENIMAGES V6:
+2026-10-13 01:45:58,521 [INFO] R@50:            1.78%
+2026-10-13 01:45:58,521 [INFO] R@100:           1.90%
+2026-10-13 01:45:58,521 [INFO] mR@50:           10.76%
+2026-10-13 01:45:58,521 [INFO] mR@100:          12.05%
+2026-10-13 01:45:58,521 [INFO] F1@50:           21.53% (or 0.2153)
+2026-10-13 01:45:58,521 [INFO] Detection mAP@50: 17.51% (or 0.1751)
+2026-10-13 01:45:58,521 [INFO] Speed:           1184.2 ms (0.84 FPS)
+2026-10-13 01:45:58,521 [INFO] ================================================================================
+2026-10-13 01:45:58,524 [INFO] Saved REACT OpenImages metrics to d:/Minor\results/REACT\openimages_metrics.json
+2026-10-13 01:45:58,525 [INFO] Saved REACT OpenImages metrics CSV to d:/Minor\results/REACT\openimages_metrics.csv

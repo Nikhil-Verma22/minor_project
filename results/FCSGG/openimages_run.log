@@ -1,0 +1,53 @@
+2026-10-13 01:48:33,423 [INFO] ================================================================================
+2026-10-13 01:48:33,424 [INFO] Starting FCSGG (HRNetW32-1S CenterNet/RAF) Benchmark Pipeline on OpenImages V6 Dataset
+2026-10-13 01:48:33,424 [INFO] Device: cpu | Max Images: 3
+2026-10-13 01:48:33,424 [INFO] ================================================================================
+2026-10-13 01:48:33,453 [INFO] Loaded OpenImages V6 evaluation dataset: 200 images
+2026-10-13 01:48:33,473 [INFO] Initialized ontology mappings: 50 object classes, 19 predicates
+2026-10-13 01:48:35,468 [INFO] Running FCSGG (HRNetW32-1S CenterNet/RAF) inference across 3 OpenImages images...
+2026-10-13 01:48:41,686 [INFO] [FCSGG] Processed   3/  3 images | E2E: 2071.9 ms (Fwd: 2051.6 ms) | RAM: 2532.0 MB
+2026-10-13 01:48:41,691 [INFO] Saved FCSGG OpenImages predictions and profile to d:/Minor\.cache/FCSGG\raw_preds_OpenImages_fcsgg_smoke.pt
+2026-10-13 01:48:41,691 [INFO] Computing detection mAP@50 and F1@50 for FCSGG on OpenImages V6...
+2026-10-13 01:48:41,719 [INFO] FCSGG Object Detection on OpenImages V6: mAP@50 = 0.3108 | F1@50 = 0.3603
+2026-10-13 01:48:41,728 [INFO] ================================================================================
+2026-10-13 01:48:41,728 [INFO] FINAL BENCHMARK SCORES FOR FCSGG ON OPENIMAGES V6:
+2026-10-13 01:48:41,728 [INFO] R@50:            0.00%
+2026-10-13 01:48:41,729 [INFO] R@100:           0.00%
+2026-10-13 01:48:41,729 [INFO] mR@50:           0.00%
+2026-10-13 01:48:41,729 [INFO] mR@100:          0.00%
+2026-10-13 01:48:41,729 [INFO] F1@50:           36.03% (or 0.3603)
+2026-10-13 01:48:41,729 [INFO] Detection mAP@50: 31.08% (or 0.3108)
+2026-10-13 01:48:41,729 [INFO] Speed:           2071.9 ms (0.48 FPS)
+2026-10-13 01:48:41,729 [INFO] ================================================================================
+2026-10-13 01:48:41,730 [INFO] Saved FCSGG OpenImages metrics to d:/Minor\results/FCSGG\openimages_metrics.json
+2026-10-13 01:48:41,730 [INFO] Saved FCSGG OpenImages metrics CSV to d:/Minor\results/FCSGG\openimages_metrics.csv
+2026-10-13 01:48:58,984 [INFO] ================================================================================
+2026-10-13 01:48:58,985 [INFO] Starting FCSGG (HRNetW32-1S CenterNet/RAF) Benchmark Pipeline on OpenImages V6 Dataset
+2026-10-13 01:48:58,985 [INFO] Device: cpu | Max Images: 200
+2026-10-13 01:48:58,985 [INFO] ================================================================================
+2026-10-13 01:48:59,013 [INFO] Loaded OpenImages V6 evaluation dataset: 200 images
+2026-10-13 01:48:59,039 [INFO] Initialized ontology mappings: 50 object classes, 19 predicates
+2026-10-13 01:49:00,552 [INFO] Running FCSGG (HRNetW32-1S CenterNet/RAF) inference across 200 OpenImages images...
+2026-10-13 01:49:58,820 [INFO] [FCSGG] Processed  25/200 images | E2E: 2329.8 ms (Fwd: 2308.7 ms) | RAM: 3035.0 MB
+2026-10-13 01:50:59,977 [INFO] [FCSGG] Processed  50/200 images | E2E: 2445.4 ms (Fwd: 2423.3 ms) | RAM: 3026.4 MB
+2026-10-13 01:51:59,807 [INFO] [FCSGG] Processed  75/200 images | E2E: 2392.4 ms (Fwd: 2368.4 ms) | RAM: 3033.1 MB
+2026-10-13 01:52:58,060 [INFO] [FCSGG] Processed 100/200 images | E2E: 2329.3 ms (Fwd: 2306.7 ms) | RAM: 3034.1 MB
+2026-10-13 01:53:56,082 [INFO] [FCSGG] Processed 125/200 images | E2E: 2320.1 ms (Fwd: 2298.0 ms) | RAM: 3070.7 MB
+2026-10-13 01:54:52,437 [INFO] [FCSGG] Processed 150/200 images | E2E: 2253.3 ms (Fwd: 2232.4 ms) | RAM: 3048.7 MB
+2026-10-13 01:55:50,572 [INFO] [FCSGG] Processed 175/200 images | E2E: 2324.6 ms (Fwd: 2301.7 ms) | RAM: 3058.5 MB
+2026-10-13 01:56:45,522 [INFO] [FCSGG] Processed 200/200 images | E2E: 2197.2 ms (Fwd: 2175.9 ms) | RAM: 3085.3 MB
+2026-10-13 01:56:45,603 [INFO] Saved FCSGG OpenImages predictions and profile to d:/Minor\.cache/FCSGG\raw_preds_OpenImages_fcsgg_full.pt
+2026-10-13 01:56:45,604 [INFO] Computing detection mAP@50 and F1@50 for FCSGG on OpenImages V6...
+2026-10-13 01:56:46,768 [INFO] FCSGG Object Detection on OpenImages V6: mAP@50 = 0.1231 | F1@50 = 0.1690
+2026-10-13 01:56:47,247 [INFO] ================================================================================
+2026-10-13 01:56:47,247 [INFO] FINAL BENCHMARK SCORES FOR FCSGG ON OPENIMAGES V6:
+2026-10-13 01:56:47,247 [INFO] R@50:            0.80%
+2026-10-13 01:56:47,247 [INFO] R@100:           0.80%
+2026-10-13 01:56:47,247 [INFO] mR@50:           3.72%
+2026-10-13 01:56:47,247 [INFO] mR@100:          3.72%
+2026-10-13 01:56:47,247 [INFO] F1@50:           16.90% (or 0.1690)
+2026-10-13 01:56:47,247 [INFO] Detection mAP@50: 12.31% (or 0.1231)
+2026-10-13 01:56:47,247 [INFO] Speed:           2324.0 ms (0.43 FPS)
+2026-10-13 01:56:47,247 [INFO] ================================================================================
+2026-10-13 01:56:47,248 [INFO] Saved FCSGG OpenImages metrics to d:/Minor\results/FCSGG\openimages_metrics.json
+2026-10-13 01:56:47,249 [INFO] Saved FCSGG OpenImages metrics CSV to d:/Minor\results/FCSGG\openimages_metrics.csv

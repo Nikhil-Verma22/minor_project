@@ -1,0 +1,1682 @@
+[
+  {
+    "row_index": 0,
+    "run_id": "RUN-01-REACT-PSG",
+    "model": "REACT",
+    "variant": "PyTorch YOLOv8m",
+    "exact_detector_runtime": "YOLOv8m Backbone + Context-guided Transformer (PyTorch CPU)",
+    "dataset": "PSG",
+    "evaluation_regime": "In-Domain",
+    "regime_provenance": "Model weights natively trained on OpenPSG train split.",
+    "executed_script": {
+      "path": "experiments/REACT/run_benchmark_react_psg.py",
+      "sha256": "1687ab288a1824b4a09d408279cc1f7ea2bd7085999f9dd3e12f2086dd492678"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "model_weights": {
+        "path": "checkpoints/REACT/react_PSG/react_PSG/best_model_epoch_11.pth",
+        "size_bytes": 235926680,
+        "sha256": "0f27511e66f77f6d3eac4c09f5ccb06a61e702547032a2eddb1b601fe26ff03d"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "0f27511e66f77f6d",
+    "annotations": {
+      "path": "evaluation_sets/PSG_200_annotations.coco.json",
+      "size_bytes": 919338,
+      "sha256": "624521593199008f36499cda8e2f12d615c30714a94865d23c5654f92d712327",
+      "image_count": 200,
+      "object_count": 3019,
+      "relation_count": 1385,
+      "category_count": 133
+    },
+    "prediction_cache": {
+      "path": ".cache/REACT/raw_preds_PSG_full.pt",
+      "size_bytes": 5684009,
+      "sha256": "8dc8f536306cdde1182834594f15f18e59712eca7443953f361b075fbb798c75",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "checkpoints/REACT/react_PSG/react_PSG/labels.json",
+        "evaluation_sets/PSG_200_annotations.coco.json"
+      ],
+      "ontology_projection": "None (Native OpenPSG 133 objects, 56 predicates)",
+      "candidate_ranking_rule": "pred_predicate_scores (rel_scores[:, 1:].max(axis=1))",
+      "sort_order_type": "rel_score_only"
+    },
+    "reported_metrics": {
+      "R@50": 0.3047,
+      "R@100": 0.3394,
+      "mR@50": 0.2398,
+      "mR@100": 0.2603,
+      "det_mAP50": 0.5673,
+      "det_f1_50": 0.6214,
+      "latency_ms": 1223.9,
+      "fps": 0.82
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 1385,
+      "total_hits_50": 417,
+      "total_hits_100": 469,
+      "new_hits_50_to_100": 52,
+      "img_avg_R@50": 0.304692,
+      "img_avg_R@100": 0.339397,
+      "img_avg_mR@50": 0.239756,
+      "img_avg_mR@100": 0.260304,
+      "pooled_R@50": 0.301083,
+      "pooled_R@100": 0.338628,
+      "pooled_mR@50": 0.242909,
+      "pooled_mR@100": 0.261773,
+      "detection_mAP50": 0.5673,
+      "detection_H_AP_AR_50": 0.6214,
+      "supplementary_H_R_mR_50": 0.268352
+    },
+    "error_analysis": {
+      "abs_error_R@50": 7.61e-06,
+      "abs_error_R@100": 3.37e-06,
+      "abs_error_mR@50": 4.374e-05,
+      "abs_error_mR@100": 4.06e-06,
+      "max_abs_error": 4.374e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 1223.9,
+      "fps": 0.82,
+      "warmup_count": 5,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/REACT/psg_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 1,
+    "run_id": "RUN-02-REACT-VG150",
+    "model": "REACT",
+    "variant": "PyTorch YOLOv8m",
+    "exact_detector_runtime": "YOLOv8m Backbone + Context-guided Transformer (PyTorch CPU)",
+    "dataset": "VG150",
+    "evaluation_regime": "In-Domain",
+    "regime_provenance": "Model weights natively trained on Visual Genome VG150 train split.",
+    "executed_script": {
+      "path": "experiments/REACT/run_benchmark_react_vg150.py",
+      "sha256": "0650c606cc4bc8e39e1ab208279937ea1051bfa118a74be05c43d68c48101f89"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "model_weights": {
+        "path": "checkpoints/REACT/react_VG150/best_model_epoch_9.pth",
+        "size_bytes": 235981109,
+        "sha256": "8bf598afdb2ccef9e5b6f54dc1fe0fa70b46a4bfceecfb02f693f2e82ad503bf"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "8bf598afdb2ccef9",
+    "annotations": {
+      "path": "evaluation_sets/VG150_200_annotations.coco.json",
+      "size_bytes": 707327,
+      "sha256": "8a969a879eb4d9982eafa4d2e02ecfe367f1c0737d56c6ce380bc8cff10efc5c",
+      "image_count": 200,
+      "object_count": 2320,
+      "relation_count": 1083,
+      "category_count": 150
+    },
+    "prediction_cache": {
+      "path": ".cache/REACT/raw_preds_VG150_full.pt",
+      "size_bytes": 5440709,
+      "sha256": "e0db14dc08779b1185babf81ed2e3d01dd92ebaa04d32917a67914d5b4cfd911",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "checkpoints/REACT/react_VG150/labels.json",
+        "evaluation_sets/VG150_200_annotations.coco.json"
+      ],
+      "ontology_projection": "None (Native VG150 150 objects, 50 predicates)",
+      "candidate_ranking_rule": "pred_predicate_scores (rel_scores[:, 1:].max(axis=1))",
+      "sort_order_type": "rel_score_only"
+    },
+    "reported_metrics": {
+      "R@50": 0.2455,
+      "R@100": 0.2777,
+      "mR@50": 0.1661,
+      "mR@100": 0.1828,
+      "det_mAP50": 0.3758,
+      "det_f1_50": 0.4546,
+      "latency_ms": 701.8,
+      "fps": 1.42
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 174,
+      "total_gt_relations": 1083,
+      "total_hits_50": 282,
+      "total_hits_100": 329,
+      "new_hits_50_to_100": 47,
+      "img_avg_R@50": 0.245528,
+      "img_avg_R@100": 0.277678,
+      "img_avg_mR@50": 0.166053,
+      "img_avg_mR@100": 0.182818,
+      "pooled_R@50": 0.260388,
+      "pooled_R@100": 0.303786,
+      "pooled_mR@50": 0.161314,
+      "pooled_mR@100": 0.180979,
+      "detection_mAP50": 0.3758,
+      "detection_H_AP_AR_50": 0.4546,
+      "supplementary_H_R_mR_50": 0.198117
+    },
+    "error_analysis": {
+      "abs_error_R@50": 2.82e-05,
+      "abs_error_R@100": 2.207e-05,
+      "abs_error_mR@50": 4.704e-05,
+      "abs_error_mR@100": 1.771e-05,
+      "max_abs_error": 4.704e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 701.8,
+      "fps": 1.42,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/REACT/vg150_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 2,
+    "run_id": "RUN-03-REACT-INDOORVG",
+    "model": "REACT",
+    "variant": "ONNX YOLOv8m (Native)",
+    "exact_detector_runtime": "YOLOv8m ONNX Runtime (CPUExecutionProvider)",
+    "dataset": "IndoorVG",
+    "evaluation_regime": "In-Domain",
+    "regime_provenance": "Model natively trained on IndoorVG and exported to ONNX format.",
+    "executed_script": {
+      "path": "experiments/REACT/run_benchmark_react_indoorvg.py",
+      "sha256": "230ca4c4c817c2ba3aefb11fe67ae395b28f3c0cf9d925f241ff07472b1ff5d8"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "onnx_model": {
+        "path": "checkpoints/REACT/react_indoorvg_yolov8m.onnx",
+        "size_bytes": 138878957,
+        "sha256": "5188b578aa155e3584d95b0e3d87a5bbd80ae2464f6d1f3e380d9b7ad872c7e8"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "5188b578aa155e35",
+    "annotations": {
+      "path": "evaluation_sets/IndoorVG_200_annotations.coco.json",
+      "size_bytes": 965773,
+      "sha256": "6f377bca5f7409b346333e8997047b95b62e7f82e2760a905ceaef7693d348a1",
+      "image_count": 200,
+      "object_count": 3118,
+      "relation_count": 1672,
+      "category_count": 84
+    },
+    "prediction_cache": {
+      "path": ".cache/REACT/raw_preds_indoorvg_react.pt",
+      "size_bytes": 7495165,
+      "sha256": "ea34568c67b8e1022d3cbefa537980f672851d4b8a999d9bd0180982c6458b0a",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/IndoorVG_200_annotations.coco.json"
+      ],
+      "ontology_projection": "None (Native IndoorVG vocabulary)",
+      "candidate_ranking_rule": "pred_triplet_scores (precomputed official triplet confidence)",
+      "sort_order_type": "triplet_scores_direct"
+    },
+    "reported_metrics": {
+      "R@50": 0.3108,
+      "R@100": 0.3658,
+      "mR@50": 0.2648,
+      "mR@100": 0.2965,
+      "det_mAP50": 0.4931,
+      "det_f1_50": 0.5798,
+      "latency_ms": 724.8,
+      "fps": 1.38
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 1672,
+      "total_hits_50": 501,
+      "total_hits_100": 600,
+      "new_hits_50_to_100": 99,
+      "img_avg_R@50": 0.310836,
+      "img_avg_R@100": 0.365762,
+      "img_avg_mR@50": 0.264804,
+      "img_avg_mR@100": 0.296524,
+      "pooled_R@50": 0.299641,
+      "pooled_R@100": 0.358852,
+      "pooled_mR@50": 0.26661,
+      "pooled_mR@100": 0.298544,
+      "detection_mAP50": 0.4931,
+      "detection_H_AP_AR_50": 0.5798,
+      "supplementary_H_R_mR_50": 0.285979
+    },
+    "error_analysis": {
+      "abs_error_R@50": 3.568e-05,
+      "abs_error_R@100": 3.778e-05,
+      "abs_error_mR@50": 4.1e-06,
+      "abs_error_mR@100": 2.394e-05,
+      "max_abs_error": 3.778e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 724.8,
+      "fps": 1.38,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/REACT/indoorvg_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 3,
+    "run_id": "RUN-04-REACT-OPENIMAGES",
+    "model": "REACT",
+    "variant": "PyTorch YOLOv8m",
+    "exact_detector_runtime": "YOLOv8m Backbone + Context-guided Transformer (PyTorch CPU)",
+    "dataset": "OpenImages V6",
+    "evaluation_regime": "Zero-Shot Transfer",
+    "regime_provenance": "VG150-trained model evaluated zero-shot transfer on OpenImages V6 via semantic ontology projection.",
+    "executed_script": {
+      "path": "experiments/REACT/run_benchmark_react_openimages.py",
+      "sha256": "744ae0520035976e1cc5469202eb82422d5e12ee78e98056f705f26770033cbc"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "model_weights": {
+        "path": "checkpoints/REACT/react_VG150/best_model_epoch_9.pth",
+        "size_bytes": 235981109,
+        "sha256": "8bf598afdb2ccef9e5b6f54dc1fe0fa70b46a4bfceecfb02f693f2e82ad503bf"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "8bf598afdb2ccef9",
+    "annotations": {
+      "path": "evaluation_sets/OpenImages_200_annotations.coco.json",
+      "size_bytes": 560765,
+      "sha256": "20eed09f1e2bd454f9324a28e2a6871e6e8d21f73352302addf09b1c27590b33",
+      "image_count": 200,
+      "object_count": 1486,
+      "relation_count": 866,
+      "category_count": 75
+    },
+    "prediction_cache": {
+      "path": ".cache/REACT/raw_preds_OpenImages_react_full.pt",
+      "size_bytes": 4147703,
+      "sha256": "1dca6988284b738cdd05dfb4418433d6e303c26167ac8db74a84ae6c8e003610",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/evaluation_ontology.json",
+        "checkpoints/REACT/react_VG150/labels.json",
+        "evaluation_sets/OpenImages_200_annotations.coco.json"
+      ],
+      "ontology_projection": "Semantic mapping VG150 -> OpenImages V6 via evaluation_ontology.json",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.0178,
+      "R@100": 0.019,
+      "mR@50": 0.1076,
+      "mR@100": 0.1205,
+      "det_mAP50": 0.1751,
+      "det_f1_50": 0.2153,
+      "latency_ms": 1184.2,
+      "fps": 0.84
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 866,
+      "total_hits_50": 18,
+      "total_hits_100": 20,
+      "new_hits_50_to_100": 2,
+      "img_avg_R@50": 0.017792,
+      "img_avg_R@100": 0.018958,
+      "img_avg_mR@50": 0.107639,
+      "img_avg_mR@100": 0.12046,
+      "pooled_R@50": 0.020785,
+      "pooled_R@100": 0.023095,
+      "pooled_mR@50": 0.086106,
+      "pooled_mR@100": 0.093099,
+      "detection_mAP50": 0.1751,
+      "detection_H_AP_AR_50": 0.2153,
+      "supplementary_H_R_mR_50": 0.030536
+    },
+    "error_analysis": {
+      "abs_error_R@50": 8.33e-06,
+      "abs_error_R@100": 4.167e-05,
+      "abs_error_mR@50": 3.948e-05,
+      "abs_error_mR@100": 4.001e-05,
+      "max_abs_error": 4.167e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 1184.2,
+      "fps": 0.84,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/REACT/openimages_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 4,
+    "run_id": "RUN-05-REACTPP-PSG",
+    "model": "REACT++",
+    "variant": "ONNX YOLO12m",
+    "exact_detector_runtime": "YOLO12m ONNX Runtime (CPUExecutionProvider)",
+    "dataset": "PSG",
+    "evaluation_regime": "In-Domain",
+    "regime_provenance": "Model natively trained on OpenPSG and exported to ONNX format.",
+    "executed_script": {
+      "path": "experiments/REACTPP/run_benchmark_reactpp_psg.py",
+      "sha256": "cc71da0396c8ed1e824891b051247212fac5e31f90d31d8fb10afded624f875f"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "onnx_model": {
+        "path": "checkpoints/PSG/react++_yolo12m/yolo12m/react_pp_yolo12m.onnx",
+        "size_bytes": 116791801,
+        "sha256": "38c4bdbb7e2a077131ffcbf57af726eb30574318e2344d5b4bfc1d3a48f5b2fe"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "38c4bdbb7e2a0771",
+    "annotations": {
+      "path": "evaluation_sets/PSG_200_annotations.coco.json",
+      "size_bytes": 919338,
+      "sha256": "624521593199008f36499cda8e2f12d615c30714a94865d23c5654f92d712327",
+      "image_count": 200,
+      "object_count": 3019,
+      "relation_count": 1385,
+      "category_count": 133
+    },
+    "prediction_cache": {
+      "path": ".cache/REACTPP/raw_preds_PSG_full.pt",
+      "size_bytes": 3879465,
+      "sha256": "30080c68729f5945a030f69801caec3437c6aaa10a1675d5f70f25df053f0f48",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/PSG_200_annotations.coco.json"
+      ],
+      "ontology_projection": "None (Native OpenPSG 133 objects, 56 predicates)",
+      "candidate_ranking_rule": "pred_predicate_scores (rel_scores[:, 1:].max(axis=1))",
+      "sort_order_type": "rel_score_only"
+    },
+    "reported_metrics": {
+      "R@50": 0.3598,
+      "R@100": 0.3779,
+      "mR@50": 0.232,
+      "mR@100": 0.2376,
+      "det_mAP50": 0.5951,
+      "det_f1_50": 0.6284,
+      "latency_ms": 548.0,
+      "fps": 1.82
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 1385,
+      "total_hits_50": 493,
+      "total_hits_100": 520,
+      "new_hits_50_to_100": 27,
+      "img_avg_R@50": 0.359832,
+      "img_avg_R@100": 0.377937,
+      "img_avg_mR@50": 0.232021,
+      "img_avg_mR@100": 0.237628,
+      "pooled_R@50": 0.355957,
+      "pooled_R@100": 0.375451,
+      "pooled_mR@50": 0.240709,
+      "pooled_mR@100": 0.246016,
+      "detection_mAP50": 0.5951,
+      "detection_H_AP_AR_50": 0.6284,
+      "supplementary_H_R_mR_50": 0.282126
+    },
+    "error_analysis": {
+      "abs_error_R@50": 3.15e-05,
+      "abs_error_R@100": 3.684e-05,
+      "abs_error_mR@50": 2.058e-05,
+      "abs_error_mR@100": 2.767e-05,
+      "max_abs_error": 3.684e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 548.0,
+      "fps": 1.82,
+      "warmup_count": 5,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/REACTPP/psg_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 5,
+    "run_id": "RUN-06-REACTPP-VG150",
+    "model": "REACT++",
+    "variant": "ONNX YOLO12m",
+    "exact_detector_runtime": "YOLO12m ONNX Runtime (CPUExecutionProvider)",
+    "dataset": "VG150",
+    "evaluation_regime": "In-Domain",
+    "regime_provenance": "Model natively trained on Visual Genome VG150 and exported to ONNX format.",
+    "executed_script": {
+      "path": "experiments/REACTPP/run_benchmark_reactpp_vg150.py",
+      "sha256": "ceadca044fba917a7eac9c28a9ac4ae02f4ed6092ad05bc66e9c68e5b19bb718"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "onnx_model": {
+        "path": "checkpoints/REACT/react_pp_vg150_yolo12m.onnx",
+        "size_bytes": 116984567,
+        "sha256": "ce01616b902271da224c61ff85f9914f8efb12c8894e4aa7bad42ebe9480c9f2"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "ce01616b902271da",
+    "annotations": {
+      "path": "evaluation_sets/VG150_200_annotations.coco.json",
+      "size_bytes": 707327,
+      "sha256": "8a969a879eb4d9982eafa4d2e02ecfe367f1c0737d56c6ce380bc8cff10efc5c",
+      "image_count": 200,
+      "object_count": 2320,
+      "relation_count": 1083,
+      "category_count": 150
+    },
+    "prediction_cache": {
+      "path": ".cache/REACTPP/raw_preds_vg150_reactpp.pt",
+      "size_bytes": 9559487,
+      "sha256": "0ff70777ec7588787479b797ec7f40c3b3d5e9e10437e7001104fd0037955170",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/VG150_200_annotations.coco.json"
+      ],
+      "ontology_projection": "None (Native VG150 150 objects, 50 predicates)",
+      "candidate_ranking_rule": "pred_triplet_scores (precomputed official triplet confidence)",
+      "sort_order_type": "triplet_scores_direct"
+    },
+    "reported_metrics": {
+      "R@50": 0.2354,
+      "R@100": 0.2556,
+      "mR@50": 0.1657,
+      "mR@100": 0.1848,
+      "det_mAP50": 0.3743,
+      "det_f1_50": 0.4668,
+      "latency_ms": 744.0,
+      "fps": 1.34
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 174,
+      "total_gt_relations": 1083,
+      "total_hits_50": 288,
+      "total_hits_100": 310,
+      "new_hits_50_to_100": 22,
+      "img_avg_R@50": 0.235401,
+      "img_avg_R@100": 0.255592,
+      "img_avg_mR@50": 0.165706,
+      "img_avg_mR@100": 0.184833,
+      "pooled_R@50": 0.265928,
+      "pooled_R@100": 0.286242,
+      "pooled_mR@50": 0.179761,
+      "pooled_mR@100": 0.199663,
+      "detection_mAP50": 0.3743,
+      "detection_H_AP_AR_50": 0.4668,
+      "supplementary_H_R_mR_50": 0.194499
+    },
+    "error_analysis": {
+      "abs_error_R@50": 1.41e-06,
+      "abs_error_R@100": 8.35e-06,
+      "abs_error_mR@50": 6.44e-06,
+      "abs_error_mR@100": 3.346e-05,
+      "max_abs_error": 3.346e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 744.0,
+      "fps": 1.34,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/REACTPP/vg150_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 6,
+    "run_id": "RUN-07-REACTPP-INDOORVG",
+    "model": "REACT++",
+    "variant": "ONNX YOLO12m",
+    "exact_detector_runtime": "YOLO12m ONNX Runtime (CPUExecutionProvider)",
+    "dataset": "IndoorVG",
+    "evaluation_regime": "Zero-Shot Transfer",
+    "regime_provenance": "VG150-trained model evaluated zero-shot transfer on IndoorVG via semantic ontology projection.",
+    "executed_script": {
+      "path": "experiments/REACTPP/run_benchmark_reactpp_indoorvg.py",
+      "sha256": "fa6c632e82a63576a41d51dd42b6a1e4f1a9b8dbd41d2b9b5697a80dcb571607"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "onnx_model": {
+        "path": "checkpoints/REACT/react_pp_vg150_yolo12m.onnx",
+        "size_bytes": 116984567,
+        "sha256": "ce01616b902271da224c61ff85f9914f8efb12c8894e4aa7bad42ebe9480c9f2"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "ce01616b902271da",
+    "annotations": {
+      "path": "evaluation_sets/IndoorVG_200_annotations.coco.json",
+      "size_bytes": 965773,
+      "sha256": "6f377bca5f7409b346333e8997047b95b62e7f82e2760a905ceaef7693d348a1",
+      "image_count": 200,
+      "object_count": 3118,
+      "relation_count": 1672,
+      "category_count": 84
+    },
+    "prediction_cache": {
+      "path": ".cache/REACTPP/raw_preds_indoorvg_reactpp.pt",
+      "size_bytes": 4512297,
+      "sha256": "6e755d72b8e05c862ce54516ce88412832ca4d02457d1508b524a00d832afe45",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/evaluation_ontology.json",
+        "evaluation_sets/IndoorVG_200_annotations.coco.json"
+      ],
+      "ontology_projection": "Semantic mapping VG150 -> IndoorVG via evaluation_ontology.json",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.1364,
+      "R@100": 0.1602,
+      "mR@50": 0.1269,
+      "mR@100": 0.1407,
+      "det_mAP50": 0.215,
+      "det_f1_50": 0.2688,
+      "latency_ms": 2450.7,
+      "fps": 0.41
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 1672,
+      "total_hits_50": 254,
+      "total_hits_100": 311,
+      "new_hits_50_to_100": 57,
+      "img_avg_R@50": 0.136377,
+      "img_avg_R@100": 0.160187,
+      "img_avg_mR@50": 0.126882,
+      "img_avg_mR@100": 0.140703,
+      "pooled_R@50": 0.151914,
+      "pooled_R@100": 0.186005,
+      "pooled_mR@50": 0.130019,
+      "pooled_mR@100": 0.145197,
+      "detection_mAP50": 0.215,
+      "detection_H_AP_AR_50": 0.2688,
+      "supplementary_H_R_mR_50": 0.131459
+    },
+    "error_analysis": {
+      "abs_error_R@50": 2.266e-05,
+      "abs_error_R@100": 1.258e-05,
+      "abs_error_mR@50": 1.78e-05,
+      "abs_error_mR@100": 2.75e-06,
+      "max_abs_error": 2.266e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 2450.7,
+      "fps": 0.41,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/REACTPP/indoorvg_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 7,
+    "run_id": "RUN-08-REACTPP-OPENIMAGES",
+    "model": "REACT++",
+    "variant": "ONNX YOLO12m",
+    "exact_detector_runtime": "YOLO12m ONNX Runtime (CPUExecutionProvider)",
+    "dataset": "OpenImages V6",
+    "evaluation_regime": "Zero-Shot Transfer",
+    "regime_provenance": "VG150-trained model evaluated zero-shot transfer on OpenImages V6 via semantic ontology projection.",
+    "executed_script": {
+      "path": "experiments/REACTPP/run_benchmark_reactpp_openimages.py",
+      "sha256": "af7ef4e988633b9fac1a3d1d7c85642d2f636e1b0326f28c20ba81f4962c3af3"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "onnx_model": {
+        "path": "checkpoints/REACT/react_pp_vg150_yolo12m.onnx",
+        "size_bytes": 116984567,
+        "sha256": "ce01616b902271da224c61ff85f9914f8efb12c8894e4aa7bad42ebe9480c9f2"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "ce01616b902271da",
+    "annotations": {
+      "path": "evaluation_sets/OpenImages_200_annotations.coco.json",
+      "size_bytes": 560765,
+      "sha256": "20eed09f1e2bd454f9324a28e2a6871e6e8d21f73352302addf09b1c27590b33",
+      "image_count": 200,
+      "object_count": 1486,
+      "relation_count": 866,
+      "category_count": 75
+    },
+    "prediction_cache": {
+      "path": ".cache/REACTPP/raw_preds_OpenImages_reactpp_full.pt",
+      "size_bytes": 4047523,
+      "sha256": "1d83a28fe07caf4a33bd3c0bfee33fce40abc97ba7055f2273101ee3b64f8917",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/evaluation_ontology.json",
+        "evaluation_sets/OpenImages_200_annotations.coco.json"
+      ],
+      "ontology_projection": "Semantic mapping VG150 -> OpenImages V6 via evaluation_ontology.json",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.0212,
+      "R@100": 0.0224,
+      "mR@50": 0.1322,
+      "mR@100": 0.1411,
+      "det_mAP50": 0.1791,
+      "det_f1_50": 0.2277,
+      "latency_ms": 599.3,
+      "fps": 1.67
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 866,
+      "total_hits_50": 19,
+      "total_hits_100": 21,
+      "new_hits_50_to_100": 2,
+      "img_avg_R@50": 0.02125,
+      "img_avg_R@100": 0.02244,
+      "img_avg_mR@50": 0.132189,
+      "img_avg_mR@100": 0.141064,
+      "pooled_R@50": 0.02194,
+      "pooled_R@100": 0.024249,
+      "pooled_mR@50": 0.116603,
+      "pooled_mR@100": 0.12515,
+      "detection_mAP50": 0.1791,
+      "detection_H_AP_AR_50": 0.2277,
+      "supplementary_H_R_mR_50": 0.036614
+    },
+    "error_analysis": {
+      "abs_error_R@50": 5e-05,
+      "abs_error_R@100": 4.048e-05,
+      "abs_error_mR@50": 1.136e-05,
+      "abs_error_mR@100": 3.562e-05,
+      "max_abs_error": 5e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 599.3,
+      "fps": 1.67,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/REACTPP/openimages_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 8,
+    "run_id": "RUN-09-FCSGG-PSG",
+    "model": "FCSGG",
+    "variant": "HRNetW32-1S CenterNet",
+    "exact_detector_runtime": "HRNetW32 CenterNet + RAF heads (PyTorch CPU)",
+    "dataset": "PSG",
+    "evaluation_regime": "Zero-Shot Transfer",
+    "regime_provenance": "VG150-trained HRNetW32-1S model evaluated zero-shot transfer on OpenPSG via semantic ontology projection.",
+    "executed_script": {
+      "path": "experiments/FCSGG/run_benchmark_fcsgg_psg.py",
+      "sha256": "56ce18cc959211708c9b95b54257db59714fc1572dd7fa980c1134f5ea9c431a"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "model_weights": {
+        "path": "checkpoints/FCSGG/HRNetW32-1S.pth",
+        "size_bytes": 380012898,
+        "sha256": "41aa7639bac0793ef6ad04b860b2d441a32523cf0f69b7590b2eda261638c084"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "41aa7639bac0793e",
+    "annotations": {
+      "path": "evaluation_sets/PSG_200_annotations.coco.json",
+      "size_bytes": 919338,
+      "sha256": "624521593199008f36499cda8e2f12d615c30714a94865d23c5654f92d712327",
+      "image_count": 200,
+      "object_count": 3019,
+      "relation_count": 1385,
+      "category_count": 133
+    },
+    "prediction_cache": {
+      "path": ".cache/FCSGG/raw_preds_PSG_fcsgg_full.pt",
+      "size_bytes": 10069565,
+      "sha256": "23dde72fbd10ac68c010a88d0298f5d84f400b588bead5e6e79ca07d91abdf36",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/evaluation_ontology.json",
+        "evaluation_sets/PSG_200_annotations.coco.json"
+      ],
+      "ontology_projection": "Semantic mapping VG150 -> OpenPSG via evaluation_ontology.json",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.0439,
+      "R@100": 0.051,
+      "mR@50": 0.011,
+      "mR@100": 0.014,
+      "det_mAP50": 0.1745,
+      "det_f1_50": 0.2123,
+      "latency_ms": 1722.3,
+      "fps": 0.58
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 1385,
+      "total_hits_50": 60,
+      "total_hits_100": 70,
+      "new_hits_50_to_100": 10,
+      "img_avg_R@50": 0.043871,
+      "img_avg_R@100": 0.051027,
+      "img_avg_mR@50": 0.011035,
+      "img_avg_mR@100": 0.013951,
+      "pooled_R@50": 0.043321,
+      "pooled_R@100": 0.050542,
+      "pooled_mR@50": 0.011898,
+      "pooled_mR@100": 0.014436,
+      "detection_mAP50": 0.1745,
+      "detection_H_AP_AR_50": 0.2123,
+      "supplementary_H_R_mR_50": 0.017634
+    },
+    "error_analysis": {
+      "abs_error_R@50": 2.94e-05,
+      "abs_error_R@100": 2.735e-05,
+      "abs_error_mR@50": 3.492e-05,
+      "abs_error_mR@100": 4.935e-05,
+      "max_abs_error": 4.935e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 1722.3,
+      "fps": 0.58,
+      "warmup_count": 5,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/FCSGG/psg_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 9,
+    "run_id": "RUN-10-FCSGG-VG150",
+    "model": "FCSGG",
+    "variant": "HRNetW32-1S CenterNet",
+    "exact_detector_runtime": "HRNetW32 CenterNet + RAF heads (PyTorch CPU)",
+    "dataset": "VG150",
+    "evaluation_regime": "In-Domain",
+    "regime_provenance": "Model natively trained on Visual Genome VG150 (150 objects, 50 predicates).",
+    "executed_script": {
+      "path": "experiments/FCSGG/run_benchmark_fcsgg_vg150.py",
+      "sha256": "cd735648c2779217e0e2ed8111a2fa0ec3fd8024fad1aab2ae13c971c03133a7"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "model_weights": {
+        "path": "checkpoints/FCSGG/HRNetW32-1S.pth",
+        "size_bytes": 380012898,
+        "sha256": "41aa7639bac0793ef6ad04b860b2d441a32523cf0f69b7590b2eda261638c084"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "41aa7639bac0793e",
+    "annotations": {
+      "path": "evaluation_sets/VG150_200_annotations.coco.json",
+      "size_bytes": 707327,
+      "sha256": "8a969a879eb4d9982eafa4d2e02ecfe367f1c0737d56c6ce380bc8cff10efc5c",
+      "image_count": 200,
+      "object_count": 2320,
+      "relation_count": 1083,
+      "category_count": 150
+    },
+    "prediction_cache": {
+      "path": ".cache/FCSGG/raw_preds_VG150_full.pt",
+      "size_bytes": 5457577,
+      "sha256": "7e676f699256d176ea43f491330d9e41ac07f7102898b2497b1a96eb8897255c",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/VG150_200_annotations.coco.json"
+      ],
+      "ontology_projection": "None (Native VG150 150 objects, 50 predicates)",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.0908,
+      "R@100": 0.1223,
+      "mR@50": 0.0262,
+      "mR@100": 0.0326,
+      "det_mAP50": 0.2253,
+      "det_f1_50": 0.3162,
+      "latency_ms": 1277.1,
+      "fps": 0.78
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 174,
+      "total_gt_relations": 1083,
+      "total_hits_50": 99,
+      "total_hits_100": 136,
+      "new_hits_50_to_100": 37,
+      "img_avg_R@50": 0.090791,
+      "img_avg_R@100": 0.122297,
+      "img_avg_mR@50": 0.026161,
+      "img_avg_mR@100": 0.032633,
+      "pooled_R@50": 0.091413,
+      "pooled_R@100": 0.125577,
+      "pooled_mR@50": 0.024414,
+      "pooled_mR@100": 0.029824,
+      "detection_mAP50": 0.2253,
+      "detection_H_AP_AR_50": 0.3162,
+      "supplementary_H_R_mR_50": 0.040618
+    },
+    "error_analysis": {
+      "abs_error_R@50": 8.64e-06,
+      "abs_error_R@100": 2.74e-06,
+      "abs_error_mR@50": 3.906e-05,
+      "abs_error_mR@100": 3.285e-05,
+      "max_abs_error": 3.906e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 1277.1,
+      "fps": 0.78,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/FCSGG/vg150_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 10,
+    "run_id": "RUN-11-FCSGG-INDOORVG",
+    "model": "FCSGG",
+    "variant": "HRNetW32-1S CenterNet",
+    "exact_detector_runtime": "HRNetW32 CenterNet + RAF heads (PyTorch CPU)",
+    "dataset": "IndoorVG",
+    "evaluation_regime": "Zero-Shot Transfer",
+    "regime_provenance": "VG150-trained model evaluated zero-shot transfer on IndoorVG via semantic ontology projection.",
+    "executed_script": {
+      "path": "experiments/FCSGG/run_benchmark_fcsgg_indoorvg.py",
+      "sha256": "cb06b3152f9947e60e0bf8561bfdf066ee0960fd7d08c7bd7946f2c9c592183d"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "model_weights": {
+        "path": "checkpoints/FCSGG/HRNetW32-1S.pth",
+        "size_bytes": 380012898,
+        "sha256": "41aa7639bac0793ef6ad04b860b2d441a32523cf0f69b7590b2eda261638c084"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "41aa7639bac0793e",
+    "annotations": {
+      "path": "evaluation_sets/IndoorVG_200_annotations.coco.json",
+      "size_bytes": 965773,
+      "sha256": "6f377bca5f7409b346333e8997047b95b62e7f82e2760a905ceaef7693d348a1",
+      "image_count": 200,
+      "object_count": 3118,
+      "relation_count": 1672,
+      "category_count": 84
+    },
+    "prediction_cache": {
+      "path": ".cache/FCSGG/raw_preds_IndoorVG_fcsgg_full.pt",
+      "size_bytes": 8553395,
+      "sha256": "4019c0b85cce2c863912adc7c9d41a6b5a3380a14d1c5d9e0633eebf2aa97b43",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/evaluation_ontology.json",
+        "evaluation_sets/IndoorVG_200_annotations.coco.json"
+      ],
+      "ontology_projection": "Semantic mapping VG150 -> IndoorVG via evaluation_ontology.json",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.0797,
+      "R@100": 0.0915,
+      "mR@50": 0.0397,
+      "mR@100": 0.0436,
+      "det_mAP50": 0.1264,
+      "det_f1_50": 0.1766,
+      "latency_ms": 2263.9,
+      "fps": 0.44
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 1672,
+      "total_hits_50": 156,
+      "total_hits_100": 177,
+      "new_hits_50_to_100": 21,
+      "img_avg_R@50": 0.079688,
+      "img_avg_R@100": 0.091464,
+      "img_avg_mR@50": 0.039738,
+      "img_avg_mR@100": 0.04359,
+      "pooled_R@50": 0.093301,
+      "pooled_R@100": 0.105861,
+      "pooled_mR@50": 0.040036,
+      "pooled_mR@100": 0.04535,
+      "detection_mAP50": 0.1264,
+      "detection_H_AP_AR_50": 0.1766,
+      "supplementary_H_R_mR_50": 0.053031
+    },
+    "error_analysis": {
+      "abs_error_R@50": 1.166e-05,
+      "abs_error_R@100": 3.617e-05,
+      "abs_error_mR@50": 3.792e-05,
+      "abs_error_mR@100": 9.71e-06,
+      "max_abs_error": 3.792e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 2263.9,
+      "fps": 0.44,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/FCSGG/indoorvg_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 11,
+    "run_id": "RUN-12-FCSGG-OPENIMAGES",
+    "model": "FCSGG",
+    "variant": "HRNetW32-1S CenterNet",
+    "exact_detector_runtime": "HRNetW32 CenterNet + RAF heads (PyTorch CPU)",
+    "dataset": "OpenImages V6",
+    "evaluation_regime": "Zero-Shot Transfer",
+    "regime_provenance": "VG150-trained model evaluated zero-shot transfer on OpenImages V6 via semantic ontology projection.",
+    "executed_script": {
+      "path": "experiments/FCSGG/run_benchmark_fcsgg_openimages.py",
+      "sha256": "b8332b6c7bf2b1debedc416b80a0cab28647535f22ca78048c8ab1514ccb55e8"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "model_weights": {
+        "path": "checkpoints/FCSGG/HRNetW32-1S.pth",
+        "size_bytes": 380012898,
+        "sha256": "41aa7639bac0793ef6ad04b860b2d441a32523cf0f69b7590b2eda261638c084"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "41aa7639bac0793e",
+    "annotations": {
+      "path": "evaluation_sets/OpenImages_200_annotations.coco.json",
+      "size_bytes": 560765,
+      "sha256": "20eed09f1e2bd454f9324a28e2a6871e6e8d21f73352302addf09b1c27590b33",
+      "image_count": 200,
+      "object_count": 1486,
+      "relation_count": 866,
+      "category_count": 75
+    },
+    "prediction_cache": {
+      "path": ".cache/FCSGG/raw_preds_OpenImages_fcsgg_full.pt",
+      "size_bytes": 3944631,
+      "sha256": "45a21705f9452e29ada501024b7e81225af0b467ecf9acfd15115b0a7ae02907",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/evaluation_ontology.json",
+        "evaluation_sets/OpenImages_200_annotations.coco.json"
+      ],
+      "ontology_projection": "Semantic mapping VG150 -> OpenImages V6 via evaluation_ontology.json",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.008,
+      "R@100": 0.008,
+      "mR@50": 0.0372,
+      "mR@100": 0.0372,
+      "det_mAP50": 0.1231,
+      "det_f1_50": 0.169,
+      "latency_ms": 2324.0,
+      "fps": 0.43
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 866,
+      "total_hits_50": 9,
+      "total_hits_100": 9,
+      "new_hits_50_to_100": 0,
+      "img_avg_R@50": 0.008006,
+      "img_avg_R@100": 0.008006,
+      "img_avg_mR@50": 0.03719,
+      "img_avg_mR@100": 0.03719,
+      "pooled_R@50": 0.010393,
+      "pooled_R@100": 0.010393,
+      "pooled_mR@50": 0.040181,
+      "pooled_mR@100": 0.040181,
+      "detection_mAP50": 0.1231,
+      "detection_H_AP_AR_50": 0.169,
+      "supplementary_H_R_mR_50": 0.013176
+    },
+    "error_analysis": {
+      "abs_error_R@50": 5.95e-06,
+      "abs_error_R@100": 5.95e-06,
+      "abs_error_mR@50": 9.95e-06,
+      "abs_error_mR@100": 9.95e-06,
+      "max_abs_error": 9.95e-06,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 2324.0,
+      "fps": 0.43,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/FCSGG/openimages_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 12,
+    "run_id": "RUN-13-CSGG-PSG",
+    "model": "Fast Contextual SGG (C-SGG)",
+    "variant": "YOLO12m + CKN (PSG)",
+    "exact_detector_runtime": "Hybrid: ONNX YOLO12m (Detector) + PyTorch CKN",
+    "dataset": "PSG",
+    "evaluation_regime": "Hybrid Adaptation",
+    "regime_provenance": "Detector: YOLO12m trained on OpenPSG (react_pp_yolo12m.onnx); CKN: FC_Net trained on OpenPSG (2619.pt) with PSG word vectors.",
+    "executed_script": {
+      "path": "experiments/FastContextualSGG/run_benchmark_fast_contextual_psg.py",
+      "sha256": "096ace385286639c85272bdbe392c348d27df45c1c9307279cff05e2da660cd5"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "detector": {
+        "path": "checkpoints/PSG/react++_yolo12m/yolo12m/react_pp_yolo12m.onnx",
+        "size_bytes": 116791801,
+        "sha256": "38c4bdbb7e2a077131ffcbf57af726eb30574318e2344d5b4bfc1d3a48f5b2fe"
+      },
+      "ckn_module": {
+        "path": "model_repos/fast-context-scene-graph-generation/PSG_dataset/ckn/2619.pt",
+        "size_bytes": 840791,
+        "sha256": "3a93b2948c7406c7c3f281a212b65d7c39a19aa706883c1b7f8fc3bba71b9efe"
+      },
+      "word_vectors": {
+        "path": ".cache/FastContextualSGG/psg_word_vec_list.pt",
+        "size_bytes": 28399,
+        "sha256": "dd42ac400e8e6c41f3cfbac235848f03f456c58494a26ed2fe5824bffc44be22"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "38c4bdbb7e2a0771",
+    "annotations": {
+      "path": "evaluation_sets/PSG_200_annotations.coco.json",
+      "size_bytes": 919338,
+      "sha256": "624521593199008f36499cda8e2f12d615c30714a94865d23c5654f92d712327",
+      "image_count": 200,
+      "object_count": 3019,
+      "relation_count": 1385,
+      "category_count": 133
+    },
+    "prediction_cache": {
+      "path": ".cache/FastContextualSGG/raw_preds_PSG_csgg_full.pt",
+      "size_bytes": 4726791,
+      "sha256": "489a4e5fc226f73a9d9cc9a054a25de016ac3ab5109958f37044bcaec0094e96",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        ".cache/FastContextualSGG/psg_word_vec_list.pt",
+        "evaluation_sets/PSG_200_annotations.coco.json"
+      ],
+      "ontology_projection": "None (Native OpenPSG 133 objects, 56 predicates)",
+      "candidate_ranking_rule": "pred_predicate_scores (rel_scores[:, 1:].max(axis=1))",
+      "sort_order_type": "rel_score_only"
+    },
+    "reported_metrics": {
+      "R@50": 0.3224,
+      "R@100": 0.3598,
+      "mR@50": 0.2182,
+      "mR@100": 0.2437,
+      "det_mAP50": 0.5948,
+      "det_f1_50": 0.6281,
+      "latency_ms": 568.5,
+      "fps": 1.76
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 1385,
+      "total_hits_50": 441,
+      "total_hits_100": 495,
+      "new_hits_50_to_100": 54,
+      "img_avg_R@50": 0.322439,
+      "img_avg_R@100": 0.35983,
+      "img_avg_mR@50": 0.218223,
+      "img_avg_mR@100": 0.243695,
+      "pooled_R@50": 0.318412,
+      "pooled_R@100": 0.357401,
+      "pooled_mR@50": 0.221958,
+      "pooled_mR@100": 0.245278,
+      "detection_mAP50": 0.5948,
+      "detection_H_AP_AR_50": 0.6281,
+      "supplementary_H_R_mR_50": 0.260287
+    },
+    "error_analysis": {
+      "abs_error_R@50": 3.86e-05,
+      "abs_error_R@100": 2.984e-05,
+      "abs_error_mR@50": 2.341e-05,
+      "abs_error_mR@100": 4.89e-06,
+      "max_abs_error": 3.86e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 568.5,
+      "fps": 1.76,
+      "warmup_count": 5,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/FastContextualSGG/psg_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 13,
+    "run_id": "RUN-14-CSGG-VG150",
+    "model": "Fast Contextual SGG (C-SGG)",
+    "variant": "YOLOv5l + CKN (VG150)",
+    "exact_detector_runtime": "YOLOv5l (models.yolo.Model, nc=151) + CKN (PyTorch CPU)",
+    "dataset": "VG150",
+    "evaluation_regime": "In-Domain",
+    "regime_provenance": "Detector: YOLOv5l trained on Visual Genome VG150; CKN: FC_Net trained on Visual Genome VG150 with VG word vectors.",
+    "executed_script": {
+      "path": "experiments/FastContextualSGG/run_benchmark_fast_contextual_vg150.py",
+      "sha256": "3e70d189b3a7aa209058297004556e7564177fcebeb583d12d6acc0b41a5566e"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "detector": {
+        "path": "checkpoints/FastContextualSGG/yolol_object_test_28.pt",
+        "size_bytes": 376488983,
+        "sha256": "f657e21917f10d2d70da5e3f1b02d3148dc8589ac74ba6e7d8c2fc5e2aaac257"
+      },
+      "ckn_module": {
+        "path": "model_repos/fast-context-scene-graph-generation/VG_dataset/ckn/CKN+EPBS.pt",
+        "size_bytes": 828503,
+        "sha256": "ffddecd41adf7881b215f6dd186c9c7b18d5a59a33b4574d71687200c4e330c4"
+      },
+      "word_vectors": {
+        "path": ".cache/FastContextualSGG/vg_word_vec_list.pt",
+        "size_bytes": 31848,
+        "sha256": "a3bc639414c53b20d2b48a1eff8efb55a46ab05adbc59137f625c8d085ccd47d"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "f657e21917f10d2d",
+    "annotations": {
+      "path": "evaluation_sets/VG150_200_annotations.coco.json",
+      "size_bytes": 707327,
+      "sha256": "8a969a879eb4d9982eafa4d2e02ecfe367f1c0737d56c6ce380bc8cff10efc5c",
+      "image_count": 200,
+      "object_count": 2320,
+      "relation_count": 1083,
+      "category_count": 150
+    },
+    "prediction_cache": {
+      "path": ".cache/FastContextualSGG/raw_preds_VG150_full.pt",
+      "size_bytes": 5141977,
+      "sha256": "db1fb1df158a4b59a32908467e3d974d17c23ef2c921ef93d07e9066e7ab221f",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        ".cache/FastContextualSGG/vg_word_vec_list.pt",
+        "evaluation_sets/VG150_200_annotations.coco.json"
+      ],
+      "ontology_projection": "None (Native VG150 150 objects, 50 predicates)",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.2005,
+      "R@100": 0.2485,
+      "mR@50": 0.141,
+      "mR@100": 0.1533,
+      "det_mAP50": 0.3419,
+      "det_f1_50": 0.4137,
+      "latency_ms": 350.3,
+      "fps": 2.85
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 174,
+      "total_gt_relations": 1083,
+      "total_hits_50": 236,
+      "total_hits_100": 286,
+      "new_hits_50_to_100": 50,
+      "img_avg_R@50": 0.200506,
+      "img_avg_R@100": 0.248521,
+      "img_avg_mR@50": 0.140978,
+      "img_avg_mR@100": 0.153297,
+      "pooled_R@50": 0.217913,
+      "pooled_R@100": 0.264081,
+      "pooled_mR@50": 0.14509,
+      "pooled_mR@100": 0.15708,
+      "detection_mAP50": 0.3419,
+      "detection_H_AP_AR_50": 0.4137,
+      "supplementary_H_R_mR_50": 0.165554
+    },
+    "error_analysis": {
+      "abs_error_R@50": 5.66e-06,
+      "abs_error_R@100": 2.058e-05,
+      "abs_error_mR@50": 2.177e-05,
+      "abs_error_mR@100": 2.85e-06,
+      "max_abs_error": 2.177e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 350.3,
+      "fps": 2.85,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/FastContextualSGG/vg150_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 14,
+    "run_id": "RUN-15-CSGG-INDOORVG",
+    "model": "Fast Contextual SGG (C-SGG)",
+    "variant": "YOLOv5l + CKN (VG150)",
+    "exact_detector_runtime": "YOLOv5l + CKN (PyTorch CPU)",
+    "dataset": "IndoorVG",
+    "evaluation_regime": "Zero-Shot Transfer",
+    "regime_provenance": "VG150-trained model evaluated zero-shot transfer on IndoorVG via semantic ontology projection.",
+    "executed_script": {
+      "path": "experiments/FastContextualSGG/run_benchmark_fast_contextual_indoorvg.py",
+      "sha256": "710c38b0857024e98deb7b1087d8b2edb9edc85bac6a499bbcb07648268798a0"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "detector": {
+        "path": "checkpoints/FastContextualSGG/yolol_object_test_28.pt",
+        "size_bytes": 376488983,
+        "sha256": "f657e21917f10d2d70da5e3f1b02d3148dc8589ac74ba6e7d8c2fc5e2aaac257"
+      },
+      "ckn_module": {
+        "path": "model_repos/fast-context-scene-graph-generation/VG_dataset/ckn/CKN+EPBS.pt",
+        "size_bytes": 828503,
+        "sha256": "ffddecd41adf7881b215f6dd186c9c7b18d5a59a33b4574d71687200c4e330c4"
+      },
+      "word_vectors": {
+        "path": ".cache/FastContextualSGG/vg_word_vec_list.pt",
+        "size_bytes": 31848,
+        "sha256": "a3bc639414c53b20d2b48a1eff8efb55a46ab05adbc59137f625c8d085ccd47d"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "f657e21917f10d2d",
+    "annotations": {
+      "path": "evaluation_sets/IndoorVG_200_annotations.coco.json",
+      "size_bytes": 965773,
+      "sha256": "6f377bca5f7409b346333e8997047b95b62e7f82e2760a905ceaef7693d348a1",
+      "image_count": 200,
+      "object_count": 3118,
+      "relation_count": 1672,
+      "category_count": 84
+    },
+    "prediction_cache": {
+      "path": ".cache/FastContextualSGG/raw_preds_IndoorVG_c-sgg_full.pt",
+      "size_bytes": 8109707,
+      "sha256": "77b2f28d3b3fa18e37198db8e894e176239411025257b6eadeef393404956c7a",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/evaluation_ontology.json",
+        "evaluation_sets/IndoorVG_200_annotations.coco.json"
+      ],
+      "ontology_projection": "Semantic mapping VG150 -> IndoorVG via evaluation_ontology.json",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.1215,
+      "R@100": 0.1522,
+      "mR@50": 0.1081,
+      "mR@100": 0.1303,
+      "det_mAP50": 0.1656,
+      "det_f1_50": 0.2088,
+      "latency_ms": 734.0,
+      "fps": 1.36
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 1672,
+      "total_hits_50": 231,
+      "total_hits_100": 272,
+      "new_hits_50_to_100": 41,
+      "img_avg_R@50": 0.121456,
+      "img_avg_R@100": 0.152217,
+      "img_avg_mR@50": 0.108095,
+      "img_avg_mR@100": 0.130347,
+      "pooled_R@50": 0.138158,
+      "pooled_R@100": 0.162679,
+      "pooled_mR@50": 0.109162,
+      "pooled_mR@100": 0.136985,
+      "detection_mAP50": 0.1656,
+      "detection_H_AP_AR_50": 0.2088,
+      "supplementary_H_R_mR_50": 0.114387
+    },
+    "error_analysis": {
+      "abs_error_R@50": 4.382e-05,
+      "abs_error_R@100": 1.742e-05,
+      "abs_error_mR@50": 5.34e-06,
+      "abs_error_mR@100": 4.735e-05,
+      "max_abs_error": 4.735e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 734.0,
+      "fps": 1.36,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/FastContextualSGG/indoorvg_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  },
+  {
+    "row_index": 15,
+    "run_id": "RUN-16-CSGG-OPENIMAGES",
+    "model": "Fast Contextual SGG (C-SGG)",
+    "variant": "YOLOv5l + CKN (VG150/OID)",
+    "exact_detector_runtime": "YOLOv5l (VG150) + OID CKN (PyTorch CPU)",
+    "dataset": "OpenImages V6",
+    "evaluation_regime": "Hybrid Adaptation",
+    "regime_provenance": "Detector: YOLOv5l trained on VG150; CKN: FC_Net_OID trained natively on OpenImages (ckn_oid_PBS.pt).",
+    "executed_script": {
+      "path": "experiments/FastContextualSGG/run_benchmark_fast_contextual_openimages.py",
+      "sha256": "cea8a3344518ec04f5128589f8e30a60de53cd0d7d762ed5dd52fb7a91fca988"
+    },
+    "git_environment": {
+      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "working_tree_dirty": true
+    },
+    "checkpoints": {
+      "detector": {
+        "path": "checkpoints/FastContextualSGG/yolol_object_test_28.pt",
+        "size_bytes": 376488983,
+        "sha256": "f657e21917f10d2d70da5e3f1b02d3148dc8589ac74ba6e7d8c2fc5e2aaac257"
+      },
+      "ckn_module": {
+        "path": "model_repos/fast-context-scene-graph-generation/OID_dataset/ckn/ckn_oid_PBS.pt",
+        "size_bytes": 787415,
+        "sha256": "c106480f718cf6d8e581feff42df43916fc3cbcbbfd5d2ae8df7ff2e30cb6a6a"
+      }
+    },
+    "primary_checkpoint_id_or_hash": "f657e21917f10d2d",
+    "annotations": {
+      "path": "evaluation_sets/OpenImages_200_annotations.coco.json",
+      "size_bytes": 560765,
+      "sha256": "20eed09f1e2bd454f9324a28e2a6871e6e8d21f73352302addf09b1c27590b33",
+      "image_count": 200,
+      "object_count": 1486,
+      "relation_count": 866,
+      "category_count": 75
+    },
+    "prediction_cache": {
+      "path": ".cache/FastContextualSGG/raw_preds_OpenImages_c-sgg_full.pt",
+      "size_bytes": 7692023,
+      "sha256": "8430e40c86c012e1e4f7b22d2a64986b5de271e6c10e3dc10b33fe54616501d3",
+      "prediction_count": 200,
+      "image_id_coverage": "200/200 (100% complete)"
+    },
+    "vocabulary_and_ontology": {
+      "vocabulary_files": [
+        "evaluation_sets/evaluation_ontology.json",
+        "evaluation_sets/OpenImages_200_annotations.coco.json"
+      ],
+      "ontology_projection": "Detector mapping VG150 -> OID; Predicate mapping CKN_OID -> OpenImages Ground Truth",
+      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
+      "sort_order_type": "triplet_conf"
+    },
+    "reported_metrics": {
+      "R@50": 0.0245,
+      "R@100": 0.0245,
+      "mR@50": 0.2403,
+      "mR@100": 0.2403,
+      "det_mAP50": 0.1281,
+      "det_f1_50": 0.1708,
+      "latency_ms": 655.0,
+      "fps": 1.53
+    },
+    "recomputed_metrics": {
+      "images_evaluated": 200,
+      "eligible_images": 200,
+      "total_gt_relations": 866,
+      "total_hits_50": 18,
+      "total_hits_100": 18,
+      "new_hits_50_to_100": 0,
+      "img_avg_R@50": 0.024458,
+      "img_avg_R@100": 0.024458,
+      "img_avg_mR@50": 0.240349,
+      "img_avg_mR@100": 0.240349,
+      "pooled_R@50": 0.020785,
+      "pooled_R@100": 0.020785,
+      "pooled_mR@50": 0.223858,
+      "pooled_mR@100": 0.223858,
+      "detection_mAP50": 0.1281,
+      "detection_H_AP_AR_50": 0.1708,
+      "supplementary_H_R_mR_50": 0.044399
+    },
+    "error_analysis": {
+      "abs_error_R@50": 4.167e-05,
+      "abs_error_R@100": 4.167e-05,
+      "abs_error_mR@50": 4.939e-05,
+      "abs_error_mR@100": 4.939e-05,
+      "max_abs_error": 4.939e-05,
+      "tolerance": 0.0001,
+      "test_outcome": "PASS"
+    },
+    "timing_and_execution": {
+      "latency_ms": 655.0,
+      "fps": 1.53,
+      "warmup_count": 3,
+      "timed_image_count": 200,
+      "measurement_boundaries": "Pure per-image forward inference latency (image resize/letterbox, detector forward, NMS, pair formulation, relationship model forward) measured with time.perf_counter(). Excludes dataset loading and metric evaluation.",
+      "raw_log_path": "results/FastContextualSGG/openimages_run.log"
+    },
+    "verification_status": {
+      "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
+      "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
+      "verification_criteria": "VERIFIED_FROM_RAW_CACHE: Serialized prediction cache exists with all 200 image predictions; ground truth annotation file exists and parses; independent re-evaluation reproduces reported metrics within floating-point tolerance (< 1e-4).",
+      "unresolved_issues": "None. Recomputed metrics match reported values to machine precision."
+    }
+  }
+]

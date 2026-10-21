@@ -1,0 +1,51 @@
+2026-10-13 00:19:16,917 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-13 00:19:16,918 [INFO] Loading ONNX session from checkpoints/REACT/react_indoorvg_yolov8m.onnx...
+2026-10-13 00:19:18,240 [INFO] ONNX session initialized successfully. Input: input
+2026-10-13 00:19:18,241 [INFO] Warming up ONNX model (3 iterations)...
+2026-10-13 00:19:19,297 [INFO] Executing fresh REACT inference on IndoorVG (3 images)...
+2026-10-13 00:19:21,083 [INFO] Progress: [  3/  3] | Fwd: 563.6 ms | E2E: 594.9 ms | RAM: 716.0 MB
+2026-10-13 00:19:21,123 [INFO] Saved inference predictions to cache: d:/Minor\.cache/REACT\raw_preds_indoorvg_react.pt
+2026-10-13 00:19:21,195 [INFO] Computing detection mAP@50 and F1@50 on IndoorVG...
+2026-10-13 00:19:21,266 [INFO] REACT Object Detection on IndoorVG: mAP@50 = 0.7054 (70.54%) | F1@50 = 0.7677 (76.77%)
+2026-10-13 00:19:21,306 [INFO] ================================================================================
+2026-10-13 00:19:21,306 [INFO] FINAL BENCHMARK SCORES FOR REACT ON INDOORVG:
+2026-10-13 00:19:21,306 [INFO] R@50:             67.14%
+2026-10-13 00:19:21,306 [INFO] R@100:            68.81%
+2026-10-13 00:19:21,306 [INFO] mR@50:            35.78%
+2026-10-13 00:19:21,306 [INFO] mR@100:           36.27%
+2026-10-13 00:19:21,306 [INFO] F1@50 (Detection):76.77% (or 0.7677)
+2026-10-13 00:19:21,306 [INFO] F1@50 (Triplet):  46.69% (or 0.4669)
+2026-10-13 00:19:21,307 [INFO] Detection mAP@50: 70.54% (or 0.7054)
+2026-10-13 00:19:21,307 [INFO] Speed:            594.9 ms (1.68 FPS)
+2026-10-13 00:19:21,307 [INFO] ================================================================================
+2026-10-13 00:19:21,309 [INFO] Saved benchmark summary JSON to d:/Minor\results/REACT\indoorvg_metrics.json
+2026-10-13 00:19:21,310 [INFO] Saved benchmark CSV to d:/Minor\results/REACT\indoorvg_metrics.csv
+2026-10-13 00:19:42,604 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-13 00:19:42,605 [INFO] Loading ONNX session from checkpoints/REACT/react_indoorvg_yolov8m.onnx...
+2026-10-13 00:19:44,001 [INFO] ONNX session initialized successfully. Input: input
+2026-10-13 00:19:44,001 [INFO] Warming up ONNX model (3 iterations)...
+2026-10-13 00:19:45,155 [INFO] Executing fresh REACT inference on IndoorVG (200 images)...
+2026-10-13 00:20:01,545 [INFO] Progress: [ 25/200] | Fwd: 628.3 ms | E2E: 655.4 ms | RAM: 717.5 MB
+2026-10-13 00:20:18,673 [INFO] Progress: [ 50/200] | Fwd: 642.7 ms | E2E: 670.2 ms | RAM: 718.3 MB
+2026-10-13 00:20:35,754 [INFO] Progress: [ 75/200] | Fwd: 646.4 ms | E2E: 674.5 ms | RAM: 719.1 MB
+2026-10-13 00:20:53,119 [INFO] Progress: [100/200] | Fwd: 650.8 ms | E2E: 679.5 ms | RAM: 724.5 MB
+2026-10-13 00:21:11,795 [INFO] Progress: [125/200] | Fwd: 663.3 ms | E2E: 693.0 ms | RAM: 725.4 MB
+2026-10-13 00:21:30,398 [INFO] Progress: [150/200] | Fwd: 671.6 ms | E2E: 701.5 ms | RAM: 726.2 MB
+2026-10-13 00:21:50,457 [INFO] Progress: [175/200] | Fwd: 685.1 ms | E2E: 715.9 ms | RAM: 727.0 MB
+2026-10-13 00:22:10,143 [INFO] Progress: [200/200] | Fwd: 694.0 ms | E2E: 724.8 ms | RAM: 727.8 MB
+2026-10-13 00:22:10,282 [INFO] Saved inference predictions to cache: d:/Minor\.cache/REACT\raw_preds_indoorvg_react.pt
+2026-10-13 00:22:10,349 [INFO] Computing detection mAP@50 and F1@50 on IndoorVG...
+2026-10-13 00:22:12,833 [INFO] REACT Object Detection on IndoorVG: mAP@50 = 0.4931 (49.31%) | F1@50 = 0.5798 (57.98%)
+2026-10-13 00:22:14,114 [INFO] ================================================================================
+2026-10-13 00:22:14,114 [INFO] FINAL BENCHMARK SCORES FOR REACT ON INDOORVG:
+2026-10-13 00:22:14,114 [INFO] R@50:             31.08%
+2026-10-13 00:22:14,114 [INFO] R@100:            36.58%
+2026-10-13 00:22:14,114 [INFO] mR@50:            26.48%
+2026-10-13 00:22:14,114 [INFO] mR@100:           29.65%
+2026-10-13 00:22:14,114 [INFO] F1@50 (Detection):57.98% (or 0.5798)
+2026-10-13 00:22:14,114 [INFO] F1@50 (Triplet):  28.60% (or 0.2860)
+2026-10-13 00:22:14,114 [INFO] Detection mAP@50: 49.31% (or 0.4931)
+2026-10-13 00:22:14,114 [INFO] Speed:            724.8 ms (1.38 FPS)
+2026-10-13 00:22:14,115 [INFO] ================================================================================
+2026-10-13 00:22:14,116 [INFO] Saved benchmark summary JSON to d:/Minor\results/REACT\indoorvg_metrics.json
+2026-10-13 00:22:14,116 [INFO] Saved benchmark CSV to d:/Minor\results/REACT\indoorvg_metrics.csv

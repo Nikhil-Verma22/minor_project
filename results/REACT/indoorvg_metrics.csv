@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+REACT (YOLOv8m),IndoorVG,31.08%,36.58%,26.48%,29.65%,57.98%,49.31%,724.8 ms (1.38 FPS)

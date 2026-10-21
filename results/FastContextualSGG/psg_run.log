@@ -1,0 +1,57 @@
+2026-10-12 23:05:18,487 [INFO] ================================================================================
+2026-10-12 23:05:18,489 [INFO] Starting Fast Contextual SGG Benchmark Pipeline on PSG Dataset
+2026-10-12 23:05:18,489 [INFO] Max Images: 5 | Device: cpu | CKN: model_repos/fast-context-scene-graph-generation/PSG_dataset/ckn/2619.pt
+2026-10-12 23:05:18,490 [INFO] ================================================================================
+2026-10-12 23:05:18,527 [INFO] Loaded PSG evaluation dataset: 200 images
+2026-10-12 23:05:18,527 [INFO] Loading ONNX detector from d:/Minor\checkpoints/PSG/react++_yolo12m/yolo12m/react_pp_yolo12m.onnx...
+2026-10-12 23:05:20,033 [INFO] Loading CKN model from d:/Minor\model_repos/fast-context-scene-graph-generation/PSG_dataset/ckn/2619.pt...
+2026-10-12 23:05:20,049 [INFO] Loading GloVe vectors from d:/Minor\.cache/FastContextualSGG/psg_word_vec_list.pt...
+2026-10-12 23:05:20,051 [INFO] Running Fast Contextual SGG inference across 5 PSG images...
+2026-10-12 23:05:22,336 [INFO] Processed 5/5 images | E2E: 455.8 ms (Det: 432.9 ms, Ctx: 5.5 ms) | RAM: 719.5 MB
+2026-10-12 23:05:22,342 [INFO] Saved predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_PSG_csgg_smoke.pt
+2026-10-12 23:05:22,342 [INFO] Computing detection mAP@50 and F1@50 on PSG...
+2026-10-12 23:05:22,398 [INFO] Object Detection on PSG: mAP@50 = 0.7806 | F1@50 = 0.7928
+2026-10-12 23:05:22,436 [INFO] ================================================================================
+2026-10-12 23:05:22,436 [INFO] FINAL BENCHMARK SCORES FOR FAST CONTEXTUAL SGG ON PSG:
+2026-10-12 23:05:22,436 [INFO] R@50:            47.84%
+2026-10-12 23:05:22,436 [INFO] R@100:           56.37%
+2026-10-12 23:05:22,437 [INFO] mR@50:           43.33%
+2026-10-12 23:05:22,437 [INFO] mR@100:          47.50%
+2026-10-12 23:05:22,437 [INFO] F1@50:           79.28% (or 0.7928)
+2026-10-12 23:05:22,437 [INFO] Detection mAP@50: 78.06% (or 0.7806)
+2026-10-12 23:05:22,437 [INFO] Speed:           455.8 ms (2.19 FPS)
+2026-10-12 23:05:22,437 [INFO] ================================================================================
+2026-10-12 23:05:22,440 [INFO] Saved PSG metrics to d:/Minor\results/FastContextualSGG\psg_metrics.json
+2026-10-12 23:05:22,442 [INFO] Saved PSG metrics CSV to d:/Minor\results/FastContextualSGG\psg_metrics.csv
+2026-10-12 23:05:37,873 [INFO] ================================================================================
+2026-10-12 23:05:37,873 [INFO] Starting Fast Contextual SGG Benchmark Pipeline on PSG Dataset
+2026-10-12 23:05:37,873 [INFO] Max Images: 200 | Device: cpu | CKN: model_repos/fast-context-scene-graph-generation/PSG_dataset/ckn/2619.pt
+2026-10-12 23:05:37,873 [INFO] ================================================================================
+2026-10-12 23:05:37,909 [INFO] Loaded PSG evaluation dataset: 200 images
+2026-10-12 23:05:37,910 [INFO] Loading ONNX detector from d:/Minor\checkpoints/PSG/react++_yolo12m/yolo12m/react_pp_yolo12m.onnx...
+2026-10-12 23:05:39,699 [INFO] Loading CKN model from d:/Minor\model_repos/fast-context-scene-graph-generation/PSG_dataset/ckn/2619.pt...
+2026-10-12 23:05:39,711 [INFO] Loading GloVe vectors from d:/Minor\.cache/FastContextualSGG/psg_word_vec_list.pt...
+2026-10-12 23:05:39,714 [INFO] Running Fast Contextual SGG inference across 200 PSG images...
+2026-10-12 23:05:54,479 [INFO] Processed 25/200 images | E2E: 589.3 ms (Det: 566.2 ms, Ctx: 6.0 ms) | RAM: 810.8 MB
+2026-10-12 23:06:09,894 [INFO] Processed 50/200 images | E2E: 602.4 ms (Det: 579.7 ms, Ctx: 6.6 ms) | RAM: 832.4 MB
+2026-10-12 23:06:24,521 [INFO] Processed 75/200 images | E2E: 596.2 ms (Det: 573.9 ms, Ctx: 6.6 ms) | RAM: 855.0 MB
+2026-10-12 23:06:37,130 [INFO] Processed 100/200 images | E2E: 572.9 ms (Det: 551.4 ms, Ctx: 5.6 ms) | RAM: 855.0 MB
+2026-10-12 23:06:51,399 [INFO] Processed 125/200 images | E2E: 572.1 ms (Det: 550.7 ms, Ctx: 5.4 ms) | RAM: 858.1 MB
+2026-10-12 23:07:05,161 [INFO] Processed 150/200 images | E2E: 568.3 ms (Det: 547.0 ms, Ctx: 5.0 ms) | RAM: 874.4 MB
+2026-10-12 23:07:18,737 [INFO] Processed 175/200 images | E2E: 564.5 ms (Det: 543.5 ms, Ctx: 4.8 ms) | RAM: 874.5 MB
+2026-10-12 23:07:33,676 [INFO] Processed 200/200 images | E2E: 568.5 ms (Det: 547.8 ms, Ctx: 4.8 ms) | RAM: 874.6 MB
+2026-10-12 23:07:33,764 [INFO] Saved predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_PSG_csgg_full.pt
+2026-10-12 23:07:33,765 [INFO] Computing detection mAP@50 and F1@50 on PSG...
+2026-10-12 23:07:35,187 [INFO] Object Detection on PSG: mAP@50 = 0.5948 | F1@50 = 0.6281
+2026-10-12 23:07:36,166 [INFO] ================================================================================
+2026-10-12 23:07:36,166 [INFO] FINAL BENCHMARK SCORES FOR FAST CONTEXTUAL SGG ON PSG:
+2026-10-12 23:07:36,166 [INFO] R@50:            32.24%
+2026-10-12 23:07:36,166 [INFO] R@100:           35.98%
+2026-10-12 23:07:36,166 [INFO] mR@50:           21.82%
+2026-10-12 23:07:36,166 [INFO] mR@100:          24.37%
+2026-10-12 23:07:36,166 [INFO] F1@50:           62.81% (or 0.6281)
+2026-10-12 23:07:36,166 [INFO] Detection mAP@50: 59.48% (or 0.5948)
+2026-10-12 23:07:36,166 [INFO] Speed:           568.5 ms (1.76 FPS)
+2026-10-12 23:07:36,166 [INFO] ================================================================================
+2026-10-12 23:07:36,168 [INFO] Saved PSG metrics to d:/Minor\results/FastContextualSGG\psg_metrics.json
+2026-10-12 23:07:36,169 [INFO] Saved PSG metrics CSV to d:/Minor\results/FastContextualSGG\psg_metrics.csv

@@ -1,0 +1,66 @@
+2026-10-13 00:26:34,917 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-13 00:26:34,917 [INFO] Importing cached predictions from d:/Minor\.cache/REACT/raw_preds_indoorvg_react.pt...
+2026-10-13 00:26:35,067 [INFO] Computing detection mAP@50 and F1@50 on IndoorVG...
+2026-10-13 00:26:36,947 [INFO] REACT++ Object Detection on IndoorVG: mAP@50 = 0.4931 (49.31%) | F1@50 = 0.5798 (57.98%)
+2026-10-13 00:26:38,165 [INFO] ================================================================================
+2026-10-13 00:26:38,165 [INFO] FINAL BENCHMARK SCORES FOR REACT++ ON INDOORVG:
+2026-10-13 00:26:38,165 [INFO] R@50:             31.08%
+2026-10-13 00:26:38,165 [INFO] R@100:            36.58%
+2026-10-13 00:26:38,166 [INFO] mR@50:            26.48%
+2026-10-13 00:26:38,168 [INFO] mR@100:           29.65%
+2026-10-13 00:26:38,168 [INFO] F1@50 (Detection):57.98% (or 0.5798)
+2026-10-13 00:26:38,168 [INFO] F1@50 (Triplet):  28.60% (or 0.2860)
+2026-10-13 00:26:38,168 [INFO] Detection mAP@50: 49.31% (or 0.4931)
+2026-10-13 00:26:38,168 [INFO] Speed:            724.8 ms (1.38 FPS)
+2026-10-13 00:26:38,168 [INFO] ================================================================================
+2026-10-13 00:26:38,170 [INFO] Saved benchmark summary JSON to d:/Minor\results/REACTPP\indoorvg_metrics.json
+2026-10-13 00:26:38,171 [INFO] Saved benchmark CSV to d:/Minor\results/REACTPP\indoorvg_metrics.csv
+2026-10-17 01:08:30,554 [INFO] ================================================================================
+2026-10-17 01:08:30,554 [INFO] Starting Genuine REACT++ (YOLO12m ONNX) Benchmark Pipeline on IndoorVG Dataset
+2026-10-17 01:08:30,555 [INFO] Model: d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx | Max Images: 200
+2026-10-17 01:08:30,555 [INFO] ================================================================================
+2026-10-17 01:08:30,586 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-17 01:08:30,604 [INFO] Initialized defensible ontology mappings: 57/150 VG classes mapped (38.0%), covering 44/84 IndoorVG classes (52.4%). Predicates mapped: 31/50.
+2026-10-17 01:08:30,605 [INFO] Loading ONNX session from d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx...
+2026-10-17 01:08:32,565 [INFO] ONNX session initialized successfully. Input: input
+2026-10-17 01:08:32,566 [INFO] Warming up ONNX model (3 iterations)...
+2026-10-17 01:08:38,325 [INFO] Executing genuine REACT++ (YOLO12m ONNX) inference on IndoorVG (200 images)...
+2026-10-17 01:09:20,230 [INFO] [REACT++] Processed  25/200 images | E2E: 1676.0 ms (Fwd: 1647.4 ms) | RAM: 759.8 MB
+2026-10-17 01:09:52,816 [INFO] [REACT++] Processed  50/200 images | E2E: 1303.4 ms (Fwd: 1283.8 ms) | RAM: 761.3 MB
+2026-10-17 01:11:33,644 [INFO] [REACT++] Processed  75/200 images | E2E: 4033.1 ms (Fwd: 3971.7 ms) | RAM: 761.3 MB
+2026-10-17 01:13:00,284 [INFO] [REACT++] Processed 100/200 images | E2E: 3464.8 ms (Fwd: 3420.0 ms) | RAM: 761.5 MB
+2026-10-17 01:13:37,444 [INFO] [REACT++] Processed 125/200 images | E2E: 1486.0 ms (Fwd: 1463.2 ms) | RAM: 762.6 MB
+2026-10-17 01:14:29,880 [INFO] [REACT++] Processed 150/200 images | E2E: 2097.4 ms (Fwd: 2064.2 ms) | RAM: 764.6 MB
+2026-10-17 01:15:45,819 [INFO] [REACT++] Processed 175/200 images | E2E: 3037.5 ms (Fwd: 2993.1 ms) | RAM: 764.6 MB
+2026-10-17 01:16:48,516 [INFO] [REACT++] Processed 200/200 images | E2E: 2507.8 ms (Fwd: 2463.6 ms) | RAM: 764.6 MB
+2026-10-17 01:16:48,646 [INFO] Saved REACT++ IndoorVG predictions and profile to d:/Minor\.cache/REACTPP\raw_preds_indoorvg_reactpp.pt
+2026-10-17 01:16:48,727 [INFO] Computing detection mAP@50 and Detection F1@50 for REACT++ on IndoorVG...
+2026-10-17 01:17:35,350 [INFO] ================================================================================
+2026-10-17 01:17:35,351 [INFO] Starting Genuine REACT++ (YOLO12m ONNX) Benchmark Pipeline on IndoorVG Dataset
+2026-10-17 01:17:35,351 [INFO] Model: d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx | Max Images: 200
+2026-10-17 01:17:35,351 [INFO] ================================================================================
+2026-10-17 01:17:35,402 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-17 01:17:35,432 [INFO] Initialized defensible ontology mappings: 57/150 VG classes mapped (38.0%), covering 44/84 IndoorVG classes (52.4%). Predicates mapped: 31/50.
+2026-10-17 01:17:35,434 [INFO] Loading cached REACT++ IndoorVG predictions from d:/Minor\.cache/REACTPP\raw_preds_indoorvg_reactpp.pt...
+2026-10-17 01:17:35,517 [INFO] Computing detection mAP@50 and Detection F1@50 for REACT++ on IndoorVG...
+2026-10-17 01:18:21,849 [INFO] ================================================================================
+2026-10-17 01:18:21,850 [INFO] Starting Genuine REACT++ (YOLO12m ONNX) Benchmark Pipeline on IndoorVG Dataset
+2026-10-17 01:18:21,850 [INFO] Model: d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx | Max Images: 200
+2026-10-17 01:18:21,850 [INFO] ================================================================================
+2026-10-17 01:18:21,894 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-17 01:18:21,917 [INFO] Initialized defensible ontology mappings: 57/150 VG classes mapped (38.0%), covering 44/84 IndoorVG classes (52.4%). Predicates mapped: 31/50.
+2026-10-17 01:18:21,920 [INFO] Loading cached REACT++ IndoorVG predictions from d:/Minor\.cache/REACTPP\raw_preds_indoorvg_reactpp.pt...
+2026-10-17 01:18:22,055 [INFO] Computing detection mAP@50 and Detection F1@50 for REACT++ on IndoorVG...
+2026-10-17 01:18:25,153 [INFO] ================================================================================
+2026-10-17 01:18:25,154 [INFO] FINAL GENUINE BENCHMARK SCORES FOR REACT++ ON INDOORVG:
+2026-10-17 01:18:25,154 [INFO] R@50:                  13.64%
+2026-10-17 01:18:25,154 [INFO] R@100:                 16.02%
+2026-10-17 01:18:25,154 [INFO] mR@50:                 12.69%
+2026-10-17 01:18:25,154 [INFO] mR@100:                14.07%
+2026-10-17 01:18:25,154 [INFO] Detection F1@50:       26.88%
+2026-10-17 01:18:25,154 [INFO] Triplet F1@50:         13.15%
+2026-10-17 01:18:25,154 [INFO] Detection mAP@50:      21.50%
+2026-10-17 01:18:25,154 [INFO] Speed:                 2450.7 ms (0.41 FPS)
+2026-10-17 01:18:25,154 [INFO] ================================================================================
+2026-10-17 01:18:25,159 [INFO] Saved benchmark summary JSON to d:/Minor\results/REACTPP\indoorvg_metrics.json
+2026-10-17 01:18:25,162 [INFO] Saved benchmark CSV to d:/Minor\results/REACTPP\indoorvg_metrics.csv

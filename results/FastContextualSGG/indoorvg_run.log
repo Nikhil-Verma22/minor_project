@@ -1,0 +1,53 @@
+2026-10-13 00:49:10,189 [INFO] ================================================================================
+2026-10-13 00:49:10,189 [INFO] Starting Fast Contextual SGG (C-SGG) Benchmark Pipeline on IndoorVG Dataset
+2026-10-13 00:49:10,190 [INFO] Max Images: 3 | Device: cpu
+2026-10-13 00:49:10,190 [INFO] ================================================================================
+2026-10-13 00:49:10,230 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-13 00:49:10,259 [INFO] Initialized ontology mappings: 76/150 object classes, 31/50 predicates
+2026-10-13 00:49:11,792 [INFO] Running Fast Contextual SGG (C-SGG) inference across 3 IndoorVG images...
+2026-10-13 00:49:14,101 [INFO] [C-SGG] Processed   3/  3 images | E2E: 765.5 ms (Det: 750.4 ms, Ctx: 6.2 ms) | RAM: 907.8 MB
+2026-10-13 00:49:14,106 [INFO] Saved Fast Contextual SGG IndoorVG predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_IndoorVG_c-sgg_smoke.pt
+2026-10-13 00:49:14,107 [INFO] Computing detection mAP@50 and F1@50 for Fast Contextual SGG on IndoorVG...
+2026-10-13 00:49:14,146 [INFO] Fast Contextual SGG (C-SGG) Object Detection on IndoorVG: mAP@50 = 0.4890 | F1@50 = 0.5410
+2026-10-13 00:49:14,163 [INFO] ================================================================================
+2026-10-13 00:49:14,163 [INFO] FINAL BENCHMARK SCORES FOR FAST CONTEXTUAL SGG (C-SGG) ON INDOORVG:
+2026-10-13 00:49:14,164 [INFO] R@50:            17.78%
+2026-10-13 00:49:14,164 [INFO] R@100:           19.44%
+2026-10-13 00:49:14,164 [INFO] mR@50:           4.74%
+2026-10-13 00:49:14,164 [INFO] mR@100:          5.23%
+2026-10-13 00:49:14,164 [INFO] F1@50:           54.10% (or 0.5410)
+2026-10-13 00:49:14,164 [INFO] Detection mAP@50: 48.90% (or 0.4890)
+2026-10-13 00:49:14,164 [INFO] Speed:           765.5 ms (1.31 FPS)
+2026-10-13 00:49:14,164 [INFO] ================================================================================
+2026-10-13 00:49:14,165 [INFO] Saved Fast Contextual SGG IndoorVG metrics to d:/Minor\results/FastContextualSGG\indoorvg_metrics.json
+2026-10-13 00:49:14,166 [INFO] Saved Fast Contextual SGG IndoorVG metrics CSV to d:/Minor\results/FastContextualSGG\indoorvg_metrics.csv
+2026-10-13 00:49:32,363 [INFO] ================================================================================
+2026-10-13 00:49:32,363 [INFO] Starting Fast Contextual SGG (C-SGG) Benchmark Pipeline on IndoorVG Dataset
+2026-10-13 00:49:32,363 [INFO] Max Images: 200 | Device: cpu
+2026-10-13 00:49:32,363 [INFO] ================================================================================
+2026-10-13 00:49:32,404 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-13 00:49:32,427 [INFO] Initialized ontology mappings: 76/150 object classes, 31/50 predicates
+2026-10-13 00:49:33,912 [INFO] Running Fast Contextual SGG (C-SGG) inference across 200 IndoorVG images...
+2026-10-13 00:49:51,688 [INFO] [C-SGG] Processed  25/200 images | E2E: 708.9 ms (Det: 695.3 ms, Ctx: 6.6 ms) | RAM: 888.3 MB
+2026-10-13 00:50:09,998 [INFO] [C-SGG] Processed  50/200 images | E2E: 719.8 ms (Det: 705.8 ms, Ctx: 7.0 ms) | RAM: 925.7 MB
+2026-10-13 00:50:29,053 [INFO] [C-SGG] Processed  75/200 images | E2E: 733.3 ms (Det: 718.5 ms, Ctx: 7.6 ms) | RAM: 933.5 MB
+2026-10-13 00:50:48,142 [INFO] [C-SGG] Processed 100/200 images | E2E: 740.4 ms (Det: 725.0 ms, Ctx: 8.0 ms) | RAM: 933.0 MB
+2026-10-13 00:51:06,733 [INFO] [C-SGG] Processed 125/200 images | E2E: 740.6 ms (Det: 725.0 ms, Ctx: 8.2 ms) | RAM: 924.6 MB
+2026-10-13 00:51:24,381 [INFO] [C-SGG] Processed 150/200 images | E2E: 734.5 ms (Det: 719.1 ms, Ctx: 8.0 ms) | RAM: 950.9 MB
+2026-10-13 00:51:43,282 [INFO] [C-SGG] Processed 175/200 images | E2E: 737.1 ms (Det: 721.4 ms, Ctx: 8.3 ms) | RAM: 951.7 MB
+2026-10-13 00:52:01,174 [INFO] [C-SGG] Processed 200/200 images | E2E: 734.0 ms (Det: 718.4 ms, Ctx: 8.2 ms) | RAM: 946.0 MB
+2026-10-13 00:52:01,271 [INFO] Saved Fast Contextual SGG IndoorVG predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_IndoorVG_c-sgg_full.pt
+2026-10-13 00:52:01,271 [INFO] Computing detection mAP@50 and F1@50 for Fast Contextual SGG on IndoorVG...
+2026-10-13 00:52:02,684 [INFO] Fast Contextual SGG (C-SGG) Object Detection on IndoorVG: mAP@50 = 0.1656 | F1@50 = 0.2088
+2026-10-13 00:52:03,567 [INFO] ================================================================================
+2026-10-13 00:52:03,568 [INFO] FINAL BENCHMARK SCORES FOR FAST CONTEXTUAL SGG (C-SGG) ON INDOORVG:
+2026-10-13 00:52:03,568 [INFO] R@50:            12.15%
+2026-10-13 00:52:03,568 [INFO] R@100:           15.22%
+2026-10-13 00:52:03,568 [INFO] mR@50:           10.81%
+2026-10-13 00:52:03,568 [INFO] mR@100:          13.03%
+2026-10-13 00:52:03,568 [INFO] F1@50:           20.88% (or 0.2088)
+2026-10-13 00:52:03,568 [INFO] Detection mAP@50: 16.56% (or 0.1656)
+2026-10-13 00:52:03,568 [INFO] Speed:           734.0 ms (1.36 FPS)
+2026-10-13 00:52:03,568 [INFO] ================================================================================
+2026-10-13 00:52:03,569 [INFO] Saved Fast Contextual SGG IndoorVG metrics to d:/Minor\results/FastContextualSGG\indoorvg_metrics.json
+2026-10-13 00:52:03,570 [INFO] Saved Fast Contextual SGG IndoorVG metrics CSV to d:/Minor\results/FastContextualSGG\indoorvg_metrics.csv

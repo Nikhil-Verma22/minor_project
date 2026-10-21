@@ -1,0 +1,266 @@
+{
+  "model": "Fully Convolutional SGG (FCSGG)",
+  "dataset": "PSG (Panoptic Scene Graph)",
+  "num_images": 200,
+  "scores": {
+    "R@50": 0.043870601620601614,
+    "R@100": 0.05102734765234764,
+    "mR@50": 0.011034915899029428,
+    "mR@100": 0.013950647148962974,
+    "F1@50": 0.21228291890414364,
+    "Detection_mAP@50": 0.17446928401536235,
+    "Speed_latency_ms": 1722.3451149999528,
+    "Speed_fps": 0.5806037310937114,
+    "Speed": "1722.3 ms (0.58 FPS)"
+  },
+  "profile": {
+    "mean_forward_latency_ms": 1711.6654409998227,
+    "mean_e2e_latency_ms": 1722.3451149999528,
+    "fps": 0.5806037310937114,
+    "peak_rss_mb": 2926.05078125
+  },
+  "sgg_metrics": {
+    "total_images": 200,
+    "eligible_images": 200,
+    "empty_images": 0,
+    "total_gt_relations": 1385,
+    "recalls_eligible": {
+      "R@50": 0.043870601620601614,
+      "R@100": 0.05102734765234764
+    },
+    "recalls_all_200": {
+      "R@50_all200": 0.043870601620601614,
+      "R@100_all200": 0.05102734765234764
+    },
+    "mean_recalls": {
+      "mR@50": 0.011034915899029428,
+      "mR@100": 0.013950647148962974
+    },
+    "per_predicate_recall_100": {
+      "over": {
+        "recall": 0.0,
+        "gt_count": 109
+      },
+      "in front of": {
+        "recall": 0.060810810810810814,
+        "gt_count": 104
+      },
+      "beside": {
+        "recall": 0.04166666666666666,
+        "gt_count": 171
+      },
+      "on": {
+        "recall": 0.10938477580813347,
+        "gt_count": 343
+      },
+      "in": {
+        "recall": 0.0,
+        "gt_count": 43
+      },
+      "attached to": {
+        "recall": 0.0,
+        "gt_count": 72
+      },
+      "hanging from": {
+        "recall": 0.0,
+        "gt_count": 33
+      },
+      "on back of": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "falling off": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "going down": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "painted on": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "walking on": {
+        "recall": 0.0,
+        "gt_count": 29
+      },
+      "running on": {
+        "recall": 0.0,
+        "gt_count": 9
+      },
+      "crossing": {
+        "recall": 0.0,
+        "gt_count": 14
+      },
+      "standing on": {
+        "recall": 0.0,
+        "gt_count": 53
+      },
+      "lying on": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "sitting on": {
+        "recall": 0.029411764705882353,
+        "gt_count": 29
+      },
+      "flying over": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "jumping over": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "jumping from": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "wearing": {
+        "recall": 0.19230769230769232,
+        "gt_count": 19
+      },
+      "holding": {
+        "recall": 0.1875,
+        "gt_count": 72
+      },
+      "carrying": {
+        "recall": 0.0,
+        "gt_count": 23
+      },
+      "looking at": {
+        "recall": 0.0,
+        "gt_count": 51
+      },
+      "guiding": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "kissing": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "eating": {
+        "recall": 0.0,
+        "gt_count": 10
+      },
+      "drinking": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "feeding": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "biting": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "catching": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "picking": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "playing with": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "chasing": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "climbing": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "cleaning": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "playing": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "touching": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "pushing": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "pulling": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "opening": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "cooking": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "talking to": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "throwing": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "slicing": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "driving": {
+        "recall": 0.0,
+        "gt_count": 7
+      },
+      "riding": {
+        "recall": 0.0625,
+        "gt_count": 12
+      },
+      "parked on": {
+        "recall": 0.0,
+        "gt_count": 40
+      },
+      "driving on": {
+        "recall": 0.0,
+        "gt_count": 53
+      },
+      "about to hit": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "kicking": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "swinging": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "entering": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "exiting": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "enclosing": {
+        "recall": 0.0,
+        "gt_count": 21
+      },
+      "leaning on": {
+        "recall": 0.0,
+        "gt_count": 7
+      }
+    }
+  }
+}

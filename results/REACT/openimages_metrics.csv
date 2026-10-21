@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+REACT (PyTorch YOLOv8m),OpenImages V6,1.78%,1.90%,10.76%,12.05%,21.53%,17.51%,1184.2 ms (0.84 FPS)

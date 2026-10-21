@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+REACT++ (YOLO12m ONNX),OpenImages V6,2.12%,2.24%,13.22%,14.11%,22.77%,17.91%,599.3 ms (1.67 FPS)

@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+REACT,VG150,24.55%,27.77%,16.61%,18.28%,45.46%,37.58%,701.8 ms (1.42 FPS)

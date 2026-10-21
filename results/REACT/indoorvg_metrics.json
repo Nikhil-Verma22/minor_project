@@ -1,0 +1,44 @@
+{
+  "model": "REACT (YOLOv8m)",
+  "dataset": "IndoorVG",
+  "num_images": 200,
+  "scores": {
+    "R@50": 0.3108356826417551,
+    "R@100": 0.3657622225617918,
+    "mR@50": 0.2648041019669086,
+    "mR@100": 0.2965239437842328,
+    "F1@50": 0.5797508623196143,
+    "Triplet_F1@50": 0.28597940785931253,
+    "Detection_mAP@50": 0.4930523172930477,
+    "Speed_latency_ms": 724.7861905002719,
+    "Speed_fps": 1.3797172367615975,
+    "Speed": "724.8 ms (1.38 FPS)"
+  },
+  "profile": {
+    "num_images": 200,
+    "mean_forward_latency_ms": 693.9518489999682,
+    "std_forward_latency_ms": 78.57830826012979,
+    "mean_e2e_latency_ms": 724.7861905002719,
+    "std_e2e_latency_ms": 82.3974543947052,
+    "fps": 1.3797172367615975,
+    "peak_rss_mb": 727.765625
+  },
+  "sgg_metrics": {
+    "total_images": 200,
+    "eligible_images": 200,
+    "empty_images": 0,
+    "total_gt_relations": 1672,
+    "recalls_eligible": {
+      "R@50": 0.3108356826417551,
+      "R@100": 0.3657622225617918
+    },
+    "recalls_all_200": {
+      "R@50_all200": 0.3108356826417551,
+      "R@100_all200": 0.3657622225617918
+    },
+    "mean_recalls": {
+      "mR@50": 0.2648041019669086,
+      "mR@100": 0.2965239437842328
+    }
+  }
+}

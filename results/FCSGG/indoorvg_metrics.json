@@ -1,0 +1,190 @@
+{
+  "model": "Fully Convolutional SGG (FCSGG)",
+  "dataset": "IndoorVG",
+  "num_images": 200,
+  "scores": {
+    "R@50": 0.07968833701751155,
+    "R@100": 0.09146382541799994,
+    "mR@50": 0.03973792229037649,
+    "mR@100": 0.0435902852336107,
+    "F1@50": 0.17659926478750287,
+    "Detection_mAP@50": 0.1264431674678884,
+    "Speed_latency_ms": 2263.9100509997297,
+    "Speed_fps": 0.4417136624126942,
+    "Speed": "2263.9 ms (0.44 FPS)"
+  },
+  "profile": {
+    "mean_forward_latency_ms": 2254.6241019998706,
+    "mean_e2e_latency_ms": 2263.9100509997297,
+    "fps": 0.4417136624126942,
+    "peak_rss_mb": 2079.80859375
+  },
+  "sgg_metrics": {
+    "total_images": 200,
+    "eligible_images": 200,
+    "empty_images": 0,
+    "total_gt_relations": 1672,
+    "recalls_eligible": {
+      "R@50": 0.07968833701751155,
+      "R@100": 0.09146382541799994
+    },
+    "recalls_all_200": {
+      "R@50_all200": 0.07968833701751155,
+      "R@100_all200": 0.09146382541799994
+    },
+    "mean_recalls": {
+      "mR@50": 0.03973792229037649,
+      "mR@100": 0.0435902852336107
+    },
+    "per_predicate_recall_100": {
+      "above": {
+        "recall": 0.017857142857142856,
+        "gt_count": 99
+      },
+      "against": {
+        "recall": 0.0,
+        "gt_count": 23
+      },
+      "at": {
+        "recall": 0.0,
+        "gt_count": 16
+      },
+      "attached to": {
+        "recall": 0.0,
+        "gt_count": 17
+      },
+      "behind": {
+        "recall": 0.1111111111111111,
+        "gt_count": 26
+      },
+      "between": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "carrying": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "covering": {
+        "recall": 0.0,
+        "gt_count": 7
+      },
+      "cutting": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "drinking": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "eating": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "filled with": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "for": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "hanging from": {
+        "recall": 0.0,
+        "gt_count": 37
+      },
+      "has": {
+        "recall": 0.10465116279069768,
+        "gt_count": 111
+      },
+      "holding": {
+        "recall": 0.0,
+        "gt_count": 30
+      },
+      "in": {
+        "recall": 0.0715130023640662,
+        "gt_count": 108
+      },
+      "in front of": {
+        "recall": 0.0,
+        "gt_count": 38
+      },
+      "laying on": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "looking at": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "lying on": {
+        "recall": 0.0,
+        "gt_count": 12
+      },
+      "mounted on": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "near": {
+        "recall": 0.14583333333333334,
+        "gt_count": 91
+      },
+      "of": {
+        "recall": 0.22058823529411764,
+        "gt_count": 50
+      },
+      "on": {
+        "recall": 0.07690771836767583,
+        "gt_count": 773
+      },
+      "playing with": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "reading": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "sitting at": {
+        "recall": 0.0,
+        "gt_count": 8
+      },
+      "sitting on": {
+        "recall": 0.0,
+        "gt_count": 60
+      },
+      "standing on": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "taking": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "talking on": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "under": {
+        "recall": 0.047619047619047616,
+        "gt_count": 30
+      },
+      "using": {
+        "recall": 0.0,
+        "gt_count": 11
+      },
+      "watching": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "wearing": {
+        "recall": 0.4323232323232323,
+        "gt_count": 55
+      },
+      "with": {
+        "recall": 0.03571428571428571,
+        "gt_count": 51
+      }
+    }
+  }
+}

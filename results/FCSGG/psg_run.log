@@ -1,0 +1,53 @@
+2026-10-12 23:23:00,830 [INFO] ================================================================================
+2026-10-12 23:23:00,831 [INFO] Starting Fully Convolutional SGG (FCSGG) Benchmark Pipeline on PSG Dataset
+2026-10-12 23:23:00,831 [INFO] Max Images: 5 | Device: cpu
+2026-10-12 23:23:00,831 [INFO] ================================================================================
+2026-10-12 23:23:00,863 [INFO] Loaded PSG evaluation dataset: 200 images
+2026-10-12 23:23:00,886 [INFO] Initialized ontology mappings: 95/150 object classes, 23/50 predicates
+2026-10-12 23:23:02,319 [INFO] Running FCSGG inference across 5 PSG images...
+2026-10-12 23:23:09,329 [INFO] Processed 5/5 images | Fwd: 1390.0 ms | E2E: 1401.1 ms | RAM: 2769.4 MB
+2026-10-12 23:23:09,335 [INFO] Saved FCSGG PSG predictions and profile to d:/Minor\.cache/FCSGG\raw_preds_PSG_fcsgg_smoke.pt
+2026-10-12 23:23:09,336 [INFO] Computing detection mAP@50 and F1@50 for FCSGG on PSG...
+2026-10-12 23:23:09,411 [INFO] FCSGG Object Detection on PSG: mAP@50 = 0.2384 | F1@50 = 0.2750
+2026-10-12 23:23:09,434 [INFO] ================================================================================
+2026-10-12 23:23:09,435 [INFO] FINAL BENCHMARK SCORES FOR FULLY CONVOLUTIONAL SGG (FCSGG) ON PSG:
+2026-10-12 23:23:09,435 [INFO] R@50:            3.89%
+2026-10-12 23:23:09,435 [INFO] R@100:           6.75%
+2026-10-12 23:23:09,435 [INFO] mR@50:           2.20%
+2026-10-12 23:23:09,435 [INFO] mR@100:          4.47%
+2026-10-12 23:23:09,435 [INFO] F1@50:           27.50% (or 0.2750)
+2026-10-12 23:23:09,435 [INFO] Detection mAP@50: 23.84% (or 0.2384)
+2026-10-12 23:23:09,435 [INFO] Speed:           1401.1 ms (0.71 FPS)
+2026-10-12 23:23:09,435 [INFO] ================================================================================
+2026-10-12 23:23:09,437 [INFO] Saved FCSGG PSG metrics to d:/Minor\results/FCSGG\psg_metrics.json
+2026-10-12 23:23:09,437 [INFO] Saved FCSGG PSG metrics CSV to d:/Minor\results/FCSGG\psg_metrics.csv
+2026-10-12 23:23:23,404 [INFO] ================================================================================
+2026-10-12 23:23:23,405 [INFO] Starting Fully Convolutional SGG (FCSGG) Benchmark Pipeline on PSG Dataset
+2026-10-12 23:23:23,405 [INFO] Max Images: 200 | Device: cpu
+2026-10-12 23:23:23,405 [INFO] ================================================================================
+2026-10-12 23:23:23,440 [INFO] Loaded PSG evaluation dataset: 200 images
+2026-10-12 23:23:23,463 [INFO] Initialized ontology mappings: 95/150 object classes, 23/50 predicates
+2026-10-12 23:23:25,298 [INFO] Running FCSGG inference across 200 PSG images...
+2026-10-12 23:24:01,249 [INFO] Processed 25/200 images | Fwd: 1426.8 ms | E2E: 1437.7 ms | RAM: 2790.8 MB
+2026-10-12 23:24:42,592 [INFO] Processed 50/200 images | Fwd: 1534.1 ms | E2E: 1545.4 ms | RAM: 2835.8 MB
+2026-10-12 23:25:23,949 [INFO] Processed 75/200 images | Fwd: 1570.7 ms | E2E: 1581.5 ms | RAM: 2799.6 MB
+2026-10-12 23:26:07,809 [INFO] Processed 100/200 images | Fwd: 1613.6 ms | E2E: 1624.6 ms | RAM: 2928.5 MB
+2026-10-12 23:26:53,789 [INFO] Processed 125/200 images | Fwd: 1656.6 ms | E2E: 1667.5 ms | RAM: 2929.0 MB
+2026-10-12 23:27:39,020 [INFO] Processed 150/200 images | Fwd: 1680.3 ms | E2E: 1691.0 ms | RAM: 2912.4 MB
+2026-10-12 23:28:23,948 [INFO] Processed 175/200 images | Fwd: 1695.5 ms | E2E: 1706.1 ms | RAM: 2924.4 MB
+2026-10-12 23:29:09,854 [INFO] Processed 200/200 images | Fwd: 1711.7 ms | E2E: 1722.3 ms | RAM: 2926.1 MB
+2026-10-12 23:29:09,950 [INFO] Saved FCSGG PSG predictions and profile to d:/Minor\.cache/FCSGG\raw_preds_PSG_fcsgg_full.pt
+2026-10-12 23:29:09,950 [INFO] Computing detection mAP@50 and F1@50 for FCSGG on PSG...
+2026-10-12 23:29:11,537 [INFO] FCSGG Object Detection on PSG: mAP@50 = 0.1745 | F1@50 = 0.2123
+2026-10-12 23:29:12,066 [INFO] ================================================================================
+2026-10-12 23:29:12,067 [INFO] FINAL BENCHMARK SCORES FOR FULLY CONVOLUTIONAL SGG (FCSGG) ON PSG:
+2026-10-12 23:29:12,067 [INFO] R@50:            4.39%
+2026-10-12 23:29:12,067 [INFO] R@100:           5.10%
+2026-10-12 23:29:12,067 [INFO] mR@50:           1.10%
+2026-10-12 23:29:12,067 [INFO] mR@100:          1.40%
+2026-10-12 23:29:12,067 [INFO] F1@50:           21.23% (or 0.2123)
+2026-10-12 23:29:12,067 [INFO] Detection mAP@50: 17.45% (or 0.1745)
+2026-10-12 23:29:12,067 [INFO] Speed:           1722.3 ms (0.58 FPS)
+2026-10-12 23:29:12,067 [INFO] ================================================================================
+2026-10-12 23:29:12,069 [INFO] Saved FCSGG PSG metrics to d:/Minor\results/FCSGG\psg_metrics.json
+2026-10-12 23:29:12,070 [INFO] Saved FCSGG PSG metrics CSV to d:/Minor\results/FCSGG\psg_metrics.csv

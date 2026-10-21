@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+Fast Contextual SGG (C-SGG),OpenImages V6,2.45%,2.45%,24.03%,24.03%,17.08%,12.81%,655.0 ms (1.53 FPS)

@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+REACT++ (YOLO12m),PSG,35.98%,37.79%,23.20%,23.76%,62.84%,59.51%,548.0 ms (1.82 FPS)

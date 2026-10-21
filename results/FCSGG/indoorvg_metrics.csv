@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+Fully Convolutional SGG (FCSGG),IndoorVG,7.97%,9.15%,3.97%,4.36%,17.66%,12.64%,2263.9 ms (0.44 FPS)

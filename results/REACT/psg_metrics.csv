@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+REACT,PSG,30.47%,33.94%,23.98%,26.03%,62.14%,56.73%,1223.9 ms (0.82 FPS)

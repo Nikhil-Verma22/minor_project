@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+Fast Contextual SGG (C-SGG),IndoorVG,12.15%,15.22%,10.81%,13.03%,20.88%,16.56%,734.0 ms (1.36 FPS)

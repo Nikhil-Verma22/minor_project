@@ -1,0 +1,43 @@
+{
+  "model": "REACT (YOLOv8m)",
+  "dataset": "VG150 (Visual Genome)",
+  "num_images": 200,
+  "scores": {
+    "R@50": 0.2455281993419871,
+    "R@100": 0.2776779323563246,
+    "mR@50": 0.16605295655843572,
+    "mR@100": 0.18281770594566063,
+    "F1@50": 0.4545570110914379,
+    "Detection_mAP@50": 0.375754702041246,
+    "Speed_latency_ms": 701.8350620001547,
+    "Speed_fps": 1.4248361960573859,
+    "Speed": "701.8 ms (1.42 FPS)"
+  },
+  "profile": {
+    "num_images": 200,
+    "mean_forward_latency_ms": 694.1450734998762,
+    "std_forward_latency_ms": 150.6705875399311,
+    "mean_e2e_latency_ms": 701.8350620001547,
+    "std_e2e_latency_ms": 151.73328916171627,
+    "fps": 1.4248361960573859,
+    "peak_rss_mb": 3506.2265625
+  },
+  "sgg_metrics": {
+    "total_images": 200,
+    "eligible_images": 174,
+    "empty_images": 26,
+    "total_gt_relations": 1083,
+    "recalls_eligible": {
+      "R@50": 0.2455281993419871,
+      "R@100": 0.2776779323563246
+    },
+    "recalls_all_200": {
+      "R@50_all200": 0.21360953342752878,
+      "R@100_all200": 0.24157980115000238
+    },
+    "mean_recalls": {
+      "mR@50": 0.16605295655843572,
+      "mR@100": 0.18281770594566063
+    }
+  }
+}

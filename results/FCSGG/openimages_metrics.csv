@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+FCSGG (HRNetW32-1S),OpenImages V6,0.80%,0.80%,3.72%,3.72%,16.90%,12.31%,2324.0 ms (0.43 FPS)

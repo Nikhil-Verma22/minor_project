@@ -1,0 +1,242 @@
+{
+  "model": "Fully Convolutional SGG (FCSGG)",
+  "dataset": "VG150 (Visual Genome)",
+  "num_images": 200,
+  "scores": {
+    "R@50": 0.0907913606189468,
+    "R@100": 0.12229726203103485,
+    "mR@50": 0.02616094263595421,
+    "mR@100": 0.03263285482265606,
+    "F1@50": 0.31619144273334315,
+    "Detection_mAP@50": 0.22534879336086608,
+    "Speed_latency_ms": 1277.1125849999953,
+    "Speed_fps": 0.7830163227152003,
+    "Speed": "1277.1 ms (0.78 FPS)"
+  },
+  "profile": {
+    "mean_forward_latency_ms": 1271.6541779997715,
+    "mean_e2e_latency_ms": 1277.1125849999953,
+    "fps": 0.7830163227152003,
+    "peak_rss_mb": 3160.6328125
+  },
+  "sgg_metrics": {
+    "total_images": 200,
+    "eligible_images": 174,
+    "empty_images": 26,
+    "total_gt_relations": 1083,
+    "recalls_eligible": {
+      "R@50": 0.0907913606189468,
+      "R@100": 0.12229726203103485
+    },
+    "recalls_all_200": {
+      "R@50_all200": 0.07898848373848373,
+      "R@100_all200": 0.10639861796700031
+    },
+    "mean_recalls": {
+      "mR@50": 0.02616094263595421,
+      "mR@100": 0.03263285482265606
+    },
+    "per_predicate_recall_100": {
+      "above": {
+        "recall": 0.0,
+        "gt_count": 14
+      },
+      "across": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "against": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "along": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "and": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "at": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "attached to": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "behind": {
+        "recall": 0.0,
+        "gt_count": 19
+      },
+      "belonging to": {
+        "recall": 0.0,
+        "gt_count": 13
+      },
+      "between": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "carrying": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "covered in": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "covering": {
+        "recall": 0.0,
+        "gt_count": 7
+      },
+      "eating": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "flying in": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "for": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "from": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "growing on": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "hanging from": {
+        "recall": 0.0,
+        "gt_count": 5
+      },
+      "has": {
+        "recall": 0.3334818775995247,
+        "gt_count": 149
+      },
+      "holding": {
+        "recall": 0.058823529411764705,
+        "gt_count": 36
+      },
+      "in": {
+        "recall": 0.09765625,
+        "gt_count": 76
+      },
+      "in front of": {
+        "recall": 0.0,
+        "gt_count": 8
+      },
+      "laying on": {
+        "recall": 0.0,
+        "gt_count": 5
+      },
+      "looking at": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "lying on": {
+        "recall": 0.0,
+        "gt_count": 4
+      },
+      "made of": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "mounted on": {
+        "recall": 0.0,
+        "gt_count": 3
+      },
+      "near": {
+        "recall": 0.034482758620689655,
+        "gt_count": 49
+      },
+      "of": {
+        "recall": 0.09404761904761905,
+        "gt_count": 77
+      },
+      "on": {
+        "recall": 0.13483169129720854,
+        "gt_count": 364
+      },
+      "on back of": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "over": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "painted on": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "parked on": {
+        "recall": 0.0,
+        "gt_count": 2
+      },
+      "part of": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "playing": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "riding": {
+        "recall": 0.2,
+        "gt_count": 8
+      },
+      "says": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "sitting on": {
+        "recall": 0.0,
+        "gt_count": 12
+      },
+      "standing on": {
+        "recall": 0.0,
+        "gt_count": 13
+      },
+      "to": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "under": {
+        "recall": 0.0,
+        "gt_count": 18
+      },
+      "using": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "walking in": {
+        "recall": null,
+        "gt_count": 0
+      },
+      "walking on": {
+        "recall": 0.0,
+        "gt_count": 14
+      },
+      "watching": {
+        "recall": 0.0,
+        "gt_count": 1
+      },
+      "wearing": {
+        "recall": 0.21705486542443064,
+        "gt_count": 113
+      },
+      "wears": {
+        "recall": 0.0,
+        "gt_count": 8
+      },
+      "with": {
+        "recall": 0.037037037037037035,
+        "gt_count": 46
+      }
+    }
+  }
+}

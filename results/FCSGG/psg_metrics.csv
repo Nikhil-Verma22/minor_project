@@ -1,0 +1,2 @@
+Model,Dataset,R@50,R@100,mR@50,mR@100,F1@50,Detection mAP@50,Speed
+Fully Convolutional SGG (FCSGG),PSG,4.39%,5.10%,1.10%,1.40%,21.23%,17.45%,1722.3 ms (0.58 FPS)

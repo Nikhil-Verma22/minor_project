@@ -1,0 +1,43 @@
+{
+  "model": "REACT++ (YOLO12m ONNX)",
+  "dataset": "PSG (Panoptic Scene Graph)",
+  "num_images": 200,
+  "scores": {
+    "R@50": 0.35983150183150187,
+    "R@100": 0.37793684093684093,
+    "mR@50": 0.232020577103447,
+    "mR@100": 0.23762767296934148,
+    "F1@50": 0.6284411016615428,
+    "Detection_mAP@50": 0.595100008286625,
+    "Speed_latency_ms": 548.0273354999554,
+    "Speed_fps": 1.8247264966951295,
+    "Speed": "548.0 ms (1.82 FPS)"
+  },
+  "profile": {
+    "num_images": 200,
+    "mean_forward_latency_ms": 527.7435440000954,
+    "std_forward_latency_ms": 134.42720484458016,
+    "mean_e2e_latency_ms": 548.0273354999554,
+    "std_e2e_latency_ms": 134.59254477477478,
+    "fps": 1.8247264966951295,
+    "peak_rss_mb": 789.31640625
+  },
+  "sgg_metrics": {
+    "total_images": 200,
+    "eligible_images": 200,
+    "empty_images": 0,
+    "total_gt_relations": 1385,
+    "recalls_eligible": {
+      "R@50": 0.35983150183150187,
+      "R@100": 0.37793684093684093
+    },
+    "recalls_all_200": {
+      "R@50_all200": 0.35983150183150187,
+      "R@100_all200": 0.37793684093684093
+    },
+    "mean_recalls": {
+      "mR@50": 0.232020577103447,
+      "mR@100": 0.23762767296934148
+    }
+  }
+}

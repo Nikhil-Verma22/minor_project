@@ -1,0 +1,63 @@
+2026-10-13 01:08:33,959 [INFO] ================================================================================
+2026-10-13 01:08:33,960 [INFO] Starting Fast Contextual SGG (C-SGG) Benchmark Pipeline on OpenImages V6 Dataset
+2026-10-13 01:08:33,960 [INFO] Max Images: 3 | Device: cpu
+2026-10-13 01:08:33,960 [INFO] ================================================================================
+2026-10-13 01:08:33,988 [INFO] Loaded OpenImages V6 evaluation dataset: 200 images
+2026-10-13 01:08:34,009 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:08:35,480 [INFO] Loading native OpenImages CKN weights from d:/Minor\model_repos/fast-context-scene-graph-generation/OID_dataset/ckn/ckn_oid_PBS.pt...
+2026-10-13 01:08:35,489 [INFO] Running Fast Contextual SGG (C-SGG) inference across 3 OpenImages images...
+2026-10-13 01:08:37,417 [INFO] [C-SGG] Processed   3/  3 images | E2E: 635.5 ms (Det: 608.9 ms, Ctx: 10.7 ms) | RAM: 915.4 MB
+2026-10-13 01:08:37,424 [INFO] Saved Fast Contextual SGG OpenImages predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_OpenImages_c-sgg_smoke.pt
+2026-10-13 01:08:37,425 [INFO] Computing detection mAP@50 and F1@50 for Fast Contextual SGG on OpenImages V6...
+2026-10-13 01:08:37,448 [INFO] Fast Contextual SGG (C-SGG) Object Detection on OpenImages V6: mAP@50 = 0.1034 | F1@50 = 0.1276
+2026-10-13 01:08:37,461 [INFO] ================================================================================
+2026-10-13 01:08:37,461 [INFO] FINAL BENCHMARK SCORES FOR FAST CONTEXTUAL SGG (C-SGG) ON OPENIMAGES V6:
+2026-10-13 01:08:37,461 [INFO] R@50:            0.00%
+2026-10-13 01:08:37,461 [INFO] R@100:           0.00%
+2026-10-13 01:08:37,461 [INFO] mR@50:           0.00%
+2026-10-13 01:08:37,461 [INFO] mR@100:          0.00%
+2026-10-13 01:08:37,461 [INFO] F1@50:           12.76% (or 0.1276)
+2026-10-13 01:08:37,461 [INFO] Detection mAP@50: 10.34% (or 0.1034)
+2026-10-13 01:08:37,461 [INFO] Speed:           635.5 ms (1.57 FPS)
+2026-10-13 01:08:37,462 [INFO] ================================================================================
+2026-10-13 01:08:37,463 [INFO] Saved Fast Contextual SGG OpenImages metrics to d:/Minor\results/FastContextualSGG\openimages_metrics.json
+2026-10-13 01:08:37,464 [INFO] Saved Fast Contextual SGG OpenImages metrics CSV to d:/Minor\results/FastContextualSGG\openimages_metrics.csv
+2026-10-13 01:09:02,544 [INFO] ================================================================================
+2026-10-13 01:09:02,545 [INFO] Starting Fast Contextual SGG (C-SGG) Benchmark Pipeline on OpenImages V6 Dataset
+2026-10-13 01:09:02,545 [INFO] Max Images: 200 | Device: cpu
+2026-10-13 01:09:02,545 [INFO] ================================================================================
+2026-10-13 01:09:02,578 [INFO] Loaded OpenImages V6 evaluation dataset: 200 images
+2026-10-13 01:09:02,600 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:09:04,342 [INFO] Loading native OpenImages CKN weights from d:/Minor\model_repos/fast-context-scene-graph-generation/OID_dataset/ckn/ckn_oid_PBS.pt...
+2026-10-13 01:09:04,347 [INFO] Running Fast Contextual SGG (C-SGG) inference across 200 OpenImages images...
+2026-10-13 01:09:20,128 [INFO] [C-SGG] Processed  25/200 images | E2E: 626.5 ms (Det: 601.6 ms, Ctx: 9.8 ms) | RAM: 960.8 MB
+2026-10-13 01:09:36,885 [INFO] [C-SGG] Processed  50/200 images | E2E: 645.3 ms (Det: 621.4 ms, Ctx: 9.0 ms) | RAM: 934.0 MB
+2026-10-13 01:09:53,702 [INFO] [C-SGG] Processed  75/200 images | E2E: 652.2 ms (Det: 628.1 ms, Ctx: 8.7 ms) | RAM: 937.6 MB
+2026-10-13 01:10:10,079 [INFO] [C-SGG] Processed 100/200 images | E2E: 651.6 ms (Det: 627.5 ms, Ctx: 8.8 ms) | RAM: 934.6 MB
+2026-10-13 01:10:24,999 [INFO] [C-SGG] Processed 125/200 images | E2E: 639.8 ms (Det: 615.8 ms, Ctx: 8.8 ms) | RAM: 947.5 MB
+2026-10-13 01:10:41,125 [INFO] [C-SGG] Processed 150/200 images | E2E: 639.7 ms (Det: 615.5 ms, Ctx: 9.1 ms) | RAM: 951.7 MB
+2026-10-13 01:10:58,909 [INFO] [C-SGG] Processed 175/200 images | E2E: 649.3 ms (Det: 624.8 ms, Ctx: 9.2 ms) | RAM: 963.4 MB
+2026-10-13 01:11:16,421 [INFO] [C-SGG] Processed 200/200 images | E2E: 655.0 ms (Det: 630.7 ms, Ctx: 9.0 ms) | RAM: 978.5 MB
+2026-10-13 01:11:16,521 [INFO] Saved Fast Contextual SGG OpenImages predictions and profile to d:/Minor\.cache/FastContextualSGG\raw_preds_OpenImages_c-sgg_full.pt
+2026-10-13 01:11:16,521 [INFO] Computing detection mAP@50 and F1@50 for Fast Contextual SGG on OpenImages V6...
+2026-10-13 01:11:17,322 [INFO] Fast Contextual SGG (C-SGG) Object Detection on OpenImages V6: mAP@50 = 0.1281 | F1@50 = 0.1708
+2026-10-13 01:11:17,799 [INFO] ================================================================================
+2026-10-13 01:11:17,799 [INFO] FINAL BENCHMARK SCORES FOR FAST CONTEXTUAL SGG (C-SGG) ON OPENIMAGES V6:
+2026-10-13 01:11:17,799 [INFO] R@50:            2.45%
+2026-10-13 01:11:17,799 [INFO] R@100:           2.45%
+2026-10-13 01:11:17,800 [INFO] mR@50:           24.03%
+2026-10-13 01:11:17,800 [INFO] mR@100:          24.03%
+2026-10-13 01:11:17,800 [INFO] F1@50:           17.08% (or 0.1708)
+2026-10-13 01:11:17,800 [INFO] Detection mAP@50: 12.81% (or 0.1281)
+2026-10-13 01:11:17,800 [INFO] Speed:           655.0 ms (1.53 FPS)
+2026-10-13 01:11:17,800 [INFO] ================================================================================
+2026-10-13 01:11:17,802 [INFO] Saved Fast Contextual SGG OpenImages metrics to d:/Minor\results/FastContextualSGG\openimages_metrics.json
+2026-10-13 01:11:17,803 [INFO] Saved Fast Contextual SGG OpenImages metrics CSV to d:/Minor\results/FastContextualSGG\openimages_metrics.csv
+2026-10-13 01:20:12,099 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:21:14,904 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:22:51,250 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:23:11,642 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:41:35,164 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:41:57,910 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:48:33,472 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
+2026-10-13 01:48:59,036 [INFO] Initialized ontology mappings: 50/150 object classes, 19/50 VG predicates, 30/30 OID CKN predicates
