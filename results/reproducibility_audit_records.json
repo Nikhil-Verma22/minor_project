@@ -13,7 +13,7 @@
       "sha256": "1687ab288a1824b4a09d408279cc1f7ea2bd7085999f9dd3e12f2086dd492678"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -116,7 +116,7 @@
       "sha256": "0650c606cc4bc8e39e1ab208279937ea1051bfa118a74be05c43d68c48101f89"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -219,7 +219,7 @@
       "sha256": "230ca4c4c817c2ba3aefb11fe67ae395b28f3c0cf9d925f241ff07472b1ff5d8"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -321,7 +321,7 @@
       "sha256": "744ae0520035976e1cc5469202eb82422d5e12ee78e98056f705f26770033cbc"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -425,7 +425,7 @@
       "sha256": "cc71da0396c8ed1e824891b051247212fac5e31f90d31d8fb10afded624f875f"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -527,7 +527,7 @@
       "sha256": "ceadca044fba917a7eac9c28a9ac4ae02f4ed6092ad05bc66e9c68e5b19bb718"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -626,10 +626,10 @@
     "regime_provenance": "VG150-trained model evaluated zero-shot transfer on IndoorVG via semantic ontology projection.",
     "executed_script": {
       "path": "experiments/REACTPP/run_benchmark_reactpp_indoorvg.py",
-      "sha256": "fa6c632e82a63576a41d51dd42b6a1e4f1a9b8dbd41d2b9b5697a80dcb571607"
+      "sha256": "0bf9f38b4dd99149c9d90471f7862e86dcdb39f5bc3bf3d718313a2fd116c699"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -662,13 +662,13 @@
         "evaluation_sets/IndoorVG_200_annotations.coco.json"
       ],
       "ontology_projection": "Semantic mapping VG150 -> IndoorVG via evaluation_ontology.json",
-      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
-      "sort_order_type": "triplet_conf"
+      "candidate_ranking_rule": "pred_predicate_scores (rel_scores[:, 1:].max(axis=1), direct ONNX triplet confidence)",
+      "sort_order_type": "triplet_scores_direct"
     },
     "reported_metrics": {
-      "R@50": 0.1364,
+      "R@50": 0.1475,
       "R@100": 0.1602,
-      "mR@50": 0.1269,
+      "mR@50": 0.1325,
       "mR@100": 0.1407,
       "det_mAP50": 0.215,
       "det_f1_50": 0.2688,
@@ -679,27 +679,27 @@
       "images_evaluated": 200,
       "eligible_images": 200,
       "total_gt_relations": 1672,
-      "total_hits_50": 254,
+      "total_hits_50": 284,
       "total_hits_100": 311,
-      "new_hits_50_to_100": 57,
-      "img_avg_R@50": 0.136377,
+      "new_hits_50_to_100": 27,
+      "img_avg_R@50": 0.147486,
       "img_avg_R@100": 0.160187,
-      "img_avg_mR@50": 0.126882,
+      "img_avg_mR@50": 0.132536,
       "img_avg_mR@100": 0.140703,
-      "pooled_R@50": 0.151914,
+      "pooled_R@50": 0.169856,
       "pooled_R@100": 0.186005,
-      "pooled_mR@50": 0.130019,
+      "pooled_mR@50": 0.137644,
       "pooled_mR@100": 0.145197,
       "detection_mAP50": 0.215,
       "detection_H_AP_AR_50": 0.2688,
-      "supplementary_H_R_mR_50": 0.131459
+      "supplementary_H_R_mR_50": 0.139612
     },
     "error_analysis": {
-      "abs_error_R@50": 2.266e-05,
+      "abs_error_R@50": 1.412e-05,
       "abs_error_R@100": 1.258e-05,
-      "abs_error_mR@50": 1.78e-05,
+      "abs_error_mR@50": 3.61e-05,
       "abs_error_mR@100": 2.75e-06,
-      "max_abs_error": 2.266e-05,
+      "max_abs_error": 3.61e-05,
       "tolerance": 0.0001,
       "test_outcome": "PASS"
     },
@@ -729,10 +729,10 @@
     "regime_provenance": "VG150-trained model evaluated zero-shot transfer on OpenImages V6 via semantic ontology projection.",
     "executed_script": {
       "path": "experiments/REACTPP/run_benchmark_reactpp_openimages.py",
-      "sha256": "af7ef4e988633b9fac1a3d1d7c85642d2f636e1b0326f28c20ba81f4962c3af3"
+      "sha256": "c376101c52c699328d2c2c9a4ce2ba7b1016469c047bb0430c7de2c1f9a94d21"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -765,13 +765,13 @@
         "evaluation_sets/OpenImages_200_annotations.coco.json"
       ],
       "ontology_projection": "Semantic mapping VG150 -> OpenImages V6 via evaluation_ontology.json",
-      "candidate_ranking_rule": "pair_conf = obj_scores[s] * obj_scores[o] * pred_rel_scores",
-      "sort_order_type": "triplet_conf"
+      "candidate_ranking_rule": "pred_predicate_scores (rel_scores[:, 1:].max(axis=1), direct ONNX triplet confidence)",
+      "sort_order_type": "triplet_scores_direct"
     },
     "reported_metrics": {
-      "R@50": 0.0212,
+      "R@50": 0.0224,
       "R@100": 0.0224,
-      "mR@50": 0.1322,
+      "mR@50": 0.1411,
       "mR@100": 0.1411,
       "det_mAP50": 0.1791,
       "det_f1_50": 0.2277,
@@ -782,27 +782,27 @@
       "images_evaluated": 200,
       "eligible_images": 200,
       "total_gt_relations": 866,
-      "total_hits_50": 19,
+      "total_hits_50": 21,
       "total_hits_100": 21,
-      "new_hits_50_to_100": 2,
-      "img_avg_R@50": 0.02125,
+      "new_hits_50_to_100": 0,
+      "img_avg_R@50": 0.02244,
       "img_avg_R@100": 0.02244,
-      "img_avg_mR@50": 0.132189,
+      "img_avg_mR@50": 0.141064,
       "img_avg_mR@100": 0.141064,
-      "pooled_R@50": 0.02194,
+      "pooled_R@50": 0.024249,
       "pooled_R@100": 0.024249,
-      "pooled_mR@50": 0.116603,
+      "pooled_mR@50": 0.12515,
       "pooled_mR@100": 0.12515,
       "detection_mAP50": 0.1791,
       "detection_H_AP_AR_50": 0.2277,
-      "supplementary_H_R_mR_50": 0.036614
+      "supplementary_H_R_mR_50": 0.038721
     },
     "error_analysis": {
-      "abs_error_R@50": 5e-05,
+      "abs_error_R@50": 4.048e-05,
       "abs_error_R@100": 4.048e-05,
-      "abs_error_mR@50": 1.136e-05,
+      "abs_error_mR@50": 3.562e-05,
       "abs_error_mR@100": 3.562e-05,
-      "max_abs_error": 5e-05,
+      "max_abs_error": 4.048e-05,
       "tolerance": 0.0001,
       "test_outcome": "PASS"
     },
@@ -835,7 +835,7 @@
       "sha256": "56ce18cc959211708c9b95b54257db59714fc1572dd7fa980c1134f5ea9c431a"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -938,7 +938,7 @@
       "sha256": "cd735648c2779217e0e2ed8111a2fa0ec3fd8024fad1aab2ae13c971c03133a7"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -1040,7 +1040,7 @@
       "sha256": "cb06b3152f9947e60e0bf8561bfdf066ee0960fd7d08c7bd7946f2c9c592183d"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -1143,7 +1143,7 @@
       "sha256": "b8332b6c7bf2b1debedc416b80a0cab28647535f22ca78048c8ab1514ccb55e8"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -1246,7 +1246,7 @@
       "sha256": "096ace385286639c85272bdbe392c348d27df45c1c9307279cff05e2da660cd5"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -1359,7 +1359,7 @@
       "sha256": "3e70d189b3a7aa209058297004556e7564177fcebeb583d12d6acc0b41a5566e"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -1472,7 +1472,7 @@
       "sha256": "710c38b0857024e98deb7b1087d8b2edb9edc85bac6a499bbcb07648268798a0"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {
@@ -1585,7 +1585,7 @@
       "sha256": "cea8a3344518ec04f5128589f8e30a60de53cd0d7d762ed5dd52fb7a91fca988"
     },
     "git_environment": {
-      "revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+      "revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
       "working_tree_dirty": true
     },
     "checkpoints": {

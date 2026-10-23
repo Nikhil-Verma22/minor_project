@@ -320,15 +320,18 @@ $$C_s^{\text{pred}} = C_s^{\text{gt}} \quad \land \quad C_o^{\text{pred}} = C_o^
 2. **REACT++ on VG150**:
    - Executed on VG150 ONNX model (`react_pp_vg150_yolo12m.onnx`).
    - Achieved **23.54% R@50**, **25.56% R@100**, and **37.43% Detection mAP@50**.
-   - Script: [run_benchmark_reactpp_vg150.py](file:///d:/M3. **REACT++ on IndoorVG**:
+   - Script: [run_benchmark_reactpp_vg150.py](file:///d:/Minor/experiments/REACTPP/run_benchmark_reactpp_vg150.py)
+3. **REACT++ on IndoorVG**:
    - Evaluated as a genuine **zero-shot cross-dataset transfer** using the official REACT++ ONNX model (`react_pp_vg150_yolo12m.onnx`).
    - Predicted VG150 classes and predicates were mapped to IndoorVG via the defensible 57-class ontology mapping (strict lexical matches and true lemmas only, excluding false equivalences like `bed -> couch` or `fork -> knife`).
-   - Achieved **13.64% R@50**, **16.02% R@100**, **12.69% mR@50**, **14.07% mR@100**, **21.50% Detection mAP@50**, **26.88% Detection F1@50**, and **13.15% Triplet F1@50** at **2,450.7 ms (0.41 FPS)** on CPU.
+   - Corrected candidate ranking directly uses the model's exported compound triplet score ($S = [s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}}]^{1/3}$), resolving the double-counting defect where object detection confidences were multiplied twice.
+   - Achieved **14.75% R@50**, **16.02% R@100**, **13.25% mR@50**, **14.07% mR@100**, **21.50% Detection mAP@50**, **26.88% Detection F1@50**, and **13.96% Harmonic Recall H(R,mR)@50** at **2,450.7 ms (0.41 FPS)** on CPU. Hits@50 increased from 254 to 284 (+30 true-positive matches).
    - Script: [run_benchmark_reactpp_indoorvg.py](file:///d:/Minor/experiments/REACTPP/run_benchmark_reactpp_indoorvg.py)
 4. **REACT++ on OpenImages V6**:
    - Single-stage ONNX execution engine transferred from VG150 to OpenImages V6.
    - High detector throughput enabled **599.3 ms latency (1.67 FPS)**.
-   - Achieved **2.12% R@50**, **2.24% R@100**, **13.22% mR@50**, **14.11% mR@100**, **22.77% Detection F1@50**, **3.66% Triplet F1@50**, and **17.91% Detection mAP@50**.
+   - Under **Protocol A (866 GT relations across 200 images)**, achieved **2.24% R@50**, **2.24% R@100**, **14.11% mR@50**, **14.11% mR@100**, **22.77% Detection F1@50**, **3.87% Harmonic Recall H(R,mR)@50**, and **17.91% Detection mAP@50** (with all 21 true-positive hits ranked within top 50).
+   - Under **Protocol B (146 physical relations across 58 eligible images)**, achieved **13.04% R@50**, **13.04% R@100**, **15.28% mR@50**, and **14.38% Pooled R@50/R@100**.
    - Script: [run_benchmark_reactpp_openimages.py](file:///d:/Minor/experiments/REACTPP/run_benchmark_reactpp_openimages.py)
 
 ---
@@ -412,13 +415,13 @@ In an intermediate reporting table, REACT and REACT++ temporarily displayed iden
   - The REACT++ authors **never trained or released an IndoorVG checkpoint**; they trained exclusively on VG150 (`react_pp_vg150_yolo12m.onnx`) and PSG (`react_pp_yolo12m.onnx`).
   - Therefore, evaluating REACT++ on IndoorVG is fundamentally a **zero-shot cross-dataset transfer task**.
 - **Corrective Action & Verified Outcome**:
-  The cache fallback was removed, the contaminated cache was purged, and genuine ONNX inference with `react_pp_vg150_yolo12m.onnx` was executed across all 200 IndoorVG images using the defensible 57-class ontology mapping. The verified, distinct results are:
-  - **R@50**: **13.64%** (vs REACT's 31.08%)
+  The cache fallback was removed, the contaminated cache was purged, and genuine ONNX inference with `react_pp_vg150_yolo12m.onnx` was executed across all 200 IndoorVG images using the defensible 57-class ontology mapping. Subsequently, an in-depth scoring audit (Task 1) revealed that `pred_rel_scores` previously stored the model's precomputed triplet score $[s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}}]^{1/3}$, which the downstream evaluator multiplied by $s_{\text{subj}} \times s_{\text{obj}}$ again. Correcting the evaluator to rank directly by the model's triplet scores eliminated double-counting and improved top-50 recall. The final verified, distinct results are:
+  - **R@50**: **14.75%** (vs REACT's 31.08%) [increased from 13.64% pre-fix]
   - **R@100**: **16.02%** (vs REACT's 36.58%)
-  - **mR@50**: **12.69%** (vs REACT's 26.48%)
+  - **mR@50**: **13.25%** (vs REACT's 26.48%) [increased from 12.69% pre-fix]
   - **mR@100**: **14.07%** (vs REACT's 29.65%)
   - **Detection F1@50**: **26.88%** (vs REACT's 57.98%)
-  - **Triplet F1@50**: **13.15%** (vs REACT's 28.60%)
+  - **Harmonic Recall H(R,mR)@50**: **13.96%** (vs REACT's 28.60%)
   - **Detection mAP@50**: **21.50%** (vs REACT's 49.31%)
   - **Speed**: **2,450.7 ms (0.41 FPS)** (vs REACT's 724.8 ms / 1.38 FPS)
 
@@ -499,8 +502,8 @@ The complete empirical results for all 16 combinations, evaluated across identic
 | **4** | **REACT** | PyTorch YOLOv8m | **OpenImages V6** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 1.78% | 1.90% | 10.76% | 12.05% | 21.53% | 3.05% | 17.51% | 1184.2 ms (0.84 FPS) |
 | **5** | **REACT++** | ONNX YOLO12m | **PSG** | In-Domain | `VERIFIED_FROM_RAW_CACHE` | 35.98% | 37.79% | 23.20% | 23.76% | 62.84% | 28.21% | 59.51% | 548.0 ms (1.82 FPS) |
 | **6** | **REACT++** | ONNX YOLO12m | **VG150** | In-Domain | `VERIFIED_FROM_RAW_CACHE` | 23.54% | 25.56% | 16.57% | 18.48% | 46.68% | 19.45% | 37.43% | 744.0 ms (1.34 FPS) |
-| **7** | **REACT++** | ONNX YOLO12m | **IndoorVG** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 13.64% | 16.02% | 12.69% | 14.07% | 26.88% | 13.15% | 21.50% | 2450.7 ms (0.41 FPS) |
-| **8** | **REACT++** | ONNX YOLO12m | **OpenImages V6** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 2.12% | 2.24% | 13.22% | 14.11% | 22.77% | 3.66% | 17.91% | 599.3 ms (1.67 FPS) |
+| **7** | **REACT++** | ONNX YOLO12m | **IndoorVG** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 14.75% | 16.02% | 13.25% | 14.07% | 26.88% | 13.96% | 21.50% | 2450.7 ms (0.41 FPS) |
+| **8** | **REACT++** | ONNX YOLO12m | **OpenImages V6** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 2.24% | 2.24% | 14.11% | 14.11% | 22.77% | 3.87% | 17.91% | 599.3 ms (1.67 FPS) |
 | **9** | **FCSGG** | CenterNet / RAF | **PSG** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 4.39% | 5.10% | 1.10% | 1.40% | 21.23% | 1.76% | 17.45% | 1722.3 ms (0.58 FPS) |
 | **10** | **FCSGG** | CenterNet / RAF | **VG150** | In-Domain | `VERIFIED_FROM_RAW_CACHE` | 9.08% | 12.23% | 2.62% | 3.26% | 31.62% | 4.06% | 22.53% | 1277.1 ms (0.78 FPS) |
 | **11** | **FCSGG** | CenterNet / RAF | **IndoorVG** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 7.97% | 9.15% | 3.97% | 4.36% | 17.66% | 5.30% | 12.64% | 2263.9 ms (0.44 FPS) |
@@ -509,6 +512,28 @@ The complete empirical results for all 16 combinations, evaluated across identic
 | **14** | **C-SGG** | YOLOv5l + CKN | **VG150** | In-Domain | `VERIFIED_FROM_RAW_CACHE` | 20.05% | 24.85% | 14.10% | 15.33% | 41.37% | 16.56% | 34.19% | 350.3 ms (2.85 FPS) |
 | **15** | **C-SGG** | YOLOv5l + CKN | **IndoorVG** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 12.15% | 15.22% | 10.81% | 13.03% | 20.88% | 11.44% | 16.56% | 734.0 ms (1.36 FPS) |
 | **16** | **C-SGG** | YOLOv5l + CKN | **OpenImages V6** | Zero-Shot Transfer | `VERIFIED_FROM_RAW_CACHE` | 2.45% | 2.45% | 24.03% | 24.03% | 17.08% | 4.44% | 12.81% | 655.0 ms (1.53 FPS) |
+
+### OpenImages V6 Dual-Protocol Benchmarking (All 4 Architectures)
+
+To evaluate models fairly given the high prevalence of visual attribute annotations in OpenImages V6 (720 unary `is` relations out of 866 total ground-truth relations), we benchmark all four models under both protocols:
+- **Protocol A: Original Standard (866 relations / 200 images)**: Retains all annotations including unary visual attributes (`is`).
+- **Protocol B: Attribute-Excluded Physical Relations (146 relations / 58 images)**: Excludes predicate 27 `is` and evaluates strictly against the 146 physical pairwise interactions across their 58 eligible images.
+
+| Model Architecture | Evaluated Variant | Protocol A Pooled R@50 | Protocol A Pooled R@100 | Protocol A Img-Avg R@50 | Protocol A Img-Avg mR@50 | Protocol B Pooled R@50 | Protocol B Pooled R@100 | Protocol B Img-Avg R@50 | Protocol B Img-Avg mR@50 |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **REACT** | PyTorch YOLOv8m | 2.08% (18/866) | 2.31% (20/866) | 1.78% | 10.76% | 12.33% (18/146) | 13.70% (20/146) | 12.02% | 11.66% |
+| **REACT++ (Corr)** | ONNX YOLO12m | 2.42% (21/866) | 2.42% (21/866) | 2.24% | 14.11% | 14.38% (21/146) | 14.38% (21/146) | 13.04% | 15.28% |
+| **FCSGG** | CenterNet / RAF | 1.04% (9/866) | 1.04% (9/866) | 0.80% | 3.72% | 6.16% (9/146) | 6.16% (9/146) | 5.62% | 4.03% |
+| **C-SGG** | YOLOv5l + CKN (OID) | 2.08% (18/866) | 2.08% (18/866) | 2.45% | 24.03% | 12.33% (18/146) | 12.33% (18/146) | 15.47% | 26.04% |
+
+### Methodological Limitations & Benchmark Scope Disclosures
+
+1. **Model-Specific Candidate Ranking Conventions**: Different SGG model families employ distinct internal scoring formulations for candidate triplet ranking:
+   - **REACT** and **FCSGG**: Rank candidate triplets by the product of subject confidence, object confidence, and predicate score ($S = s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}}$).
+   - **REACT++**: Ranks candidate triplets directly using the model's exported compound triplet score ($S = (s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}})^{1/3}$), without multiplying detection confidences twice.
+   - **Fast Contextual SGG (C-SGG)**: Employs composite context scoring based on CKN logit routing and detector box confidences.
+   Because these model-specific score calibrations and dynamic ranges differ, small numerical differences between models should not be interpreted as definitive proof of absolute superiority. Issue 5 ranking standardization is deliberately deferred to preserve each model family's native design.
+2. **IndoorVG Training-Split Overlap**: The selected 200-image IndoorVG evaluation subset originates from Visual Genome images that overlap with the standard VG150 training split (`LEAK_INDOOR_VGTRAIN`). Therefore, transfer evaluations on IndoorVG (e.g., REACT++ and FCSGG) measure domain-adaptation behavior under familiar visual scenes rather than strict, clean, held-out zero-shot generalization. The existing 200-image evaluation subsets are preserved without resampling to maintain benchmark stability.
 
 ---
 
@@ -525,7 +550,7 @@ In Scene Graph Detection, relationship recall is strictly bounded by object dete
 
 ### 2. Prior Training Exposure vs. Genuine Cross-Domain Transfer
 - Models trained natively on a target dataset (e.g. REACT on IndoorVG with `react_indoorvg_yolov8m.onnx`) achieve high recall (**31.08% R@50**, **49.31% mAP@50**).
-- Under true zero-shot cross-dataset transfer (REACT++ transferred from VG150 to IndoorVG), recall drops to **13.64% R@50** and **21.50% mAP@50**, reflecting the unmapped 34.4% annotation gap and distribution shift.
+- Under true zero-shot cross-dataset transfer (REACT++ transferred from VG150 to IndoorVG), recall drops to **14.75% R@50** and **21.50% mAP@50**, reflecting the unmapped 34.4% annotation gap and distribution shift.
 - Transferring to **OpenImages V6** exposed the fragility of visual scene graph models: ground-truth relationships in OpenImages are sparse and dominated by `is` attributes (83.1%), causing interactive relationship models to experience severe false-positive penalties.
 
 ### 3. Latency vs. Representation: The Efficiency Frontier

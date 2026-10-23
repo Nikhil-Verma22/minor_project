@@ -4,11 +4,11 @@
 **Workspace Root**: `d:/Minor`  
 **Host Platform**: Intel(R) Core(TM) Ultra 5 125H (14 cores / 18 threads), 16 GB RAM (15.61 GB visible), Windows 11  
 **Software Stack**: Python 3.13.7, PyTorch 2.8.0+cpu, ONNX Runtime 1.27.0, torchvision 0.23.0, OpenCV 4.11.0, pycocotools 2.0.8  
-**Scope**: Complete benchmark consolidation containing all four evaluated SGG models across Visual Genome (VG150) and Panoptic Scene Graph (PSG):
-1. **REACT** (PyTorch YOLOv8m on PSG & VG150)
-2. **REACT++** (ONNX YOLO12m on PSG)
-3. **FCSGG** (HRNetW32-1S CenterNet/RAF on VG150)
-4. **Fast Contextual SGG** (C-SGG & CV-SGG on VG150)  
+**Scope**: Complete benchmark consolidation containing all four evaluated SGG models across all four target datasets (PSG, VG150, IndoorVG, and OpenImages V6) across 16 core combinations:
+1. **REACT** (PyTorch YOLOv8m on PSG, VG150, IndoorVG, OpenImages V6)
+2. **REACT++** (ONNX YOLO12m on PSG, VG150, IndoorVG, OpenImages V6)
+3. **FCSGG** (HRNetW32-1S CenterNet/RAF on PSG, VG150, IndoorVG, OpenImages V6)
+4. **Fast Contextual SGG** (C-SGG on PSG, VG150, IndoorVG, OpenImages V6; plus CV-SGG on VG150)  
 **Standardized Task**: Scene Graph Detection (`SGDet`) across 4 ontology views (`strict`, `extended`, `tri_dataset`, `native`)  
 **Data Integrity**: 851 / 851 evaluation files verified 100% bit-for-bit identical via cryptographic SHA-256 auditing  
 **Date**: October 10, 2026  
@@ -61,8 +61,8 @@ All metrics strictly evaluate directed relationship triplets $(s, p, o)$ requiri
 | **REACT** | PyTorch YOLOv8m | **OpenImages V6** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 1.78% | 1.90% | 10.76% | 12.05% | 21.53% | 3.05% | 17.51% | 1,184.2 ms (0.84 FPS) |
 | **REACT++** | ONNX YOLO12m | **PSG** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 35.98% | 37.79% | 23.20% | 23.76% | 62.84% | 28.21% | 59.51% | 548.0 ms (1.82 FPS) |
 | **REACT++** | ONNX YOLO12m | **VG150** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 23.54% | 25.56% | 16.57% | 18.48% | 46.68% | 19.45% | 37.43% | 744.0 ms (1.34 FPS) |
-| **REACT++** | ONNX YOLO12m | **IndoorVG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 13.64% | 16.02% | 12.69% | 14.07% | 26.88% | 13.15% | 21.50% | 2,450.7 ms (0.41 FPS) |
-| **REACT++** | ONNX YOLO12m | **OpenImages V6** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 2.12% | 2.24% | 13.22% | 14.11% | 22.77% | 3.66% | 17.91% | 599.3 ms (1.67 FPS) |
+| **REACT++** | ONNX YOLO12m | **IndoorVG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 14.75% | 16.02% | 13.25% | 14.07% | 26.88% | 13.96% | 21.50% | 2,450.7 ms (0.41 FPS) |
+| **REACT++** | ONNX YOLO12m | **OpenImages V6** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 2.24% | 2.24% | 14.11% | 14.11% | 22.77% | 3.87% | 17.91% | 599.3 ms (1.67 FPS) |
 | **FCSGG** | CenterNet / RAF | **PSG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 4.39% | 5.10% | 1.10% | 1.40% | 21.23% | 1.76% | 17.45% | 1,722.3 ms (0.58 FPS) |
 | **FCSGG** | CenterNet / RAF | **VG150** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 9.08% | 12.23% | 2.62% | 3.26% | 31.62% | 4.06% | 22.53% | 1,277.1 ms (0.78 FPS) |
 | **FCSGG** | CenterNet / RAF | **IndoorVG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 7.97% | 9.15% | 3.97% | 4.36% | 17.66% | 5.30% | 12.64% | 2,263.9 ms (0.44 FPS) |
@@ -71,6 +71,28 @@ All metrics strictly evaluate directed relationship triplets $(s, p, o)$ requiri
 | **Fast Contextual SGG** | C-SGG (YOLOv5l + CKN) | **VG150** | In-Domain | **VERIFIED_FROM_RAW_CACHE** | 20.05% | 24.85% | 14.10% | 15.33% | 41.37% | 16.56% | 34.19% | 350.3 ms (2.85 FPS) |
 | **Fast Contextual SGG** | C-SGG (YOLOv5l + CKN) | **IndoorVG** | Zero-Shot Transfer | **VERIFIED_FROM_RAW_CACHE** | 12.15% | 15.22% | 10.81% | 13.03% | 20.88% | 11.44% | 16.56% | 734.0 ms (1.36 FPS) |
 | **Fast Contextual SGG** | C-SGG (YOLOv5l + CKN OID) | **OpenImages V6** | Hybrid Adaptation | **VERIFIED_FROM_RAW_CACHE** | 2.45% | 2.45% | 24.03% | 24.03% | 17.08% | 4.44% | 12.81% | 655.0 ms (1.53 FPS) |
+
+### OpenImages V6 Dual-Protocol Benchmarking (All 4 Architectures)
+
+To evaluate models fairly given the high prevalence of visual attribute annotations in OpenImages V6 (720 unary `is` relations out of 866 total ground-truth relations), we benchmark all four models under both protocols:
+- **Protocol A: Original Standard (866 relations / 200 images)**: Retains all annotations including unary visual attributes (`is`).
+- **Protocol B: Attribute-Excluded Physical Relations (146 relations / 58 images)**: Excludes predicate 27 `is` and evaluates strictly against the 146 physical pairwise interactions across their 58 eligible images.
+
+| Model Architecture | Evaluated Variant | Protocol A Pooled R@50 | Protocol A Pooled R@100 | Protocol A Img-Avg R@50 | Protocol A Img-Avg mR@50 | Protocol B Pooled R@50 | Protocol B Pooled R@100 | Protocol B Img-Avg R@50 | Protocol B Img-Avg mR@50 |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **REACT** | PyTorch YOLOv8m | 2.08% (18/866) | 2.31% (20/866) | 1.78% | 10.76% | 12.33% (18/146) | 13.70% (20/146) | 12.02% | 11.66% |
+| **REACT++ (Corr)** | ONNX YOLO12m | 2.42% (21/866) | 2.42% (21/866) | 2.24% | 14.11% | 14.38% (21/146) | 14.38% (21/146) | 13.04% | 15.28% |
+| **FCSGG** | CenterNet / RAF | 1.04% (9/866) | 1.04% (9/866) | 0.80% | 3.72% | 6.16% (9/146) | 6.16% (9/146) | 5.62% | 4.03% |
+| **C-SGG** | YOLOv5l + CKN (OID) | 2.08% (18/866) | 2.08% (18/866) | 2.45% | 24.03% | 12.33% (18/146) | 12.33% (18/146) | 15.47% | 26.04% |
+
+### Methodological Limitations & Benchmark Scope Disclosures
+
+1. **Model-Specific Candidate Ranking Conventions**: Different SGG model families employ distinct internal scoring formulations for candidate triplet ranking:
+   - **REACT** and **FCSGG**: Rank candidate triplets by the product of subject confidence, object confidence, and predicate score ($S = s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}}$).
+   - **REACT++**: Ranks candidate triplets directly using the model's exported compound triplet score ($S = (s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}})^{1/3}$), without multiplying detection confidences twice.
+   - **Fast Contextual SGG (C-SGG)**: Employs composite context scoring based on CKN logit routing and detector box confidences.
+   Because these model-specific score calibrations and dynamic ranges differ, small numerical differences between models should not be interpreted as definitive proof of absolute superiority. Issue 5 ranking standardization is deliberately deferred to preserve each model family's native design.
+2. **IndoorVG Training-Split Overlap**: The selected 200-image IndoorVG evaluation subset originates from Visual Genome images that overlap with the standard VG150 training split (`LEAK_INDOOR_VGTRAIN`). Therefore, transfer evaluations on IndoorVG (e.g., REACT++ and FCSGG) measure domain-adaptation behavior under familiar visual scenes rather than strict, clean, held-out zero-shot generalization. The existing 200-image evaluation subsets are preserved without resampling to maintain benchmark stability.
 
 ---
 

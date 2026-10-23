@@ -64,3 +64,24 @@
 2026-10-17 01:18:25,154 [INFO] ================================================================================
 2026-10-17 01:18:25,159 [INFO] Saved benchmark summary JSON to d:/Minor\results/REACTPP\indoorvg_metrics.json
 2026-10-17 01:18:25,162 [INFO] Saved benchmark CSV to d:/Minor\results/REACTPP\indoorvg_metrics.csv
+2026-10-24 00:36:30,084 [INFO] ================================================================================
+2026-10-24 00:36:30,086 [INFO] Starting Genuine REACT++ (YOLO12m ONNX) Benchmark Pipeline on IndoorVG Dataset
+2026-10-24 00:36:30,087 [INFO] Model: d:/Minor\checkpoints/REACT/react_pp_vg150_yolo12m.onnx | Max Images: 200
+2026-10-24 00:36:30,087 [INFO] ================================================================================
+2026-10-24 00:36:30,200 [INFO] Loaded IndoorVG evaluation dataset: 200 images
+2026-10-24 00:36:30,320 [INFO] Initialized defensible ontology mappings: 57/150 VG classes mapped (38.0%), covering 44/84 IndoorVG classes (52.4%). Predicates mapped: 31/50.
+2026-10-24 00:36:30,325 [INFO] Loading cached REACT++ IndoorVG predictions from d:/Minor\.cache/REACTPP\raw_preds_indoorvg_reactpp.pt...
+2026-10-24 00:36:30,495 [INFO] Computing detection mAP@50 and Detection F1@50 for REACT++ on IndoorVG...
+2026-10-24 00:36:36,896 [INFO] ================================================================================
+2026-10-24 00:36:36,897 [INFO] FINAL GENUINE BENCHMARK SCORES FOR REACT++ ON INDOORVG:
+2026-10-24 00:36:36,897 [INFO] R@50:                  14.75%
+2026-10-24 00:36:36,897 [INFO] R@100:                 16.02%
+2026-10-24 00:36:36,898 [INFO] mR@50:                 13.25%
+2026-10-24 00:36:36,898 [INFO] mR@100:                14.07%
+2026-10-24 00:36:36,898 [INFO] Detection F1@50:       26.88%
+2026-10-24 00:36:36,898 [INFO] Triplet F1@50:         13.96%
+2026-10-24 00:36:36,898 [INFO] Detection mAP@50:      21.50%
+2026-10-24 00:36:36,906 [INFO] Speed:                 2450.7 ms (0.41 FPS)
+2026-10-24 00:36:36,907 [INFO] ================================================================================
+2026-10-24 00:36:36,911 [INFO] Saved benchmark summary JSON to d:/Minor\results/REACTPP\indoorvg_metrics.json
+2026-10-24 00:36:36,914 [INFO] Saved benchmark CSV to d:/Minor\results/REACTPP\indoorvg_metrics.csv

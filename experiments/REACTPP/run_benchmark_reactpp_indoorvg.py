@@ -427,19 +427,21 @@ def evaluate_sgg_recalls(
                 per_img_recalls_all[k].append(0.0)
             continue
 
-        # Extract top predicate per pair and rank by triplet score
+        # Extract top predicate per pair
         pred_predicate_scores = rel_scores_np[:, 1:].max(axis=1) if rel_scores_np.shape[1] > 1 else np.zeros(len(rel_scores_np))
         pred_predicate_labels = 1 + rel_scores_np[:, 1:].argmax(axis=1) if rel_scores_np.shape[1] > 1 else np.ones(len(rel_scores_np), dtype=int)
 
-        # Standardized Triplet Confidence = obj_scores[subj] * obj_scores[obj] * pred_predicate_scores
-        s_idxs = raw_pair_idxs[:, 0]
-        o_idxs = raw_pair_idxs[:, 1]
-        pair_conf = obj_scores[s_idxs] * obj_scores[o_idxs] * pred_predicate_scores
-
-        sort_order = np.argsort(-pair_conf)
+        # NOTE ON SCORING (TASK 1 CORRECTION):
+        # In REACT++ ONNX output, rels_raw[:, 3] already contains the model's precomputed triplet confidence:
+        #   triplet_score = (obj_scores[subj] * obj_scores[obj] * rel_score) ** (1/3).
+        # mapped_rel_scores was populated directly from rels_raw[:, 3].
+        # Downstream ranking must rank directly by pred_predicate_scores.
+        # Multiplying by obj_scores[subj] * obj_scores[obj] again double-counts detection confidences
+        # and distorts candidate ranking. Direct ranking matches native REACT++ (PSG and VG150).
+        sort_order = np.argsort(-pred_predicate_scores)
         sorted_pairs = raw_pair_idxs[sort_order]
         sorted_labels = pred_predicate_labels[sort_order]
-        sorted_scores = pair_conf[sort_order]
+        sorted_scores = pred_predicate_scores[sort_order]
 
         pred_rels = np.column_stack((sorted_pairs, sorted_labels))
         gt_triplets, gt_triplet_boxes, _ = _triplet(gt_rels, gt_classes, gt_boxes)

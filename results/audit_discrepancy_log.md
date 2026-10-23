@@ -183,6 +183,61 @@ To ensure complete scientific integrity, unconditional assignments of verificati
 
 ---
 
+### Discrepancy 11: REACT++ Cross-Dataset Scoring Defect (Double-Counting Object Confidences in RUN-07 and RUN-08)
+- **Affected Runs**:
+  - RUN-07: REACT++ on IndoorVG
+  - RUN-08: REACT++ on OpenImages V6
+- **Suspected vs. Confirmed Defect**:
+  - The REACT++ YOLO12m ONNX model exports relation tensors where column 3 represents the precomputed compound triplet confidence score ($S = [s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}}]^{1/3}$) and column 4 represents relation-only confidence ($s_{\text{rel}}$).
+  - In `experiments/REACTPP/run_benchmark_reactpp_indoorvg.py` and `experiments/REACTPP/run_benchmark_reactpp_openimages.py`, the scripts stored `rels_raw[:, 3]` (the compound triplet score) into `pred_rel_scores`.
+  - Downstream, `evaluate_sgg_recalls` multiplied `pred_rel_scores * (obj_scores[sub] * obj_scores[obj])` again. Consequently, the object confidences were double-counted, distorting candidate ranking across the top-50 and top-100 evaluation thresholds.
+- **Trace of Native vs. Transfer Runners**:
+  - In native PSG (`run_benchmark_reactpp_psg.py`) and native VG150 (`run_benchmark_reactpp_vg150.py`), `evaluate_sgg_recalls` sorts directly by `pred_predicate_scores` (the stored compound triplet score) without secondary multiplication.
+  - Thus, native runs were already mathematically un-double-counted and required no change.
+- **Correction Made**:
+  - Modified `experiments/REACTPP/run_benchmark_reactpp_indoorvg.py` and `experiments/REACTPP/run_benchmark_reactpp_openimages.py` to rank directly by `pred_predicate_scores` without multiplying object detection confidences again, achieving mathematical consistency with the native REACT++ evaluator.
+- **Verification from Existing Prediction Caches**:
+  - Recomputed metrics from cached predictions (`.cache/REACTPP/raw_preds_indoorvg_reactpp.pt` and `.cache/REACTPP/raw_preds_OpenImages_reactpp_full.pt`) without fresh inference:
+    - **RUN-07 (IndoorVG)**:
+      - *Pre-Fix (Double-Counted)*: Image-Avg R@50: 13.64%, Pooled R@50: 15.19% (254/1672), Pooled R@100: 17.46%, Image-Avg mR@50: 12.69%, H(R,mR)@50: 13.15%.
+      - *Post-Fix (Direct Triplet Score)*: **Image-Avg R@50: 14.75%**, **Pooled R@50: 16.99%** (284/1672), **Pooled R@100: 18.60%** (311/1672), **Image-Avg mR@50: 13.25%**, **H(R,mR)@50: 13.96%**. Hits@50 increased by +30 from 254 to 284 true positives.
+    - **RUN-08 (OpenImages V6)**:
+      - *Pre-Fix (Double-Counted)*: Protocol A Image-Avg R@50: 2.12%, Pooled R@50: 2.19% (19/866), Pooled R@100: 2.31%, Image-Avg mR@50: 13.22%, H(R,mR)@50: 3.66%.
+      - *Post-Fix (Direct Triplet Score)*: Protocol A (866 GT): **Image-Avg R@50: 2.24%**, **Pooled R@50: 2.42%** (21/866), **Pooled R@100: 2.42%** (21/866), **Image-Avg mR@50: 14.11%**, **H(R,mR)@50: 3.87%**. All 21 hits now appear within the top 50 ranks.
+      - *Protocol B (146 physical GT / 58 images)*: **Image-Avg R@50: 13.04%**, **Pooled R@50: 14.38%** (21/146), **Pooled R@100: 14.38%** (21/146), **Image-Avg mR@50: 15.28%**, **Pooled mR@50: 13.56%**.
+- **Remaining Uncertainty**: None.
+
+---
+
+### Discrepancy 12: Resolution of the 8 Pooled Recall@100 README vs. JSON Matrix Discrepancies
+- **Affected Runs**:
+  - RUN-02 (REACT / VG150): README had 28.53% vs. Canonical JSON 30.38% (329/1083).
+  - RUN-05 (REACT++ / PSG): README had 37.40% vs. Canonical JSON 37.55% (520/1385).
+  - RUN-07 (REACT++ / IndoorVG): README had 17.46% vs. Post-Fix Canonical JSON 18.60% (311/1672).
+  - RUN-08 (REACT++ / OpenImages V6): README had 2.31% vs. Post-Fix Canonical JSON 2.42% (21/866).
+  - RUN-10 (FCSGG / VG150): README had 12.28% vs. Canonical JSON 12.56% (136/1083).
+  - RUN-13 (C-SGG / PSG): README had 35.45% vs. Canonical JSON 35.74% (495/1385).
+  - RUN-14 (C-SGG / VG150): README had 26.50% vs. Canonical JSON 26.41% (286/1083).
+  - RUN-15 (C-SGG / IndoorVG): README had 16.81% vs. Canonical JSON 16.27% (272/1672).
+- **Raw-Source Evidence**:
+  - Every canonical value was mathematically computed from raw cache hits divided by total ground truth ($H / N_{\text{gt}}$).
+  - The README contained legacy draft or rounded approximations in those 8 cells.
+- **Resolution**:
+  - Synchronized `README.md`, `final_report.md`, `METHODOLOGY_CROSS_DATASET_BENCHMARKING.md`, and `results/single_pair_benchmark_matrix.csv` directly with the canonical machine-readable JSON matrix (`results/single_pair_benchmark_matrix.json`).
+- **Remaining Uncertainty**: None.
+
+---
+
+### Discrepancy 13: IndoorVG Predicate Count Discrepancy (37 in Vocabulary vs. 31 Documented)
+- **Previous Claim**: README and documentation stated IndoorVG contains "31 indoor predicates".
+- **Raw-Source Evidence**:
+  - Direct inspection of `evaluation_sets/IndoorVG_200_annotations.coco.json` revealed `len(data['rel_categories']) == 37`.
+  - In the frozen 200 evaluation images, exactly 29 predicates are active ($N_{\text{gt}} > 0$).
+- **Resolution**: Corrected documentation across all markdown files to cite 37 predicate categories in vocabulary (with 29 active in the 200 evaluation images).
+- **Remaining Uncertainty**: None.
+
+---
+
 ## 4. Mathematical Proof for Equal R@50 and R@100 Runs
 
 Two runs in the benchmark produce identical R@50 and R@100 values:
@@ -224,6 +279,17 @@ Run: Fast Contextual SGG on OpenImages V6 (200 images, 866 GT relations)
 - As a mathematical consequence, **all models score 0 hits across all 720 `is` annotations**.
 
 ### 5.2 Side-by-Side Dual-Protocol Evaluation
+
+#### Complete 4-Model Comparison on OpenImages V6
+
+| Model Architecture | Evaluated Variant | Protocol A Pooled R@50 | Protocol A Pooled R@100 | Protocol A Img-Avg R@50 | Protocol A Img-Avg mR@50 | Protocol B Pooled R@50 | Protocol B Pooled R@100 | Protocol B Img-Avg R@50 | Protocol B Img-Avg mR@50 |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **REACT** | PyTorch YOLOv8m | 2.08% (18/866) | 2.31% (20/866) | 1.78% | 10.76% | 12.33% (18/146) | 13.70% (20/146) | 12.02% | 11.66% |
+| **REACT++ (Corr)** | ONNX YOLO12m | 2.42% (21/866) | 2.42% (21/866) | 2.24% | 14.11% | 14.38% (21/146) | 14.38% (21/146) | 13.04% | 15.28% |
+| **FCSGG** | CenterNet / RAF | 1.04% (9/866) | 1.04% (9/866) | 0.80% | 3.72% | 6.16% (9/146) | 6.16% (9/146) | 5.62% | 4.03% |
+| **C-SGG** | YOLOv5l + CKN (OID) | 2.08% (18/866) | 2.08% (18/866) | 2.45% | 24.03% | 12.33% (18/146) | 12.33% (18/146) | 15.47% | 26.04% |
+
+#### Protocol A vs Protocol B Population & Metric Rules (Exemplified with C-SGG)
 
 | Evaluation Metric | Protocol A: Original Population (Literature Standard) | Protocol B: Attribute-Excluded Population (Physical Relations Only) | Mathematical Relationship & Derivation |
 | :--- | :---: | :---: | :--- |
@@ -317,5 +383,10 @@ The table below audits every active predicate in OpenImages V6 and explains why 
 - [x] All four annotation files exist, are nonempty, parse valid COCO structures, and match their documented cryptographic checksums.
 - [x] Unconditional verification statuses permanently removed; replaced with `VERIFIED_FROM_RAW_CACHE` and `NOT_EXECUTED_IN_AUDIT`.
 - [x] Hardware host specifications reconciled to 16 GB physical RAM (15.61 GB visible to OS).
-- [x] OpenImages original (866 relations) and attribute-excluded (146 relations) protocols audited side-by-side.
+- [x] OpenImages original (866 relations) and attribute-excluded (146 relations) protocols audited side-by-side across all 4 model architectures.
 - [x] Mathematical cause of R@50 == R@100 on OpenImages documented and proven.
+- [x] REACT++ cross-dataset transfer scoring bug (double-counting object confidences) identified and corrected on IndoorVG (RUN-07) and OpenImages (RUN-08).
+- [x] The 8 pooled Recall@100 README discrepancies reconciled against the canonical recomputed JSON matrix.
+- [x] IndoorVG predicate count verified and corrected to 37 vocabulary predicates (29 active in 200 evaluation images).
+- [x] Methodological limitations (Task 4 differing ranking score conventions, Task 5 IndoorVG training-split overlap) explicitly documented.
+- [x] Zero full model inference or benchmark reruns were executed; all corrections derived from existing caches, annotations, and checkpoints.

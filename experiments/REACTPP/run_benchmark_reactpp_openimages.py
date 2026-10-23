@@ -201,7 +201,8 @@ def run_reactpp_openimages_inference(
 def evaluate_reactpp_openimages_recalls(
     predictions: List[Dict[str, Any]],
     dataset: RelationDataset,
-    k_list: List[int] = [50, 100]
+    k_list: List[int] = [50, 100],
+    exclude_predicate: Optional[int] = None
 ) -> Dict[str, Any]:
     num_images = len(predictions)
     target_ind_to_predicates = dataset.ind_to_predicates
@@ -214,7 +215,9 @@ def evaluate_reactpp_openimages_recalls(
     per_img_recalls_all = {k: [] for k in k_list}
     class_recall_collector = {k: [[] for _ in range(num_predicates)] for k in k_list}
     class_gt_counts = [0] * num_predicates
+    class_hit_counts = {k: [0] * num_predicates for k in k_list}
     total_gt_relations = 0
+    total_hits = {k: 0 for k in k_list}
 
     for idx in range(num_images):
         pred_dict = predictions[idx]
@@ -223,6 +226,11 @@ def evaluate_reactpp_openimages_recalls(
         gt_boxes = gt_dict["boxes"].numpy()
         gt_classes = gt_dict["labels"].numpy()
         gt_rels = gt_dict["relation_tuple"].numpy()
+
+        if exclude_predicate is not None and len(gt_rels) > 0:
+            mask = gt_rels[:, 2] != exclude_predicate
+            gt_rels = gt_rels[mask]
+
         num_gt = len(gt_rels)
         total_gt_relations += num_gt
 
@@ -251,17 +259,21 @@ def evaluate_reactpp_openimages_recalls(
                 per_img_recalls_all[k].append(0.0)
             continue
 
+        # Extract top predicate per pair
         pred_predicate_scores = rel_scores_np[:, 1:].max(axis=1) if rel_scores_np.shape[1] > 1 else np.zeros(len(rel_scores_np))
         pred_predicate_labels = 1 + rel_scores_np[:, 1:].argmax(axis=1) if rel_scores_np.shape[1] > 1 else np.ones(len(rel_scores_np), dtype=int)
 
-        s_idxs = raw_pair_idxs[:, 0]
-        o_idxs = raw_pair_idxs[:, 1]
-        pair_conf = obj_scores[s_idxs] * obj_scores[o_idxs] * pred_predicate_scores
-
-        sort_order = np.argsort(-pair_conf)
+        # NOTE ON SCORING (TASK 1 CORRECTION):
+        # In REACT++ ONNX output, rels_raw[:, 3] already contains the model's precomputed triplet confidence:
+        #   triplet_score = (obj_scores[subj] * obj_scores[obj] * rel_score) ** (1/3).
+        # mapped_rel_scores was populated directly from rels_raw[:, 3].
+        # Downstream ranking must rank directly by pred_predicate_scores.
+        # Multiplying by obj_scores[subj] * obj_scores[obj] again double-counts detection confidences
+        # and distorts candidate ranking. Direct ranking matches native REACT++ (PSG and VG150).
+        sort_order = np.argsort(-pred_predicate_scores)
         sorted_pairs = raw_pair_idxs[sort_order]
         sorted_labels = pred_predicate_labels[sort_order]
-        sorted_scores = pair_conf[sort_order]
+        sorted_scores = pred_predicate_scores[sort_order]
 
         pred_rels = np.column_stack((sorted_pairs, sorted_labels))
         gt_triplets, gt_triplet_boxes, _ = _triplet(gt_rels, gt_classes, gt_boxes)
@@ -446,25 +458,39 @@ def main():
     det_map50, det_f1_50 = evaluate_reactpp_openimages_detection(predictions, oid_dataset)
     logger.info(f"REACT++ Object Detection on OpenImages V6: mAP@50 = {det_map50:.4f} | F1@50 = {det_f1_50:.4f}")
 
-    eval_results = evaluate_reactpp_openimages_recalls(predictions, oid_dataset, k_list=[50, 100])
+    eval_results_a = evaluate_reactpp_openimages_recalls(predictions, oid_dataset, k_list=[50, 100], exclude_predicate=None)
+    eval_results_b = evaluate_reactpp_openimages_recalls(predictions, oid_dataset, k_list=[50, 100], exclude_predicate=27)
 
-    r50 = eval_results["recalls_eligible"]["R@50"]
-    r100 = eval_results["recalls_eligible"]["R@100"]
-    mr50 = eval_results["mean_recalls"]["mR@50"]
-    mr100 = eval_results["mean_recalls"]["mR@100"]
+    r50_a = eval_results_a["recalls_eligible"]["R@50"]
+    r100_a = eval_results_a["recalls_eligible"]["R@100"]
+    mr50_a = eval_results_a["mean_recalls"]["mR@50"]
+    mr100_a = eval_results_a["mean_recalls"]["mR@100"]
+
+    r50_b = eval_results_b["recalls_eligible"]["R@50"]
+    r100_b = eval_results_b["recalls_eligible"]["R@100"]
+    mr50_b = eval_results_b["mean_recalls"]["mR@50"]
+    mr100_b = eval_results_b["mean_recalls"]["mR@100"]
+
     speed_ms = profile["mean_e2e_latency_ms"]
     fps = profile["fps"]
     speed_str = f"{speed_ms:.1f} ms ({fps:.2f} FPS)"
 
     logger.info("=" * 80)
     logger.info("FINAL BENCHMARK SCORES FOR REACT++ ON OPENIMAGES V6:")
-    logger.info(f"R@50:            {r50 * 100:.2f}%")
-    logger.info(f"R@100:           {r100 * 100:.2f}%")
-    logger.info(f"mR@50:           {mr50 * 100:.2f}%")
-    logger.info(f"mR@100:          {mr100 * 100:.2f}%")
-    logger.info(f"F1@50:           {det_f1_50 * 100:.2f}% (or {det_f1_50:.4f})")
-    logger.info(f"Detection mAP@50: {det_map50 * 100:.2f}% (or {det_map50:.4f})")
-    logger.info(f"Speed:           {speed_str}")
+    logger.info("--- Protocol A: Original Annotations (866 GT, 200 Images) ---")
+    logger.info(f"R@50:            {r50_a * 100:.2f}%")
+    logger.info(f"R@100:           {r100_a * 100:.2f}%")
+    logger.info(f"mR@50:           {mr50_a * 100:.2f}%")
+    logger.info(f"mR@100:          {mr100_a * 100:.2f}%")
+    logger.info("--- Protocol B: Physical Relations Only (146 GT, 58 Eligible Images, Excl 'is') ---")
+    logger.info(f"R@50:            {r50_b * 100:.2f}%")
+    logger.info(f"R@100:           {r100_b * 100:.2f}%")
+    logger.info(f"mR@50:           {mr50_b * 100:.2f}%")
+    logger.info(f"mR@100:          {mr100_b * 100:.2f}%")
+    logger.info("--- Detection & Speed ---")
+    logger.info(f"Detection H(AP,AR)@50: {det_f1_50 * 100:.2f}% (or {det_f1_50:.4f})")
+    logger.info(f"Detection mAP@50:      {det_map50 * 100:.2f}% (or {det_map50:.4f})")
+    logger.info(f"Speed:                 {speed_str}")
     logger.info("=" * 80)
 
     # Save to JSON
@@ -475,18 +501,26 @@ def main():
         "dataset": "OpenImages V6",
         "num_images": len(predictions),
         "scores": {
-            "R@50": r50,
-            "R@100": r100,
-            "mR@50": mr50,
-            "mR@100": mr100,
+            "R@50": r50_a,
+            "R@100": r100_a,
+            "mR@50": mr50_a,
+            "mR@100": mr100_a,
             "F1@50": det_f1_50,
             "Detection_mAP@50": det_map50,
             "Speed_latency_ms": speed_ms,
             "Speed_fps": fps,
             "Speed": speed_str,
+            "protocol_b": {
+                "description": "Physical pairwise relations only (excluding predicate 27 'is', 146 relations across 58 eligible images)",
+                "R@50": r50_b,
+                "R@100": r100_b,
+                "mR@50": mr50_b,
+                "mR@100": mr100_b
+            }
         },
         "profile": profile,
-        "sgg_metrics": eval_results,
+        "sgg_metrics": eval_results_a,
+        "sgg_metrics_protocol_b": eval_results_b,
     }
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(final_payload, f, indent=2)
@@ -496,25 +530,39 @@ def main():
     csv_path = os.path.join(LOG_DIR, "openimages_metrics.csv")
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["Model", "Dataset", "R@50", "R@100", "mR@50", "mR@100", "F1@50", "Detection mAP@50", "Speed"])
+        writer.writerow(["Model", "Dataset", "Protocol", "R@50", "R@100", "mR@50", "mR@100", "F1@50", "Detection mAP@50", "Speed"])
         writer.writerow([
             "REACT++ (YOLO12m ONNX)",
             "OpenImages V6",
-            f"{r50 * 100:.2f}%",
-            f"{r100 * 100:.2f}%",
-            f"{mr50 * 100:.2f}%",
-            f"{mr100 * 100:.2f}%",
+            "Protocol A (Original 866 GT)",
+            f"{r50_a * 100:.2f}%",
+            f"{r100_a * 100:.2f}%",
+            f"{mr50_a * 100:.2f}%",
+            f"{mr100_a * 100:.2f}%",
+            f"{det_f1_50 * 100:.2f}%",
+            f"{det_map50 * 100:.2f}%",
+            speed_str,
+        ])
+        writer.writerow([
+            "REACT++ (YOLO12m ONNX)",
+            "OpenImages V6",
+            "Protocol B (Physical 146 GT)",
+            f"{r50_b * 100:.2f}%",
+            f"{r100_b * 100:.2f}%",
+            f"{mr50_b * 100:.2f}%",
+            f"{mr100_b * 100:.2f}%",
             f"{det_f1_50 * 100:.2f}%",
             f"{det_map50 * 100:.2f}%",
             speed_str,
         ])
     logger.info(f"Saved REACT++ OpenImages metrics CSV to {csv_path}")
 
-    print("\n" + "=" * 80)
-    print("REQUESTED BENCHMARK OUTPUT TABLE:")
-    print("R@50\tR@100\tmR@50\tmR@100\tF1@50\tDetection mAP@50\tSpeed")
-    print(f"{r50 * 100:.2f}%\t{r100 * 100:.2f}%\t{mr50 * 100:.2f}%\t{mr100 * 100:.2f}%\t{det_f1_50 * 100:.2f}%\t{det_map50 * 100:.2f}%\t{speed_str}")
-    print("=" * 80 + "\n")
+    print("\n" + "=" * 90)
+    print("REACT++ ON OPENIMAGES V6 BENCHMARK TABLE:")
+    print("Protocol\tR@50\tR@100\tmR@50\tmR@100\tDet. H(AP,AR)\tDet. mAP@50\tSpeed")
+    print(f"Protocol A\t{r50_a * 100:.2f}%\t{r100_a * 100:.2f}%\t{mr50_a * 100:.2f}%\t{mr100_a * 100:.2f}%\t{det_f1_50 * 100:.2f}%\t{det_map50 * 100:.2f}%\t{speed_str}")
+    print(f"Protocol B\t{r50_b * 100:.2f}%\t{r100_b * 100:.2f}%\t{mr50_b * 100:.2f}%\t{mr100_b * 100:.2f}%\t{det_f1_50 * 100:.2f}%\t{det_map50 * 100:.2f}%\t{speed_str}")
+    print("=" * 90 + "\n")
 
 
 if __name__ == "__main__":

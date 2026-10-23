@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "Comprehensive 16-Run Scene Graph Generation Benchmark Matrix",
-    "generated_timestamp": "2026-10-17T16:15:15+0530",
-    "code_revision": "1b6b15ac7a3186a600d21cf062af6943d1667710",
+    "generated_timestamp": "2026-10-24T00:41:29+0530",
+    "code_revision": "05c79e17bffbb65f014f76dc0fd8e55f66e532c8",
     "is_working_tree_dirty": true,
     "hardware_environment": "Intel(R) Core(TM) Ultra 5 125H (14 cores, 18 threads), 16 GB RAM (15.61 GB visible to OS), Windows 11 Home 64-bit",
     "software_environment": {
@@ -194,17 +194,17 @@
       "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
       "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
       "scores": {
-        "R@50": "13.64%",
+        "R@50": "14.75%",
         "R@100": "16.02%",
-        "mR@50": "12.69%",
+        "mR@50": "13.25%",
         "mR@100": "14.07%",
-        "pooled_R@50": "15.19%",
+        "pooled_R@50": "16.99%",
         "pooled_R@100": "18.60%",
-        "pooled_mR@50": "13.00%",
+        "pooled_mR@50": "13.76%",
         "pooled_mR@100": "14.52%",
         "detection_mAP@50": "21.50%",
         "detection_H_AP_AR@50": "26.88%",
-        "supplementary_H_R_mR@50": "13.15%",
+        "supplementary_H_R_mR@50": "13.96%",
         "speed": "2450.7 ms (0.41 FPS)"
       },
       "script": "experiments/REACTPP/run_benchmark_reactpp_indoorvg.py",
@@ -222,17 +222,17 @@
       "cache_verification_status": "VERIFIED_FROM_RAW_CACHE",
       "end_to_end_status": "NOT_EXECUTED_IN_AUDIT",
       "scores": {
-        "R@50": "2.12%",
+        "R@50": "2.24%",
         "R@100": "2.24%",
-        "mR@50": "13.22%",
+        "mR@50": "14.11%",
         "mR@100": "14.11%",
-        "pooled_R@50": "2.19%",
+        "pooled_R@50": "2.42%",
         "pooled_R@100": "2.42%",
-        "pooled_mR@50": "11.66%",
+        "pooled_mR@50": "12.52%",
         "pooled_mR@100": "12.52%",
         "detection_mAP@50": "17.91%",
         "detection_H_AP_AR@50": "22.77%",
-        "supplementary_H_R_mR@50": "3.66%",
+        "supplementary_H_R_mR@50": "3.87%",
         "speed": "599.3 ms (1.67 FPS)"
       },
       "script": "experiments/REACTPP/run_benchmark_reactpp_openimages.py",
@@ -464,5 +464,78 @@
       "checkpoint_sha256": "f657e21917f10d2d70da5e3f1b02d3148dc8589ac74ba6e7d8c2fc5e2aaac257",
       "prediction_cache_sha256": "8430e40c86c012e1e4f7b22d2a64986b5de271e6c10e3dc10b33fe54616501d3"
     }
-  ]
+  ],
+  "openimages_protocols_summary": {
+    "description": "Comparison of OpenImages V6 under Protocol A (Original 866 GT relations across 200 images, including 720 unary visual attributes 'is') and Protocol B (Physical pairwise relations only, 146 relations across 58 eligible images, excluding predicate 27 'is')",
+    "protocol_b_physical_relations": [
+      {
+        "run_id": "RUN-04-REACT-OPENIMAGES",
+        "model": "REACT",
+        "variant": "PyTorch YOLOv8m",
+        "eligible_images": 58,
+        "total_physical_gt": 146,
+        "hits@50": 18,
+        "hits@100": 20,
+        "image_avg_R@50": "12.02%",
+        "image_avg_R@100": "13.22%",
+        "pooled_R@50": "12.33%",
+        "pooled_R@100": "13.70%",
+        "image_avg_mR@50": "11.66%",
+        "image_avg_mR@100": "13.05%",
+        "pooled_mR@50": "9.33%",
+        "pooled_mR@100": "10.09%"
+      },
+      {
+        "run_id": "RUN-08-REACTPP-OPENIMAGES",
+        "model": "REACT++",
+        "variant": "ONNX YOLO12m",
+        "eligible_images": 58,
+        "total_physical_gt": 146,
+        "hits@50": 21,
+        "hits@100": 21,
+        "image_avg_R@50": "13.04%",
+        "image_avg_R@100": "13.04%",
+        "pooled_R@50": "14.38%",
+        "pooled_R@100": "14.38%",
+        "image_avg_mR@50": "15.28%",
+        "image_avg_mR@100": "15.28%",
+        "pooled_mR@50": "13.56%",
+        "pooled_mR@100": "13.56%"
+      },
+      {
+        "run_id": "RUN-12-FCSGG-OPENIMAGES",
+        "model": "FCSGG",
+        "variant": "HRNetW32-1S CenterNet",
+        "eligible_images": 58,
+        "total_physical_gt": 146,
+        "hits@50": 9,
+        "hits@100": 9,
+        "image_avg_R@50": "5.62%",
+        "image_avg_R@100": "5.62%",
+        "pooled_R@50": "6.16%",
+        "pooled_R@100": "6.16%",
+        "image_avg_mR@50": "4.03%",
+        "image_avg_mR@100": "4.03%",
+        "pooled_mR@50": "4.35%",
+        "pooled_mR@100": "4.35%"
+      },
+      {
+        "run_id": "RUN-16-CSGG-OPENIMAGES",
+        "model": "Fast Contextual SGG (C-SGG)",
+        "variant": "YOLOv5l + CKN (OID)",
+        "eligible_images": 58,
+        "total_physical_gt": 146,
+        "hits@50": 18,
+        "hits@100": 18,
+        "image_avg_R@50": "15.47%",
+        "image_avg_R@100": "15.47%",
+        "pooled_R@50": "12.33%",
+        "pooled_R@100": "12.33%",
+        "image_avg_mR@50": "26.04%",
+        "image_avg_mR@100": "26.04%",
+        "pooled_mR@50": "24.25%",
+        "pooled_mR@100": "24.25%"
+      }
+    ]
+  }
 }

@@ -19,7 +19,7 @@ In dynamic workspace environments (collaborative robotic workspaces, tabletop ob
 This repository provides an empirical, standardized benchmark suite evaluating **four state-of-the-art scene graph generation (SGG) model architectures** under identical hardware conditions, evaluating on frozen 200-image evaluation subsets across four benchmark datasets:
 1. **Panoptic Scene Graph (PSG)**: 200 images, 3,019 objects, 1,385 relations, 133 COCO classes, 56 OpenPSG predicates.
 2. **Visual Genome (VG150)**: 200 images, 2,320 objects, 1,083 relations, 150 object classes, 50 predicate classes.
-3. **IndoorVG**: 200 images, 3,118 objects, 1,672 relations, 84 indoor object categories, 31 indoor predicates.
+3. **IndoorVG**: 200 images, 3,118 objects, 1,672 relations, 84 indoor object categories, 37 indoor predicates (29 active in evaluation subset).
 4. **OpenImages V6**: 200 images, 1,486 objects, 866 relations (146 physical relations, 720 visual attributes), 75 object categories, 31 relationship predicates.
 
 ### Evaluated Model Architectures (16 Core Combinations)
@@ -37,23 +37,23 @@ This repository provides an empirical, standardized benchmark suite evaluating *
 All models were evaluated under standardized **Scene Graph Detection (`SGDet`)** criteria (bounding box IoU ≥ 0.5 on both subject and object, with correct category and directed predicate predictions):
 
 | Run ID | Model Architecture | Evaluated Variant | Exact Detector / Runtime | Target Dataset | Regime | Image-Avg R@50 | Image-Avg R@100 | Pooled R@50 | Pooled R@100 | Image-Avg mR@50 | Image-Avg mR@100 | Det. mAP@50 | Det. H(AP,AR) [Supp] | Supp. H(R,mR)@50 | Latency (ms) | Speed (FPS) | Cache Status |
-| :---: | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **RUN-01** | **REACT** | PyTorch YOLOv8m | YOLOv8m (PyTorch CPU) | **PSG** | In-Domain | 30.47% | 33.94% | 30.11% | 33.86% | 23.98% | 26.03% | 56.73% | 62.14% | 26.84% | 1,223.9 ms | 0.82 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-02** | **REACT** | PyTorch YOLOv8m | YOLOv8m (PyTorch CPU) | **VG150** | In-Domain | 24.55% | 27.77% | 26.04% | 28.53% | 16.61% | 18.28% | 37.58% | 45.46% | 19.81% | 701.8 ms | 1.42 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| :---: | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **RUN-01** | **REACT** | PyTorch YOLOv8m | YOLOv8m (PyTorch CPU) | **PSG** | In-Domain | 30.47% | 33.94% | 30.11% | 33.86% | 23.98% | 26.03% | 56.73% | 62.14% | 26.84% | 1223.9 ms | 0.82 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-02** | **REACT** | PyTorch YOLOv8m | YOLOv8m (PyTorch CPU) | **VG150** | In-Domain | 24.55% | 27.77% | 26.04% | 30.38% | 16.61% | 18.28% | 37.58% | 45.46% | 19.81% | 701.8 ms | 1.42 FPS | `VERIFIED_FROM_RAW_CACHE` |
 | **RUN-03** | **REACT** | ONNX YOLOv8m (Native) | YOLOv8m ONNX Runtime | **IndoorVG** | In-Domain | 31.08% | 36.58% | 29.96% | 35.89% | 26.48% | 29.65% | 49.31% | 57.98% | 28.60% | 724.8 ms | 1.38 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-04** | **REACT** | PyTorch YOLOv8m | YOLOv8m (PyTorch CPU) | **OpenImages V6** | Zero-Shot Transfer | 1.78% | 1.90% | 2.08% | 2.31% | 10.76% | 12.05% | 17.51% | 21.53% | 3.05% | 1,184.2 ms | 0.84 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-05** | **REACT++** | ONNX YOLO12m | YOLO12m ONNX Runtime | **PSG** | In-Domain | **35.98%** | **37.79%** | **35.60%** | **37.40%** | **23.20%** | **23.76%** | **59.51%** | **62.84%** | **28.21%** | **548.0 ms** | **1.82 FPS** | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-04** | **REACT** | PyTorch YOLOv8m | YOLOv8m (PyTorch CPU) | **OpenImages V6** | Zero-Shot Transfer | 1.78% | 1.90% | 2.08% | 2.31% | 10.76% | 12.05% | 17.51% | 21.53% | 3.05% | 1184.2 ms | 0.84 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-05** | **REACT++** | ONNX YOLO12m | YOLO12m ONNX Runtime | **PSG** | In-Domain | 35.98% | 37.79% | 35.60% | 37.55% | 23.20% | 23.76% | 59.51% | 62.84% | 28.21% | 548.0 ms | 1.82 FPS | `VERIFIED_FROM_RAW_CACHE` |
 | **RUN-06** | **REACT++** | ONNX YOLO12m | YOLO12m ONNX Runtime | **VG150** | In-Domain | 23.54% | 25.56% | 26.59% | 28.62% | 16.57% | 18.48% | 37.43% | 46.68% | 19.45% | 744.0 ms | 1.34 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-07** | **REACT++** | ONNX YOLO12m | YOLO12m ONNX Runtime | **IndoorVG** | Zero-Shot Transfer | 13.64% | 16.02% | 15.19% | 17.46% | 12.69% | 14.07% | 21.50% | 26.88% | 13.15% | 2,450.7 ms | 0.41 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-08** | **REACT++** | ONNX YOLO12m | YOLO12m ONNX Runtime | **OpenImages V6** | Zero-Shot Transfer | 2.12% | 2.24% | 2.19% | 2.31% | 13.22% | 14.11% | 17.91% | 22.77% | 3.66% | 599.3 ms | 1.67 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-09** | **FCSGG** | CenterNet / RAF | HRNetW32 CenterNet (PyTorch) | **PSG** | Zero-Shot Transfer | 4.39% | 5.10% | 4.33% | 5.05% | 1.10% | 1.40% | 17.45% | 21.23% | 1.76% | 1,722.3 ms | 0.58 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-10** | **FCSGG** | CenterNet / RAF | HRNetW32 CenterNet (PyTorch) | **VG150** | In-Domain | 9.08% | 12.23% | 9.14% | 12.28% | 2.62% | 3.26% | 22.53% | 31.62% | 4.06% | 1,277.1 ms | 0.78 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-11** | **FCSGG** | CenterNet / RAF | HRNetW32 CenterNet (PyTorch) | **IndoorVG** | Zero-Shot Transfer | 7.97% | 9.15% | 9.33% | 10.59% | 3.97% | 4.36% | 12.64% | 17.66% | 5.30% | 2,263.9 ms | 0.44 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-12** | **FCSGG** | CenterNet / RAF | HRNetW32 CenterNet (PyTorch) | **OpenImages V6** | Zero-Shot Transfer | 0.80% | 0.80% | 1.04% | 1.04% | 3.72% | 3.72% | 12.31% | 16.90% | 1.32% | 2,324.0 ms | 0.43 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-13** | **C-SGG** | YOLO12m + CKN (PSG) | ONNX YOLO12m + PyTorch CKN | **PSG** | Hybrid Adaptation | 32.24% | 35.98% | 31.84% | 35.45% | 21.82% | 24.37% | 59.48% | 62.81% | 26.03% | 568.5 ms | 1.76 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-14** | **C-SGG** | YOLOv5l + CKN (VG150) | YOLOv5l + PyTorch CKN | **VG150** | In-Domain | 20.05% | 24.85% | 21.79% | 26.50% | **14.10%** | **15.33%** | 34.19% | 41.37% | 16.56% | **350.3 ms** | **2.85 FPS** | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-15** | **C-SGG** | YOLOv5l + CKN (VG150) | YOLOv5l + PyTorch CKN | **IndoorVG** | Zero-Shot Transfer | 12.15% | 15.22% | 13.82% | 16.81% | 10.81% | 13.03% | 16.56% | 20.88% | 11.44% | 734.0 ms | 1.36 FPS | `VERIFIED_FROM_RAW_CACHE` |
-| **RUN-16** | **C-SGG** | YOLOv5l + CKN (OID) | YOLOv5l + PyTorch CKN (OID) | **OpenImages V6** | Hybrid Adaptation | 2.45% | 2.45% | 2.08% | 2.08% | **24.03%** | **24.03%** | 12.81% | 17.08% | 4.44% | 655.0 ms | 1.53 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-07** | **REACT++** | ONNX YOLO12m | YOLO12m ONNX Runtime | **IndoorVG** | Zero-Shot Transfer | 14.75% | 16.02% | 16.99% | 18.60% | 13.25% | 14.07% | 21.50% | 26.88% | 13.96% | 2450.7 ms | 0.41 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-08** | **REACT++** | ONNX YOLO12m | YOLO12m ONNX Runtime | **OpenImages V6** | Zero-Shot Transfer | 2.24% | 2.24% | 2.42% | 2.42% | 14.11% | 14.11% | 17.91% | 22.77% | 3.87% | 599.3 ms | 1.67 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-09** | **FCSGG** | CenterNet / RAF | HRNetW32 CenterNet (PyTorch) | **PSG** | Zero-Shot Transfer | 4.39% | 5.10% | 4.33% | 5.05% | 1.10% | 1.40% | 17.45% | 21.23% | 1.76% | 1722.3 ms | 0.58 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-10** | **FCSGG** | CenterNet / RAF | HRNetW32 CenterNet (PyTorch) | **VG150** | In-Domain | 9.08% | 12.23% | 9.14% | 12.56% | 2.62% | 3.26% | 22.53% | 31.62% | 4.06% | 1277.1 ms | 0.78 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-11** | **FCSGG** | CenterNet / RAF | HRNetW32 CenterNet (PyTorch) | **IndoorVG** | Zero-Shot Transfer | 7.97% | 9.15% | 9.33% | 10.59% | 3.97% | 4.36% | 12.64% | 17.66% | 5.30% | 2263.9 ms | 0.44 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-12** | **FCSGG** | CenterNet / RAF | HRNetW32 CenterNet (PyTorch) | **OpenImages V6** | Zero-Shot Transfer | 0.80% | 0.80% | 1.04% | 1.04% | 3.72% | 3.72% | 12.31% | 16.90% | 1.32% | 2324.0 ms | 0.43 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-13** | **C-SGG** | YOLO12m + CKN (PSG) | ONNX YOLO12m + PyTorch CKN | **PSG** | Hybrid Adaptation | 32.24% | 35.98% | 31.84% | 35.74% | 21.82% | 24.37% | 59.48% | 62.81% | 26.03% | 568.5 ms | 1.76 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-14** | **C-SGG** | YOLOv5l + CKN (VG150) | YOLOv5l + PyTorch CKN | **VG150** | In-Domain | 20.05% | 24.85% | 21.79% | 26.41% | 14.10% | 15.33% | 34.19% | 41.37% | 16.56% | 350.3 ms | 2.85 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-15** | **C-SGG** | YOLOv5l + CKN (VG150) | YOLOv5l + PyTorch CKN | **IndoorVG** | Zero-Shot Transfer | 12.15% | 15.22% | 13.82% | 16.27% | 10.81% | 13.03% | 16.56% | 20.88% | 11.44% | 734.0 ms | 1.36 FPS | `VERIFIED_FROM_RAW_CACHE` |
+| **RUN-16** | **C-SGG** | YOLOv5l + CKN (OID) | YOLOv5l + PyTorch CKN (OID) | **OpenImages V6** | Hybrid Adaptation | 2.45% | 2.45% | 2.08% | 2.08% | 24.03% | 24.03% | 12.81% | 17.08% | 4.44% | 655.0 ms | 1.53 FPS | `VERIFIED_FROM_RAW_CACHE` |
 
 *Verification Note*: All 16 rows hold status `VERIFIED_FROM_RAW_CACHE`. End-to-end CPU re-inference across all 3,200 images was not re-executed during this audit pass (`NOT_EXECUTED_IN_AUDIT`). See [`results/audit_discrepancy_log.md`](results/audit_discrepancy_log.md) for cryptographic provenance and per-run validation records.
 
@@ -87,12 +87,29 @@ To avoid conflation across distinct evaluation populations:
   - *Important*: Because the ground-truth relation count and eligible image population differ drastically between Native and Strict views, **scores from different ontology views cannot be directly compared**.
 
 ### 3. OpenImages V6 Dual-Protocol Evaluation
-- **Protocol A: Original Standard (866 relations / 200 images)**: Retains all ground-truth relations including unary visual attributes (`is`, `category_id == 27`). Because standard box-pair models have no attribute head, all models score 0 hits on the 720 `is` annotations:
-  - C-SGG: **Image-Avg R@50 = 2.45%**, **Pooled R@50 = 2.08%** (18/866 hits), **Image-Avg mR@50 = 24.03%**.
-  - REACT: **Image-Avg R@50 = 1.78%**, **Pooled R@50 = 2.08%** (18/866 hits), **Image-Avg mR@50 = 10.76%**.
-- **Protocol B: Attribute-Excluded Physical Relations (146 relations / 58 images)**: Excludes predicate 27 `is`:
-  - C-SGG: **Image-Avg R@50 = 15.47%**, **Pooled R@50 = 12.33%** (18/146 hits), **Image-Avg mR@50 = 26.04%**.
-  - REACT: **Image-Avg R@50 = 12.42%**, **Pooled R@50 = 12.33%** (18/146 hits), **Image-Avg mR@50 = 12.48%**.
+
+OpenImages V6 annotations contain a large proportion of unary visual attributes using predicate `is` (`category_id == 27`, 720 relations), alongside physical pairwise relations (146 relations across 58 eligible images). Because standard SGG box-pair models have no unary attribute prediction head, all models score 0 hits on the 720 `is` annotations. To ensure fair and comprehensive evaluation, results are reported under two distinct protocols:
+
+- **Protocol A: Original Standard (866 relations / 200 images)**: Retains all ground-truth relations including unary visual attributes (`is`). Measures overall recall against the unedited benchmark annotations.
+- **Protocol B: Attribute-Excluded Physical Relations (146 relations / 58 images)**: Excludes predicate 27 `is` and evaluates strictly against the 146 physical pairwise relations across their 58 eligible images.
+
+#### Complete 4-Model OpenImages V6 Comparison
+
+| Model Architecture | Evaluated Variant | Protocol A Pooled R@50 | Protocol A Pooled R@100 | Protocol A Img-Avg R@50 | Protocol A Img-Avg mR@50 | Protocol B Pooled R@50 | Protocol B Pooled R@100 | Protocol B Img-Avg R@50 | Protocol B Img-Avg mR@50 |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **REACT** | PyTorch YOLOv8m | 2.08% (18/866) | 2.31% (20/866) | 1.78% | 10.76% | 12.33% (18/146) | 13.70% (20/146) | 12.02% | 11.66% |
+| **REACT++ (Corr)** | ONNX YOLO12m | 2.42% (21/866) | 2.42% (21/866) | 2.24% | 14.11% | 14.38% (21/146) | 14.38% (21/146) | 13.04% | 15.28% |
+| **FCSGG** | CenterNet / RAF | 1.04% (9/866) | 1.04% (9/866) | 0.80% | 3.72% | 6.16% (9/146) | 6.16% (9/146) | 5.62% | 4.03% |
+| **C-SGG** | YOLOv5l + CKN (OID) | 2.08% (18/866) | 2.08% (18/866) | 2.45% | 24.03% | 12.33% (18/146) | 12.33% (18/146) | 15.47% | 26.04% |
+
+### 4. Methodological Limitations & Evaluation Scope Disclosures
+
+1. **Model-Specific Ranking Conventions (Ranking Standardization Deferred)**: Different SGG model families employ distinct internal scoring formulations for candidate triplet ranking:
+   - **REACT** and **FCSGG**: Rank candidate triplets by the product of subject confidence, object confidence, and predicate score ($S = s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}}$).
+   - **REACT++**: Ranks candidate triplets directly using the model's exported compound triplet score ($S = (s_{\text{subj}} \times s_{\text{obj}} \times s_{\text{rel}})^{1/3}$), without multiplying detection confidences twice.
+   - **Fast Contextual SGG (C-SGG)**: Employs composite context scoring based on CKN logit routing and detector box confidences.
+   Because these model-specific score calibrations and dynamic ranges differ, small numerical differences between models should not be interpreted as definitive proof of absolute superiority.
+2. **IndoorVG Training-Split Overlap**: The selected 200-image IndoorVG evaluation subset originates from Visual Genome images that overlap with the standard VG150 training split (`LEAK_INDOOR_VGTRAIN`). Therefore, transfer evaluations on IndoorVG (e.g., REACT++ and FCSGG) measure domain-adaptation behavior under familiar visual scenes rather than strict, clean, held-out zero-shot generalization. The existing 200-image evaluation subsets are preserved without resampling to maintain benchmark stability.
 
 ---
 
