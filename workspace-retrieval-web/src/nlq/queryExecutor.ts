@@ -519,7 +519,7 @@ export class QueryExecutor {
 
       const matchingInstances = instances.filter(
         (inst) => (plan.targetObject?.instanceId && inst.instanceId === plan.targetObject.instanceId) ||
-                  matchesTarget(targetCategory, [inst.categoryId, inst.displayName])
+          matchesTarget(targetCategory, [inst.categoryId, inst.displayName])
       );
 
       if (matchingInstances.length > 0) {
@@ -883,7 +883,7 @@ export class QueryExecutor {
 
       const matchingInstances = instances.filter(
         (inst) => (plan.targetObject?.instanceId && inst.instanceId === plan.targetObject.instanceId) ||
-                  matchesTarget(targetCategory, [inst.categoryId, inst.displayName])
+          matchesTarget(targetCategory, [inst.categoryId, inst.displayName])
       );
 
       if (matchingInstances.length === 0) {

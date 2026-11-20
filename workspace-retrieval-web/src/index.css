@@ -1395,6 +1395,48 @@ body {
   color: #ffffff;
 }
 
+.btn-prompt-vlm {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  border-radius: var(--radius-md);
+  padding: 3px 9px;
+  font-size: 0.725rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-prompt-vlm:hover {
+  background-color: #f59e0b;
+  color: #09090b;
+}
+
+.scope-chip.vlm-active {
+  background-color: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+}
+
+.vlm-mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.675rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-left: 2px;
+}
+
 /* Reasoning Trace (How did I answer?) */
 .reasoning-trace-section {
   display: flex;

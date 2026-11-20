@@ -44,7 +44,7 @@ import {
 import { PipelineStage } from '../pipeline/pipelineTypes';
 
 interface WorkspaceAssistantProps {
-  onAskQuery: (query: string, context?: ConversationContext, scope?: QueryScope) => void;
+  onAskQuery: (query: string, context?: ConversationContext, scope?: QueryScope, forceVLM?: boolean) => void;
   queryResult: NLQResult | null;
   pipelineStage: PipelineStage;
   isEnabled: boolean;
@@ -75,7 +75,7 @@ const SUGGESTION_CATEGORIES: SuggestionCategory[] = [
     questions: [
       'What is beside the laptop?',
       'What is next to the notebook?',
-      'Which objects are connected?',
+      'Where is the person sitting?',
     ],
   },
   {
@@ -88,12 +88,12 @@ const SUGGESTION_CATEGORIES: SuggestionCategory[] = [
     ],
   },
   {
-    title: 'Object Changes',
-    icon: <Activity size={13} className="text-amber-400" />,
+    title: 'Direct Visual AI (VLM)',
+    icon: <Sparkles size={13} className="text-amber-400" />,
     questions: [
-      'Did the screwdriver move?',
-      'Which objects changed their locations?',
-      'Which objects reappeared?',
+      '/visual cloth color on the table',
+      '/visual what is the person wearing',
+      '/visual describe items on the desk',
     ],
   },
 ];
@@ -178,10 +178,12 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSubmit = (e?: React.FormEvent, customQuery?: string) => {
+  const handleSubmit = (e?: React.FormEvent, customQuery?: string, forceVLM?: boolean) => {
     if (e) e.preventDefault();
     const finalQuery = (customQuery || queryText).trim();
     if (!finalQuery || !isEnabled) return;
+
+    const isDirectVlm = forceVLM || scope === 'vlm' || /^\s*\/(visual|vlm|inspect|image)\b/i.test(finalQuery);
 
     // Add user message to conversation thread
     const userMsg: ConversationMessage = {
@@ -189,14 +191,26 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
       sender: 'user',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       text: finalQuery,
-      scope,
+      scope: isDirectVlm ? 'vlm' : scope,
     };
 
     setMessages((prev) => [...prev, userMsg]);
     setQueryText('');
 
     // Trigger pipeline query execution with active conversation context
-    onAskQuery(finalQuery, conversationContext, scope);
+    onAskQuery(finalQuery, conversationContext, isDirectVlm ? 'vlm' : scope, isDirectVlm);
+  };
+
+  const handleVerifyWithVLM = (msg: ConversationMessage) => {
+    let originalQuery = msg.result?.queryPlan.rawQuery;
+    if (!originalQuery) {
+      const idx = messages.findIndex((m) => m.id === msg.id);
+      if (idx > 0 && messages[idx - 1].sender === 'user') {
+        originalQuery = messages[idx - 1].text;
+      }
+    }
+    const clean = originalQuery ? originalQuery.replace(/^\s*\/(visual|vlm|inspect|image)\s+/i, '').trim() : msg.text;
+    handleSubmit(undefined, `/visual ${clean}`, true);
   };
 
   const handleClearConversation = () => {
@@ -341,6 +355,15 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
                 onClick={() => setScope('all')}
               >
                 All Available Memory
+              </button>
+              <button
+                type="button"
+                className={`scope-chip ${scope === 'vlm' ? 'active vlm-active' : ''}`}
+                onClick={() => setScope('vlm')}
+                title="Directly query the RGB image with SmolVLM-500M visual model"
+              >
+                <Sparkles size={11} className="text-amber-400" />
+                <span>Visual AI (VLM)</span>
               </button>
             </div>
           </div>
@@ -496,6 +519,19 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
                               <span>Inspect in Image</span>
                             </button>
                           )}
+
+                          {/* Option to manually prompt VLM if user is unsatisfied with SGG answer */}
+                          {msg.result.evidence.source !== 'vlm' && (
+                            <button
+                              type="button"
+                              className="btn-prompt-vlm"
+                              onClick={() => handleVerifyWithVLM(msg)}
+                              title="Not satisfied with Scene Graph answer? Inspect visually with SmolVLM"
+                            >
+                              <Sparkles size={12} className="text-amber-400" />
+                              <span>Verify visually with VLM</span>
+                            </button>
+                          )}
                         </div>
 
                         {/* Collapsible "How did I answer?" Reasoning Trace */}
@@ -643,18 +679,36 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
       <form onSubmit={(e) => handleSubmit(e)} className="assistant-composer">
         <div className="assistant-input-wrapper">
           <Search size={16} className="assistant-input-icon text-zinc-500" />
+          {(scope === 'vlm' || /^\s*\/(visual|vlm|inspect)\b/i.test(queryText)) && (
+            <span className="vlm-mode-badge" title="Direct SmolVLM-500M visual execution">
+              <Sparkles size={11} className="text-amber-400" />
+              <span>VLM</span>
+            </span>
+          )}
           <input
             type="text"
             className="assistant-input"
             placeholder={
               isEnabled
-                ? 'Ask something about your workspace...'
+                ? 'Ask about workspace (or type /visual <question> to prompt VLM directly)...'
                 : 'Upload an observation image to enable queries'
             }
             value={queryText}
             onChange={(e) => setQueryText(e.target.value)}
             disabled={!isEnabled || isQuerying}
           />
+          {isEnabled && !/^\s*\/(visual|vlm)\b/i.test(queryText) && scope !== 'vlm' && (
+            <button
+              type="button"
+              className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-zinc-800 text-amber-400 hover:bg-zinc-700 transition-colors mr-1 flex-shrink-0"
+              onClick={() =>
+                setQueryText((prev) => (prev ? `/visual ${prev.replace(/^\s*\/(visual|vlm)\s*/i, '')}` : '/visual '))
+              }
+              title="Prefix query with /visual to prompt VLM directly"
+            >
+              /visual
+            </button>
+          )}
         </div>
 
         <button

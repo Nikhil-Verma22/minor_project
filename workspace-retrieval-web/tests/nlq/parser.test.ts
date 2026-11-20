@@ -69,5 +69,17 @@ export function testQueryParser() {
     throw new Error(`Failed on follow-up pronoun resolution: ${JSON.stringify(p8)}`);
   }
 
+  // 9. Cloth color on the table: attribute lookup
+  const p9 = parser.parseQuery('cloth color on the table');
+  if (p9.intent !== 'object_attribute' || p9.targetObject?.requestedAttribute !== 'color' || p9.targetObject?.mention !== 'cloth') {
+    throw new Error(`Failed on 'cloth color on the table': ${JSON.stringify(p9)}`);
+  }
+
+  // 10. Manual /visual slash command for direct VLM
+  const p10 = parser.parseQuery('/visual cloth color on the table');
+  if (!p10.forceVLM) {
+    throw new Error(`Failed on '/visual cloth color on the table': expected forceVLM to be true: ${JSON.stringify(p10)}`);
+  }
+
   console.log('✓ QueryParser tests passed!');
 }

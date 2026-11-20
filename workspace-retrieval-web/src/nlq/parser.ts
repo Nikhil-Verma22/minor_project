@@ -20,7 +20,9 @@ export class QueryParser {
     scope: QueryScope = 'current'
   ): QueryPlan {
     const text = rawQuery.trim();
-    const lower = text.toLowerCase();
+    const isDirectVlm = /^\s*\/(visual|vlm|inspect|image)\b/i.test(text) || scope === 'vlm';
+    const cleanText = text.replace(/^\s*\/(visual|vlm|inspect|image)\s+/i, '').trim();
+    const lower = (cleanText || text).toLowerCase();
 
     // 1. Check for Occluded / Non-visible Storage Query (e.g. "behind closed drawer")
     for (const pat of OCCLUDED_AREA_PATTERNS) {
@@ -61,12 +63,15 @@ export class QueryParser {
 
     // Detect if asking about sitting / support: "Where is the person sitting?", "What is the person sitting on?"
     const sittingMatch = lower.match(/\bwhere\s+(?:is|are)\s+(?:the\s+)?([a-z0-9_\s-]+?)\s+(?:sitting|seated|placed|resting|standing)\b/i) ||
-                         lower.match(/\bwhat\s+(?:is|are)\s+(?:the\s+)?([a-z0-9_\s-]+?)\s+(?:sitting|seated|resting)\s+on\b/i);
+      lower.match(/\bwhat\s+(?:is|are)\s+(?:the\s+)?([a-z0-9_\s-]+?)\s+(?:sitting|seated|resting)\s+on\b/i);
 
-    // A. Attribute lookup: "What color is the table?", "What is the color of the shirt?"
-    if (/\b(what|which)\s+(is\s+the\s+)?(color|colour|type|material|kind)\s+(of\s+)?/i.test(lower) ||
-        /\b(color|colour)\s+(is|of)\b/i.test(lower) ||
-        /\b(what\s+is\s+the\s+person\s+wearing|what\s+color\s+shirt)\b/i.test(lower)) {
+    // A. Attribute lookup: "What color is the table?", "What is the color of the shirt?", "cloth color on the table"
+    if (
+      /\b(what|which)\s+(is\s+the\s+)?(color|colour|type|material|kind)\s+(of\s+)?/i.test(lower) ||
+      /\b(color|colour)\s+(is|of)\b/i.test(lower) ||
+      /\b(color|colour)\b/i.test(lower) ||
+      /\b(what\s+is\s+the\s+person\s+wearing|what\s+color\s+shirt)\b/i.test(lower)
+    ) {
       intent = 'object_attribute';
       if (/\b(shirt|clothes|clothing|pants|top|t-shirt|wearing)\b/i.test(lower)) {
         requestedAttribute = 'shirt_color';
@@ -81,7 +86,7 @@ export class QueryParser {
     }
     // C. Object movement / state change: "Did the screwdriver move?", "Which objects changed their locations?"
     else if (/\b(did|has|have)\b.*\b(move|moved|change position|reappear)\b/i.test(lower) ||
-             /\b(which|what)\s+objects\s+(changed|moved|reappeared)\b/i.test(lower)) {
+      /\b(which|what)\s+objects\s+(changed|moved|reappeared)\b/i.test(lower)) {
       intent = 'object_change';
     }
     // D. Standard location queries: "Where is/was X?"
@@ -132,8 +137,20 @@ export class QueryParser {
           targetMention = 'shirt';
         }
       } else {
-        const match = lower.match(/(?:color|colour|type|material|kind)\s+(?:is|of)\s+(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i);
-        if (match) targetMention = match[1].trim();
+        const matchOf = lower.match(/(?:color|colour|type|material|kind)\s+(?:is|of)\s+(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i);
+        const matchPrefix = lower.match(/(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)\s+(?:color|colour|type|material|kind)\b/i);
+        if (matchOf) {
+          targetMention = matchOf[1].trim();
+        } else if (matchPrefix) {
+          targetMention = matchPrefix[1].trim();
+        }
+        // Extract reference if spatial qualifier present (e.g. "cloth color on the table")
+        if (/\bon\s+(?:the\s+|a\s+|my\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i.test(lower)) {
+          const matchRef = lower.match(/\bon\s+(?:the\s+|a\s+|my\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i);
+          if (matchRef && matchRef[1].trim() !== targetMention) {
+            referenceMention = matchRef[1].trim();
+          }
+        }
       }
     } else if (sittingMatch) {
       targetMention = sittingMatch[1].trim();
@@ -236,32 +253,33 @@ export class QueryParser {
       scope,
       targetObject: targetResolved
         ? {
-            category: targetResolved.category,
-            instanceId: targetResolved.instanceId,
-            attributes: targetResolved.attributes,
-            mention: targetMention,
-            requestedAttribute,
-          }
+          category: targetResolved.category,
+          instanceId: targetResolved.instanceId,
+          attributes: targetResolved.attributes,
+          mention: targetMention,
+          requestedAttribute,
+        }
         : targetMention
-        ? {
+          ? {
             mention: targetMention,
             requestedAttribute,
           }
-        : undefined,
+          : undefined,
       referenceObject: refResolved
         ? {
-            category: refResolved.category,
-            instanceId: refResolved.instanceId,
-            mention: referenceMention,
-          }
+          category: refResolved.category,
+          instanceId: refResolved.instanceId,
+          mention: referenceMention,
+        }
         : referenceMention
-        ? {
+          ? {
             mention: referenceMention,
           }
-        : undefined,
+          : undefined,
       predicate: detectedPredicate,
       timeScope,
-      needsVisualReasoning: false,
+      forceVLM: isDirectVlm,
+      needsVisualReasoning: isDirectVlm,
       unresolvedSlots: [],
     };
   }

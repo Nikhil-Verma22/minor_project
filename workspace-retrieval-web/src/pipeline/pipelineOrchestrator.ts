@@ -238,12 +238,23 @@ export class PipelineOrchestrator {
   async answerQuery(
     queryText: string,
     context?: ConversationContext,
-    scope: QueryScope = 'current'
+    scope: QueryScope = 'current',
+    forceVLM?: boolean
   ): Promise<NLQResult> {
     try {
-      this.setStage('query_parsing', `Understanding query: "${queryText}"`);
+      const isDirectVlm =
+        forceVLM === true ||
+        scope === 'vlm' ||
+        /^\s*\/(visual|vlm|inspect|image)\b/i.test(queryText);
+
+      const cleanQueryText = queryText.replace(/^\s*\/(visual|vlm|inspect|image)\s+/i, '').trim() || queryText;
+
+      this.setStage('query_parsing', `Understanding query: "${cleanQueryText}"`);
       const activeInstances = await MemoryRepository.getInstances(this.currentWorkspaceId);
-      const plan = this.parser.parseQuery(queryText, activeInstances, context, scope);
+      const plan = this.parser.parseQuery(cleanQueryText, activeInstances, context, isDirectVlm ? 'vlm' : scope);
+      if (isDirectVlm) {
+        plan.forceVLM = true;
+      }
 
       this.setStage('graph_memory_reasoning', 'Searching scene graph & memory...');
       const nlqResult = await QueryExecutor.executeQuery(
@@ -252,6 +263,12 @@ export class PipelineOrchestrator {
         this.currentWorkspaceId,
         this.currentImageSource || this.currentImageBitmap
       );
+
+      if (isDirectVlm) {
+        nlqResult.requiresVLM = true;
+        nlqResult.vlmReason = 'User explicitly requested direct visual inspection via SmolVLM.';
+        nlqResult.reasoningTrace.push('Manual VLM trigger: Direct visual inspection requested by user.');
+      }
 
       // If sufficient evidence was found in graph/memory, answer directly!
       if (!nlqResult.requiresVLM) {
@@ -291,7 +308,7 @@ export class PipelineOrchestrator {
       }
 
       // Build target-attribute-focused prompt if applicable
-      let vlmQueryPrompt = queryText;
+      let vlmQueryPrompt = cleanQueryText;
       if (plan.intent === 'object_attribute' && plan.targetObject?.requestedAttribute) {
         const attr = plan.targetObject.requestedAttribute;
         const target = plan.targetObject.mention || 'workspace surface';
@@ -336,7 +353,10 @@ export class PipelineOrchestrator {
 
       // Handle attribute answer completeness
       let finalAnswer = vlmResponse.answer;
-      if (plan.intent === 'object_attribute') {
+      if (
+        plan.intent === 'object_attribute' &&
+        (!vlmResponse.answer || vlmResponse.answer.includes('does not provide conclusive evidence'))
+      ) {
         const attr = plan.targetObject?.requestedAttribute || 'attribute';
         const target = plan.targetObject?.mention || 'target object';
         if (vlmResponse.unresolved || !hasCandidates) {

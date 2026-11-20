@@ -158,10 +158,15 @@ export const App: React.FC = () => {
     handleRunSgg();
   };
 
-  const handleAskQuery = async (queryText: string, context?: ConversationContext, scope?: QueryScope) => {
+  const handleAskQuery = async (
+    queryText: string,
+    context?: ConversationContext,
+    scope?: QueryScope,
+    forceVLM?: boolean
+  ) => {
     if (!orchestratorRef.current) return;
     try {
-      await orchestratorRef.current.answerQuery(queryText, context, scope);
+      await orchestratorRef.current.answerQuery(queryText, context, scope, forceVLM);
     } catch (err) {
       console.error('Error executing query:', err);
     }

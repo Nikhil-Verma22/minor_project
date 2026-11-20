@@ -447,6 +447,31 @@ export async function testWorkspaceAssistant() {
     }
     console.log('✓ Acceptance Test 11 Passed: Sitting support relationship answered directly from Scene Graph.');
 
+    // ------------------------------------------------------------------------
+    // Acceptance Test 12: Attribute query for unobserved object ("cloth color on the table")
+    // Expected: Correctly routes to VLM visual reasoning instead of returning unrelated objects.
+    // ------------------------------------------------------------------------
+    const plan12 = parser.parseQuery('cloth color on the table', mockInstances);
+    const res12 = await QueryExecutor.executeQuery(plan12, mockCurrentGraph, workspaceId);
+
+    if (res12.answer.includes('floor (floor_001)')) {
+      throw new Error(`Test 12 Failed: Returned unrelated floor entity: "${res12.answer}"`);
+    }
+    if (!res12.requiresVLM && res12.certainty !== 'insufficient') {
+      throw new Error(`Test 12 Failed: Expected requiresVLM to be true: "${JSON.stringify(res12)}"`);
+    }
+    console.log('✓ Acceptance Test 12 Passed: Unobserved object attribute query safely avoids false scene graph answers.');
+
+    // ------------------------------------------------------------------------
+    // Acceptance Test 13: Manual /visual slash command for direct VLM inspection
+    // Expected: forceVLM is true on the plan, and routing flags VLM requirement.
+    // ------------------------------------------------------------------------
+    const plan13 = parser.parseQuery('/visual cloth color on the table', mockInstances);
+    if (!plan13.forceVLM) {
+      throw new Error(`Test 13 Failed: Expected plan.forceVLM to be true`);
+    }
+    console.log('✓ Acceptance Test 13 Passed: Manual /visual slash command enforces direct VLM invocation.');
+
   } finally {
     // Restore repository getters
     MemoryRepository.getFrames = origGetFrames;
