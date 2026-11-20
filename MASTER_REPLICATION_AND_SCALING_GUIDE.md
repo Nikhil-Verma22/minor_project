@@ -727,3 +727,4 @@ python experiments/FastContextualSGG/run_benchmark_fast_contextual_openimages.py
 4. **Reproducibility Demands Bit-Level Auditing**: Without exact tracking of compound scoring contracts, unpickling environments, and explicit protocol definitions (Protocol A vs. B), cross-dataset SGG benchmarks cannot be compared fairly.
 
 This repository, alongside this replication guide, establishes a transparent, verified, and permanent foundation for future scene graph generation research.
+
