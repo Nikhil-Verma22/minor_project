@@ -59,18 +59,32 @@ export class QueryParser {
     let intent: QueryIntent = 'unknown';
     let requestedAttribute: string | undefined;
 
-    // A. Attribute lookup: "What color is the table?", "What is the colour of the laptop?"
+    // Detect if asking about sitting / support: "Where is the person sitting?", "What is the person sitting on?"
+    const sittingMatch = lower.match(/\bwhere\s+(?:is|are)\s+(?:the\s+)?([a-z0-9_\s-]+?)\s+(?:sitting|seated|placed|resting|standing)\b/i) ||
+                         lower.match(/\bwhat\s+(?:is|are)\s+(?:the\s+)?([a-z0-9_\s-]+?)\s+(?:sitting|seated|resting)\s+on\b/i);
+
+    // A. Attribute lookup: "What color is the table?", "What is the color of the shirt?"
     if (/\b(what|which)\s+(is\s+the\s+)?(color|colour|type|material|kind)\s+(of\s+)?/i.test(lower) ||
-        /\b(color|colour)\s+(is|of)\b/i.test(lower)) {
+        /\b(color|colour)\s+(is|of)\b/i.test(lower) ||
+        /\b(what\s+is\s+the\s+person\s+wearing|what\s+color\s+shirt)\b/i.test(lower)) {
       intent = 'object_attribute';
-      requestedAttribute = /\b(color|colour)\b/i.test(lower) ? 'color' : 'type';
+      if (/\b(shirt|clothes|clothing|pants|top|t-shirt|wearing)\b/i.test(lower)) {
+        requestedAttribute = 'shirt_color';
+      } else {
+        requestedAttribute = /\b(color|colour)\b/i.test(lower) ? 'color' : 'type';
+      }
     }
-    // B. Object movement / state change: "Did the screwdriver move?", "Which objects changed their locations?"
+    // B. Relational location query: "Where is the person sitting?"
+    else if (sittingMatch) {
+      intent = 'spatial_relationship';
+      detectedPredicate = 'on';
+    }
+    // C. Object movement / state change: "Did the screwdriver move?", "Which objects changed their locations?"
     else if (/\b(did|has|have)\b.*\b(move|moved|change position|reappear)\b/i.test(lower) ||
              /\b(which|what)\s+objects\s+(changed|moved|reappeared)\b/i.test(lower)) {
       intent = 'object_change';
     }
-    // C. Location queries: "Where is/was X?"
+    // D. Standard location queries: "Where is/was X?"
     else if (/^\s*where\s+(is|was|are|were)\b/i.test(lower)) {
       if (timeScope === 'last_seen' || timeScope === 'previous_observation' || scope === 'history' || /\byesterday\b/i.test(lower)) {
         intent = 'last_seen_location';
@@ -78,7 +92,7 @@ export class QueryParser {
         intent = 'object_location';
       }
     }
-    // D. Relational queries: "What is next to X?", "Which object is on the surface?", "Which objects are connected?"
+    // E. Relational queries: "What is next to X?", "Which object is on the surface?", "Which objects are connected?"
     else if (/\b(what|which|who)\b.*\b(is|was|are|were|connected)\b/i.test(lower) && detectedPredicate) {
       if (timeScope === 'previous_observation' || scope === 'history') {
         intent = 'historical_relationship';
@@ -86,7 +100,7 @@ export class QueryParser {
         intent = 'spatial_relationship';
       }
     }
-    // E. Scene description / overview
+    // F. Scene description / overview
     else if (/\b(describe|what is in|list objects|overview)\b/i.test(lower)) {
       intent = 'describe_scene';
     } else if (detectedPredicate) {
@@ -104,18 +118,36 @@ export class QueryParser {
     // Pronoun replacement helper
     const hasPronoun = (str: string) => /\b(it|that object|the same one|that one|its|there)\b/i.test(str);
 
+    // Check for explicit instance ID in query (e.g. "person_001", "chair_002", "det_2_0")
+    const explicitIdMatch = lower.match(/\b([a-z]+(?:_[a-z]+)*_[0-9]+)\b/i) || lower.match(/\b(det_[0-9]+(?:_[0-9]+)?)\b/i);
+
     if (intent === 'object_attribute') {
-      const match = lower.match(/(?:color|colour|type|material|kind)\s+(?:is|of)\s+(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i);
-      if (match) targetMention = match[1].trim();
+      if (requestedAttribute === 'shirt_color') {
+        // e.g. "what is the color of the shirt of person_001" or "what is the color of the shirt"
+        if (explicitIdMatch) {
+          targetMention = explicitIdMatch[1];
+        } else if (lower.includes('person')) {
+          targetMention = 'person';
+        } else {
+          targetMention = 'shirt';
+        }
+      } else {
+        const match = lower.match(/(?:color|colour|type|material|kind)\s+(?:is|of)\s+(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i);
+        if (match) targetMention = match[1].trim();
+      }
+    } else if (sittingMatch) {
+      targetMention = sittingMatch[1].trim();
     } else if (intent === 'object_change') {
       const match = lower.match(/\b(did|has)\s+(the|my|a|an)?\s*([a-z0-9_\s-]+?)\s+(move|moved)\b/i);
       if (match) targetMention = match[3].trim();
     } else if (intent === 'object_location' || intent === 'last_seen_location') {
-      const match = lower.match(/\bwhere\s+(is|was)\s+(the|my|a|an)?\s*([a-z0-9_\s-]+?)(\s+last seen|\s+now|\s+yesterday|\?|$)/i);
-      if (match) targetMention = match[3].trim();
+      if (explicitIdMatch) {
+        targetMention = explicitIdMatch[1];
+      } else {
+        const match = lower.match(/\bwhere\s+(is|was)\s+(the|my|a|an)?\s*([a-z0-9_\s-]+?)(\s+last seen|\s+now|\s+yesterday|\?|$)/i);
+        if (match) targetMention = match[3].trim();
+      }
     } else if (intent === 'spatial_relationship' || intent === 'historical_relationship') {
-      // E.g. "What is beside the laptop?" -> target: "?", reference: "laptop", predicate: "next_to"
-      // E.g. "What was next to it?" -> target: "?", reference: "it", predicate: "next_to"
       for (const [phrase] of Object.entries(PREDICATE_SYNONYMS)) {
         if (new RegExp(`\\b${phrase}\\b`, 'i').test(lower)) {
           const parts = lower.split(new RegExp(`\\b${phrase}\\b`, 'i'));
@@ -142,8 +174,39 @@ export class QueryParser {
       }
     }
 
-    let targetResolved = targetMention ? this.resolver.resolveMention(targetMention, activeInstances) : undefined;
-    let refResolved = referenceMention ? this.resolver.resolveMention(referenceMention, activeInstances) : undefined;
+    // Direct resolution if targetMention or referenceMention is an explicit instance ID
+    let targetResolved: any = undefined;
+    if (explicitIdMatch && targetMention === explicitIdMatch[1]) {
+      const id = explicitIdMatch[1];
+      const baseCat = id.replace(/_[0-9]+$/, '');
+      targetResolved = {
+        category: baseCat,
+        instanceId: id,
+        mention: id,
+        attributes: {},
+        isAmbiguous: false,
+      };
+    } else if (targetMention) {
+      targetResolved = this.resolver.resolveMention(targetMention, activeInstances);
+    }
+
+    let refResolved: any = undefined;
+    if (referenceMention) {
+      const refExplicitMatch = referenceMention.match(/\b([a-z]+(?:_[a-z]+)*_[0-9]+)\b/i) || referenceMention.match(/\b(det_[0-9]+(?:_[0-9]+)?)\b/i);
+      if (refExplicitMatch) {
+        const id = refExplicitMatch[1];
+        const baseCat = id.replace(/_[0-9]+$/, '');
+        refResolved = {
+          category: baseCat,
+          instanceId: id,
+          mention: id,
+          attributes: {},
+          isAmbiguous: false,
+        };
+      } else {
+        refResolved = this.resolver.resolveMention(referenceMention, activeInstances);
+      }
+    }
 
     // Direct Context Entity Inheritance for Pronoun References
     if (context?.lastTargetEntity) {

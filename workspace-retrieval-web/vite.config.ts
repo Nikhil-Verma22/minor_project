@@ -14,6 +14,10 @@ export default defineConfig({
           src: 'node_modules/onnxruntime-web/dist/*.{wasm,mjs}',
           dest: 'ort-dist',
         },
+        {
+          src: 'node_modules/onnxruntime-web/dist/*.{wasm,mjs}',
+          dest: 'ort',
+        },
       ],
     }),
     {

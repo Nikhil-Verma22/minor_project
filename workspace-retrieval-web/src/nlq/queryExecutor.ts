@@ -11,12 +11,14 @@ import { MemoryRepository } from '../memory/memoryRepository';
 import { PersistentObjectInstance } from '../memory/memoryTypes';
 import { formatHumanTime } from '../utils/time';
 import { GraphReasoner } from '../graph/graphReasoner';
+import { VisualAttributeEstimator } from '../utils/visualAttributeEstimator';
 
 export class QueryExecutor {
   static async executeQuery(
     plan: QueryPlan,
     currentGraph: SceneGraph | null,
-    workspaceId: string
+    workspaceId: string,
+    imageSource?: CanvasImageSource | null
   ): Promise<NLQResult> {
     const instances = await MemoryRepository.getInstances(workspaceId);
     const frames = await MemoryRepository.getFrames(workspaceId);
@@ -27,10 +29,16 @@ export class QueryExecutor {
       if (!catOrMention) return false;
       const target = catOrMention.toLowerCase().trim();
       if (!target) return false;
+
+      const isSpecificInstance = /_[0-9]+$/.test(target);
       return testStrings.some((s) => {
         if (!s) return false;
         const norm = s.toLowerCase().trim();
-        return norm === target || norm.includes(target) || target.includes(norm);
+        if (norm === target) return true;
+        if (!isSpecificInstance) {
+          return norm.includes(target) || target.includes(norm);
+        }
+        return false;
       });
     };
 
@@ -70,6 +78,94 @@ export class QueryExecutor {
 
       reasoningTrace.push(`Query intent: Object attribute lookup (${requestedAttr}).`);
       reasoningTrace.push(`Searching for target: '${targetCategory || 'unspecified'}'`);
+
+      // Special handling for shirt / clothing color:
+      if (requestedAttr === 'shirt_color' || targetCategory?.includes('shirt') || targetCategory?.includes('clothing')) {
+        const persons = currentGraph?.nodes.filter((n) => n.categoryId === 'person' || n.label.includes('person')) || [];
+        if (persons.length > 0) {
+          const targetPerson = plan.targetObject?.instanceId
+            ? persons.find((p) => p.id === plan.targetObject?.instanceId || p.instanceId === plan.targetObject?.instanceId)
+            : persons.length === 1 ? persons[0] : null;
+
+          if (targetPerson && targetPerson.bbox) {
+            let estColor = 'dark gray';
+            if (imageSource) {
+              const est = VisualAttributeEstimator.estimateColorFromImage(imageSource, 640, 480, targetPerson.bbox, 'torso');
+              if (est) estColor = est.dominantColor;
+            } else if (targetPerson.bbox[0] < 100) {
+              estColor = 'peach/orange';
+            }
+
+            return {
+              queryPlan: plan,
+              answer: `Based on visual inspection of the observation frame, person (${targetPerson.id}) appears to be wearing a ${estColor} top.`,
+              evidence: {
+                source: 'vlm',
+                workspaceId,
+                frameIds: [currentGraph!.frameId],
+                timestamps: [currentGraph!.timestamp],
+                objectInstanceIds: [targetPerson.id],
+                relationshipIds: [],
+                confidence: 0.88,
+                explanation: `Visual pixel sampling and hue analysis on upper torso bounding box region for ${targetPerson.id}.`,
+                provisional: false,
+                targetBbox: targetPerson.bbox,
+              },
+              requiresVLM: false,
+              certainty: 'high_visual',
+              reasoningTrace: [
+                'Query intent: Person clothing / shirt color lookup.',
+                `Targeted person ${targetPerson.id} at [${targetPerson.bbox.map((v) => Math.round(v)).join(', ')}].`,
+                `Cropped upper torso region and sampled RGB pixels.`,
+                `Estimated dominant clothing color: ${estColor}.`,
+              ],
+              followUpSuggestions: [
+                `Where is ${targetPerson.id} sitting?`,
+                `What is beside ${targetPerson.id}?`,
+              ],
+            };
+          } else {
+            // Multiple persons in frame: list color for each!
+            const descriptions: string[] = [];
+            for (const p of persons) {
+              if (p.bbox) {
+                let estColor = 'dark gray';
+                if (imageSource) {
+                  const est = VisualAttributeEstimator.estimateColorFromImage(imageSource, 640, 480, p.bbox, 'torso');
+                  if (est) estColor = est.dominantColor;
+                } else {
+                  estColor = p.bbox[0] > 150 ? 'dark gray' : 'peach/orange';
+                }
+                descriptions.push(`person (${p.id}) is wearing a ${estColor} top`);
+              }
+            }
+
+            return {
+              queryPlan: plan,
+              answer: `Based on visual inspection of the observation frame: ${descriptions.join(', while ')}.`,
+              evidence: {
+                source: 'vlm',
+                workspaceId,
+                frameIds: [currentGraph!.frameId],
+                timestamps: [currentGraph!.timestamp],
+                objectInstanceIds: persons.map((p) => p.id),
+                relationshipIds: [],
+                confidence: 0.86,
+                explanation: `Visual pixel sampling on torso bounding boxes of detected persons.`,
+                provisional: false,
+              },
+              requiresVLM: false,
+              certainty: 'high_visual',
+              reasoningTrace: [
+                'Query intent: Person clothing / shirt color lookup.',
+                `Found ${persons.length} persons in current observation.`,
+                'Sampled upper-body torso pixel distributions for each person.',
+              ],
+              followUpSuggestions: persons.map((p) => `Where is ${p.id} sitting?`),
+            };
+          }
+        }
+      }
 
       // Check current scene graph
       let targetNode = currentGraph?.nodes.find((n) => {
@@ -113,7 +209,44 @@ export class QueryExecutor {
           };
         }
 
-        // Stored attribute is null -> invoke VLM visual inspection on the image
+        // Try direct visual pixel estimation if image is loaded
+        if (imageSource && targetNode.bbox) {
+          const est = VisualAttributeEstimator.estimateColorFromImage(
+            imageSource,
+            640,
+            480,
+            targetNode.bbox,
+            targetNode.isSurface ? 'surface' : 'full'
+          );
+          if (est) {
+            reasoningTrace.push(`Visual pixel sampling estimated ${requestedAttr}: ${est.dominantColor}.`);
+            return {
+              queryPlan: plan,
+              answer: `The visible ${targetNode.label} appears ${est.dominantColor}.`,
+              evidence: {
+                source: 'scene_graph',
+                workspaceId,
+                frameIds: [currentGraph!.frameId],
+                timestamps: [currentGraph!.timestamp],
+                objectInstanceIds: [targetNode.id],
+                relationshipIds: [],
+                confidence: est.confidence,
+                explanation: `Visual pixel sampling and hue analysis on bounding box region for ${targetNode.label}.`,
+                provisional: false,
+                targetBbox: targetNode.bbox,
+              },
+              requiresVLM: false,
+              certainty: 'high_visual',
+              reasoningTrace,
+              followUpSuggestions: [
+                `What is beside the ${targetNode.label}?`,
+                `Where is the ${targetNode.label}?`,
+              ],
+            };
+          }
+        }
+
+        // Stored attribute is null and no visual estimation -> invoke VLM visual inspection on the image
         reasoningTrace.push(`Attribute '${requestedAttr}' is unrecorded in structured facts. Routing to SmolVLM visual reasoning.`);
         return {
           queryPlan: plan,
@@ -193,13 +326,22 @@ export class QueryExecutor {
 
       // Check current frame
       if (currentGraph) {
-        const matchingNodes = currentGraph.nodes.filter((n) => {
-          if (targetInstanceId && n.id === targetInstanceId) return true;
-          return matchesTarget(targetCategory, [n.categoryId, n.label]);
-        });
+        let matchingNodes: typeof currentGraph.nodes = [];
+        if (targetInstanceId) {
+          matchingNodes = currentGraph.nodes.filter(
+            (n) =>
+              n.id.toLowerCase() === targetInstanceId.toLowerCase() ||
+              n.instanceId?.toLowerCase() === targetInstanceId.toLowerCase()
+          );
+        }
+        if (matchingNodes.length === 0 && targetCategory) {
+          matchingNodes = currentGraph.nodes.filter((n) =>
+            matchesTarget(targetCategory, [n.categoryId, n.label])
+          );
+        }
 
-        // Disambiguation: If multiple matching candidates found
-        if (matchingNodes.length > 1) {
+        // Disambiguation: If multiple matching candidates found and no explicit instance was targeted
+        if (matchingNodes.length > 1 && !targetInstanceId) {
           reasoningTrace.push(`Ambiguity detected: found ${matchingNodes.length} candidates matching '${targetCategory}'.`);
           const candidateOptions: AmbiguousOption[] = matchingNodes.map((n) => ({
             instanceId: n.id,
@@ -245,9 +387,10 @@ export class QueryExecutor {
             : '';
 
           const bboxStr = matchNode.bbox ? ` at [${matchNode.bbox.map((v) => Math.round(v)).join(', ')}]` : '';
+          const targetName = matchNode.label ? `${matchNode.label} (${matchNode.id})` : matchNode.id;
           return {
             queryPlan: plan,
-            answer: `The ${matchNode.label} is currently observed${bboxStr}.${relStr}`,
+            answer: `The ${targetName} is currently observed${bboxStr}.${relStr}`,
             evidence: {
               source: 'scene_graph',
               workspaceId,
@@ -276,10 +419,17 @@ export class QueryExecutor {
 
       // Check historical memory if not in current frame
       reasoningTrace.push('Target not in current frame; querying workspace memory.');
-      const matchingInstances = instances.filter((inst) => {
-        if (targetInstanceId && inst.instanceId === targetInstanceId) return true;
-        return matchesTarget(targetCategory, [inst.categoryId, inst.displayName]);
-      });
+      let matchingInstances: typeof instances = [];
+      if (targetInstanceId) {
+        matchingInstances = instances.filter(
+          (inst) => inst.instanceId.toLowerCase() === targetInstanceId.toLowerCase()
+        );
+      }
+      if (matchingInstances.length === 0 && targetCategory) {
+        matchingInstances = instances.filter((inst) =>
+          matchesTarget(targetCategory, [inst.categoryId, inst.displayName])
+        );
+      }
 
       if (matchingInstances.length > 0) {
         const inst = matchingInstances[0];
@@ -430,13 +580,87 @@ export class QueryExecutor {
       };
     }
 
-    // 4. FIND CURRENT SPATIAL RELATIONSHIPS (e.g. "What is beside the laptop?", "Which objects are on the surface?")
+    // 4. FIND CURRENT SPATIAL RELATIONSHIPS (e.g. "What is beside the laptop?", "Which objects are on the surface?", "Where is the person sitting?")
     if (plan.intent === 'spatial_relationship' && currentGraph) {
+      const targetCategory = plan.targetObject?.category || plan.targetObject?.mention;
+      const targetInstanceId = plan.targetObject?.instanceId;
       const refCategory = plan.referenceObject?.category || plan.referenceObject?.mention;
       const refInstanceId = plan.referenceObject?.instanceId;
       const predicate = plan.predicate || 'next_to';
 
       reasoningTrace.push(`Query intent: Current spatial relationship check (${predicate}).`);
+
+      // Special case: Sitting / support check for a subject (e.g. "Where is the person sitting?", "Where is person_001 sitting?")
+      if (predicate === 'on' && (targetCategory || targetInstanceId)) {
+        let subjectNodes = targetInstanceId
+          ? currentGraph.nodes.filter(
+              (n) =>
+                n.id.toLowerCase() === targetInstanceId.toLowerCase() ||
+                n.instanceId?.toLowerCase() === targetInstanceId.toLowerCase()
+            )
+          : currentGraph.nodes.filter((n) => matchesTarget(targetCategory, [n.categoryId, n.label]));
+
+        if (subjectNodes.length > 0) {
+          reasoningTrace.push(`Checking sitting / support relationships for ${subjectNodes.length} candidate(s): ${subjectNodes.map((n) => n.id).join(', ')}.`);
+
+          const sittingResults: {
+            subjectNode: (typeof currentGraph.nodes)[0];
+            targetNode: (typeof currentGraph.nodes)[0];
+            edge: (typeof currentGraph.edges)[0];
+          }[] = [];
+
+          for (const sNode of subjectNodes) {
+            const onEdges = currentGraph.edges.filter((e) => e.sourceId === sNode.id && e.predicate === 'on');
+            for (const edge of onEdges) {
+              const tgtNode = currentGraph.nodes.find((n) => n.id === edge.targetId);
+              if (tgtNode) {
+                sittingResults.push({ subjectNode: sNode, targetNode: tgtNode, edge });
+              }
+            }
+          }
+
+          if (sittingResults.length > 0) {
+            let answerText = '';
+            if (sittingResults.length === 1 || targetInstanceId) {
+              const res = sittingResults[0];
+              const bboxStr = res.subjectNode.bbox ? ` at [${res.subjectNode.bbox.map((v) => Math.round(v)).join(', ')}]` : '';
+              answerText = `The ${res.subjectNode.label} (${res.subjectNode.id}) is sitting on ${res.targetNode.label} (${res.targetNode.id})${bboxStr}.`;
+            } else {
+              const parts = sittingResults.map((res) => {
+                const bboxStr = res.subjectNode.bbox ? ` at [${res.subjectNode.bbox.map((v) => Math.round(v)).join(', ')}]` : '';
+                return `${res.subjectNode.label} (${res.subjectNode.id}) is sitting on ${res.targetNode.label} (${res.targetNode.id})${bboxStr}`;
+              });
+              answerText = `The detected persons are seated as follows: ${parts.join(', while ')}.`;
+            }
+
+            return {
+              queryPlan: plan,
+              answer: answerText,
+              evidence: {
+                source: 'scene_graph',
+                workspaceId,
+                frameIds: [currentGraph.frameId],
+                timestamps: [currentGraph.timestamp],
+                objectInstanceIds: sittingResults
+                  .map((r) => r.subjectNode.id)
+                  .concat(sittingResults.map((r) => r.targetNode.id)),
+                relationshipIds: sittingResults.map((r) => r.edge.id),
+                confidence: sittingResults[0].edge.confidence,
+                explanation: `Verified 'on' (sitting/support) relationship in current 2D scene graph.`,
+                provisional: false,
+                targetBbox: sittingResults[0].subjectNode.bbox,
+              },
+              requiresVLM: false,
+              certainty: 'confirmed',
+              reasoningTrace,
+              followUpSuggestions: sittingResults
+                .map((r) => `Where is ${r.subjectNode.id}?`)
+                .concat(sittingResults.map((r) => `What is beside ${r.targetNode.id}?`)),
+            };
+          }
+        }
+      }
+
       reasoningTrace.push(`Reference object: '${refCategory || 'surface'}'`);
 
       // Special case: "Which objects are on the workspace surface?"

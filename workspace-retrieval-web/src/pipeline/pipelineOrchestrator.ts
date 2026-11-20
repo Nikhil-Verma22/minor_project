@@ -41,6 +41,7 @@ export class PipelineOrchestrator {
   private frameCount = 0;
 
   private currentImageBitmap: ImageBitmap | null = null;
+  private currentImageSource: CanvasImageSource | null = null;
   private currentImageBlob: Blob | null = null;
   private currentGraph: SceneGraph | null = null;
   private latestSggResult: SGGInferenceResult | null = null;
@@ -97,6 +98,7 @@ export class PipelineOrchestrator {
   ): Promise<{ sggResult: SGGInferenceResult; graph: SceneGraph }> {
     try {
       this.currentImageBlob = imageBlob || null;
+      this.currentImageSource = imageSource;
       if (imageSource instanceof ImageBitmap) {
         this.currentImageBitmap = imageSource;
       }
@@ -244,7 +246,12 @@ export class PipelineOrchestrator {
       const plan = this.parser.parseQuery(queryText, activeInstances, context, scope);
 
       this.setStage('graph_memory_reasoning', 'Searching scene graph & memory...');
-      const nlqResult = await QueryExecutor.executeQuery(plan, this.currentGraph, this.currentWorkspaceId);
+      const nlqResult = await QueryExecutor.executeQuery(
+        plan,
+        this.currentGraph,
+        this.currentWorkspaceId,
+        this.currentImageSource || this.currentImageBitmap
+      );
 
       // If sufficient evidence was found in graph/memory, answer directly!
       if (!nlqResult.requiresVLM) {

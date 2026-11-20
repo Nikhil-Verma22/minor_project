@@ -86,8 +86,38 @@ export async function testWorkspaceAssistant() {
         isSurface: false,
         attributes: { color: 'black', type: null },
       },
+      // Person and chair for sitting relationship test
+      {
+        id: 'person_001',
+        instanceId: 'person_001',
+        categoryId: 'person',
+        label: 'person',
+        bbox: [295, 124, 352, 236],
+        confidence: 0.88,
+        isSurface: false,
+        attributes: { color: null, type: null },
+      },
+      {
+        id: 'chair_002',
+        instanceId: 'chair_002',
+        categoryId: 'chair',
+        label: 'chair',
+        bbox: [290, 160, 350, 260],
+        confidence: 0.85,
+        isSurface: false,
+        attributes: { color: null, type: null },
+      },
     ],
     edges: [
+      {
+        id: 'rel_sitting_001',
+        sourceId: 'person_001',
+        targetId: 'chair_002',
+        predicate: 'on',
+        confidence: 0.90,
+        source: 'reactpp',
+        provisional: false,
+      },
       {
         id: 'rel_001',
         sourceId: 'notebook_001',
@@ -381,6 +411,41 @@ export async function testWorkspaceAssistant() {
       throw new Error('Test 9 Failed: Memory records were unexpectedly modified during conversation clearing.');
     }
     console.log('✓ Acceptance Test 9 Passed: Conversation clearing leaves persistent workspace memory completely intact.');
+
+    // ------------------------------------------------------------------------
+    // Acceptance Test 10: Disambiguation resolution without looping
+    // Query: "Where is pen_001?"
+    // Expected: Direct location of pen_001, strictly bypassing disambiguation.
+    // ------------------------------------------------------------------------
+    const plan10 = parser.parseQuery('Where is pen_001?', mockInstances);
+    const res10 = await QueryExecutor.executeQuery(plan10, mockCurrentGraph, workspaceId);
+
+    if (res10.ambiguousOptions && res10.ambiguousOptions.length > 0) {
+      throw new Error(`Test 10 Failed: Expected single instance resolution, but disambiguation was triggered: "${res10.answer}"`);
+    }
+    if (!res10.answer.includes('pen_001')) {
+      throw new Error(`Test 10 Failed: Expected answer to locate pen_001: "${res10.answer}"`);
+    }
+    if (res10.certainty !== 'confirmed') {
+      throw new Error(`Test 10 Failed: Expected certainty 'confirmed', got '${res10.certainty}'`);
+    }
+    console.log('✓ Acceptance Test 10 Passed: Instance ID disambiguation resolution succeeds without loop.');
+
+    // ------------------------------------------------------------------------
+    // Acceptance Test 11: Relational sitting query
+    // Query: "Where is the person sitting?"
+    // Expected: Scene graph verifies person_001 is on chair_002.
+    // ------------------------------------------------------------------------
+    const plan11 = parser.parseQuery('Where is the person sitting?', mockInstances);
+    const res11 = await QueryExecutor.executeQuery(plan11, mockCurrentGraph, workspaceId);
+
+    if (res11.evidence.source !== 'scene_graph') {
+      throw new Error(`Test 11 Failed: Expected source 'scene_graph', got '${res11.evidence.source}'`);
+    }
+    if (!res11.answer.toLowerCase().includes('chair_002') && !res11.answer.toLowerCase().includes('chair')) {
+      throw new Error(`Test 11 Failed: Answer did not report sitting on chair: "${res11.answer}"`);
+    }
+    console.log('✓ Acceptance Test 11 Passed: Sitting support relationship answered directly from Scene Graph.');
 
   } finally {
     // Restore repository getters
