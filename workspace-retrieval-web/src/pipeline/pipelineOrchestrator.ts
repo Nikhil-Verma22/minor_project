@@ -15,7 +15,7 @@ import { SceneGraph } from '../graph/graphTypes';
 import { MemoryRepository } from '../memory/memoryRepository';
 import { QueryParser } from '../nlq/parser';
 import { QueryExecutor } from '../nlq/queryExecutor';
-import { NLQResult } from '../nlq/queryTypes';
+import { NLQResult, ConversationContext, QueryScope } from '../nlq/queryTypes';
 import { generateId, formatFrameId } from '../utils/ids';
 import { getCurrentIsoTimestamp } from '../utils/time';
 import { logMessage } from '../utils/logging';
@@ -233,13 +233,17 @@ export class PipelineOrchestrator {
   /**
    * Execute natural language query with deterministic reasoning and selective VLM fallback.
    */
-  async answerQuery(queryText: string): Promise<NLQResult> {
+  async answerQuery(
+    queryText: string,
+    context?: ConversationContext,
+    scope: QueryScope = 'current'
+  ): Promise<NLQResult> {
     try {
-      this.setStage('query_parsing', `Parsing query: "${queryText}"`);
+      this.setStage('query_parsing', `Understanding query: "${queryText}"`);
       const activeInstances = await MemoryRepository.getInstances(this.currentWorkspaceId);
-      const plan = this.parser.parseQuery(queryText, activeInstances);
+      const plan = this.parser.parseQuery(queryText, activeInstances, context, scope);
 
-      this.setStage('graph_memory_reasoning', 'Querying Scene Graph & Temporal Memory...');
+      this.setStage('graph_memory_reasoning', 'Searching scene graph & memory...');
       const nlqResult = await QueryExecutor.executeQuery(plan, this.currentGraph, this.currentWorkspaceId);
 
       // If sufficient evidence was found in graph/memory, answer directly!
@@ -251,7 +255,7 @@ export class PipelineOrchestrator {
 
       // SELECTIVE VLM FALLBACK: Only invoked when Graph/Memory is unresolved
       logMessage('info', 'PipelineOrchestrator', 'Invoking VLM Fallback:', nlqResult.vlmReason);
-      this.setStage('vlm_loading', 'Lazy loading SmolVLM-500M WebGPU runtime...');
+      this.setStage('vlm_loading', 'Visual reasoning required...');
 
       if (!this.vlmEngine) {
         this.vlmEngine = new SmolVLMExecuTorchEngine();
@@ -265,22 +269,31 @@ export class PipelineOrchestrator {
         // Return clear limitation message if WebGPU unavailable
         const safeResult: NLQResult = {
           ...nlqResult,
-          answer: `${nlqResult.answer} (VLM fallback unavailable: ${vlmStatus.error || 'WebGPU not available'}).`,
+          answer: `${nlqResult.answer} (Visual reasoning fallback unavailable: ${vlmStatus.error || 'WebGPU device not available'}).`,
+          certainty: 'insufficient',
         };
-        this.setStage('answer_ready', 'Completed with VLM limitation noted');
+        this.setStage('answer_ready', 'Completed with visual reasoning limitation noted');
         this.callbacks.onQueryResult?.(safeResult);
         return safeResult;
       }
 
-      this.setStage('vlm_reasoning', 'Running SmolVLM-500M visual fallback reasoning...');
+      this.setStage('vlm_reasoning', 'Inspecting image with SmolVLM-500M...');
 
       if (!this.currentImageBitmap && !this.currentImageBlob) {
         throw new Error('No current image available for VLM reasoning');
       }
 
+      // Build target-attribute-focused prompt if applicable
+      let vlmQueryPrompt = queryText;
+      if (plan.intent === 'object_attribute' && plan.targetObject?.requestedAttribute) {
+        const attr = plan.targetObject.requestedAttribute;
+        const target = plan.targetObject.mention || 'workspace surface';
+        vlmQueryPrompt = `What is the ${attr} of the ${target}? If visible, state its ${attr} clearly. If not clearly visible, say its ${attr} cannot be determined.`;
+      }
+
       const vlmResponse = await this.vlmEngine.answer(
         (this.currentImageBitmap || this.currentImageBlob)!,
-        queryText,
+        vlmQueryPrompt,
         {
           currentGraph: this.currentGraph,
           activeInstances,
@@ -306,9 +319,27 @@ export class PipelineOrchestrator {
       }
 
       const hasCandidates = vlmResponse.candidate_relations.length > 0;
+      const trace = [...nlqResult.reasoningTrace];
+      trace.push('SmolVLM-500M visual inspection completed.');
+      trace.push(
+        hasCandidates
+          ? `Grounded candidate relationship: <${vlmResponse.candidate_relations[0].subject_id}, ${vlmResponse.candidate_relations[0].predicate_text}, ${vlmResponse.candidate_relations[0].object_id}>.`
+          : 'Visual inspection concluded with insufficient grounded evidence for target.'
+      );
+
+      // Handle attribute answer completeness
+      let finalAnswer = vlmResponse.answer;
+      if (plan.intent === 'object_attribute') {
+        const attr = plan.targetObject?.requestedAttribute || 'attribute';
+        const target = plan.targetObject?.mention || 'target object';
+        if (vlmResponse.unresolved || !hasCandidates) {
+          finalAnswer = `I can inspect the workspace context, but the ${attr} of '${target}' cannot be determined confidently from this observation.`;
+        }
+      }
+
       const finalResult: NLQResult = {
         queryPlan: plan,
-        answer: vlmResponse.answer,
+        answer: finalAnswer,
         evidence: {
           source: 'vlm',
           workspaceId: this.currentWorkspaceId,
@@ -318,14 +349,20 @@ export class PipelineOrchestrator {
           relationshipIds: [],
           confidence: hasCandidates ? (vlmResponse.candidate_relations[0]?.confidence ?? 0.75) : 0.1,
           explanation: hasCandidates
-            ? `Visual fallback reasoned over RGB image context. Found ${vlmResponse.candidate_relations.length} provisional candidate relation(s).`
-            : `Visual fallback found no conclusive evidence for target entity in current observation.`,
+            ? `Visual reasoning grounded candidate presence in RGB image context.`
+            : `Visual reasoning found no conclusive evidence for target entity in current observation.`,
           provisional: true,
         },
         requiresVLM: false,
+        certainty: vlmResponse.unresolved ? 'insufficient' : hasCandidates ? 'provisional' : 'insufficient',
+        reasoningTrace: trace,
+        followUpSuggestions: [
+          'Which objects are on the workspace surface?',
+          'What is visible in the current observation?',
+        ],
       };
 
-      this.setStage('answer_ready', 'Answer derived from SmolVLM-500M fallback');
+      this.setStage('answer_ready', 'Answer derived from SmolVLM-500M visual reasoning');
       this.callbacks.onQueryResult?.(finalResult);
       return finalResult;
     } catch (err: any) {

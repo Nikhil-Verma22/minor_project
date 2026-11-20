@@ -14,14 +14,14 @@ import { ModelStatus } from '../components/ModelStatus';
 import { WorkspaceObservation } from '../components/WorkspaceObservation';
 import { SceneGraphPanel } from '../components/SceneGraphPanel';
 import { ObjectList } from '../components/ObjectList';
-import { QueryPanel } from '../components/QueryPanel';
+import { WorkspaceAssistant } from '../components/WorkspaceAssistant';
 import { HistoryTimeline } from '../components/HistoryTimeline';
 import { DiagnosticsPanel } from '../components/DiagnosticsPanel';
 import { PipelineOrchestrator } from '../pipeline/pipelineOrchestrator';
 import { MemoryRepository } from '../memory/memoryRepository';
 import { SGGInferenceResult, SGGObjectDetection, SGGRelation } from '../models/sgg/SGGEngine';
 import { SceneGraph } from '../graph/graphTypes';
-import { NLQResult } from '../nlq/queryTypes';
+import { NLQResult, ConversationContext, QueryScope } from '../nlq/queryTypes';
 import { FrameRecord, PersistentObjectInstance } from '../memory/memoryTypes';
 import { PipelineStage } from '../pipeline/pipelineTypes';
 import { buildEntityColorMap } from '../utils/colors';
@@ -158,10 +158,10 @@ export const App: React.FC = () => {
     handleRunSgg();
   };
 
-  const handleAskQuery = async (queryText: string) => {
+  const handleAskQuery = async (queryText: string, context?: ConversationContext, scope?: QueryScope) => {
     if (!orchestratorRef.current) return;
     try {
-      await orchestratorRef.current.answerQuery(queryText);
+      await orchestratorRef.current.answerQuery(queryText, context, scope);
     } catch (err) {
       console.error('Error executing query:', err);
     }
@@ -308,13 +308,16 @@ export const App: React.FC = () => {
         </aside>
       </main>
 
-      {/* C. Full-Width Prominent Natural Language Query Composer */}
-      <section className="nlq-section">
-        <QueryPanel
+      {/* C. Full-Width Prominent Workspace Assistant */}
+      <section className="assistant-section">
+        <WorkspaceAssistant
           onAskQuery={handleAskQuery}
           queryResult={queryResult}
           pipelineStage={pipelineStage}
           isEnabled={objects.length > 0 || frames.length > 0}
+          onSelectEntity={(id) => setSelectedId(id)}
+          onSelectHistoricalFrame={handleSelectHistoricalFrame}
+          availableFramesCount={frames.length}
         />
       </section>
 

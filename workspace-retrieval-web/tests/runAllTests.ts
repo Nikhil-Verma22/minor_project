@@ -7,6 +7,7 @@ import { testVocabularyAdapter } from './sgg/vocabularyAdapter.test';
 import { testPostprocessing } from './sgg/postprocess.test';
 import { testIdentityAssociation } from './memory/identityAssociation.test';
 import { testQueryParser } from './nlq/parser.test';
+import { testWorkspaceAssistant } from './workspaceAssistant.test';
 
 async function run() {
   console.log('==================================================');
@@ -18,9 +19,10 @@ async function run() {
     testPostprocessing();
     testIdentityAssociation();
     testQueryParser();
+    await testWorkspaceAssistant();
 
     console.log('\n==================================================');
-    console.log('ALL TESTS PASSED SUCCESSFULLY! (4 suites, 0 failures)');
+    console.log('ALL TESTS PASSED SUCCESSFULLY! (5 suites, 0 failures)');
     console.log('==================================================');
     process.exit(0);
   } catch (err: any) {

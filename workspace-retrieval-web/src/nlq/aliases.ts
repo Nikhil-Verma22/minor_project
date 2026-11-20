@@ -1,14 +1,8 @@
 /**
- * Aliases, Synonyms, and Token Maps for NLQ Parsing.
+ * Aliases, Synonyms, and Token Maps for NLQ Parsing & Workspace Assistant.
  */
 
-import { WORKSPACE_CATEGORIES } from '../config/categories';
 import { CanonicalPredicate } from '../config/predicates';
-
-export interface EntityAliasMatch {
-  categoryId: string;
-  matchedText: string;
-}
 
 export const PREDICATE_SYNONYMS: Record<string, CanonicalPredicate> = {
   // on
@@ -54,7 +48,7 @@ export const PREDICATE_SYNONYMS: Record<string, CanonicalPredicate> = {
 };
 
 export const TIME_SCOPE_PATTERNS = [
-  { pattern: /\b(last seen|last observed|where was|previous location)\b/i, scope: 'last_seen' as const },
+  { pattern: /\b(last seen|last observed|where was|previous location|yesterday)\b/i, scope: 'last_seen' as const },
   { pattern: /\b(previous observation|earlier frame|before|past|previously)\b/i, scope: 'previous_observation' as const },
   { pattern: /\b(history|timeline|all along|over time)\b/i, scope: 'all_history' as const },
   { pattern: /\b(now|currently|current|present|at present)\b/i, scope: 'current' as const },
@@ -72,4 +66,24 @@ export const ATTRIBUTE_COLORS = [
   'gray',
   'orange',
   'purple',
+  'brown',
+  'pink',
+  'cyan',
+  'teal',
+];
+
+/**
+ * Patterns that indicate unobserved, occluded, or non-visible spaces (e.g. closed drawers).
+ */
+export const OCCLUDED_AREA_PATTERNS = [
+  /\b(behind|inside|in)\s+(the\s+)?(closed\s+drawer|closed\s+cabinet|closed\s+cupboard|closed\s+door|closed\s+box|closed\s+bag|closed\s+backpack)\b/i,
+  /\b(inside|within)\s+(the\s+)?(drawer|cupboard|cabinet|closed|opaque\s+box)\b/i,
+  /\b(underneath|under)\s+(the\s+)?(floor|carpet|ceiling)\b/i,
+];
+
+/**
+ * Pronouns referencing prior conversational entity.
+ */
+export const PRONOUN_PATTERNS = [
+  /\b(it|that\s+object|the\s+same\s+one|that\s+one|its\s+previous\s+location|there)\b/i,
 ];
