@@ -1,11 +1,11 @@
 /**
  * SceneGraphPanel Component.
- * Visualizes 2D Scene Graph as categorized triplets and an interactive node-edge graph.
- * Uses unified object colors matching the BoundingBoxOverlay and ObjectList.
+ * Visualizes the 2D Scene Graph as clean, modern triplet rows and an interactive SVG graph.
+ * Uses restrained, unified color chips and subtle separators.
  */
 
 import React, { useState } from 'react';
-import { Network, List, Share2, ArrowRight } from 'lucide-react';
+import { Network, List, Share2, ArrowRight, Filter } from 'lucide-react';
 import { SceneGraph } from '../graph/graphTypes';
 import { CANONICAL_PREDICATES } from '../config/predicates';
 
@@ -29,15 +29,15 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
 
   if (!graph || graph.edges.length === 0) {
     return (
-      <div className="panel-card">
-        <div className="panel-header">
-          <div className="flex items-center gap-2">
-            <Network size={18} className="text-cyan-400" />
-            <h2 className="panel-title">2D Scene Graph</h2>
-          </div>
+      <div className="ai-panel">
+        <div className="ai-panel-header">
+          <h3 className="ai-panel-title">
+            <Network size={16} className="ai-panel-title-icon" />
+            2D Scene Graph
+          </h3>
         </div>
-        <div className="empty-state">
-          No relationship facts detected in this observation yet.
+        <div className="text-center py-8 text-zinc-500 text-xs italic">
+          No relationship facts detected in current observation.
         </div>
       </div>
     );
@@ -57,55 +57,65 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
   });
 
   return (
-    <div className="panel-card">
-      <div className="panel-header">
+    <div className="ai-panel">
+      {/* Header with Title, Count, Predicate Filter, and View Mode Toggle */}
+      <div className="ai-panel-header">
         <div className="flex items-center gap-2">
-          <Network size={18} className="text-cyan-400" />
-          <h2 className="panel-title">2D Scene Graph</h2>
-          <span className="badge-count">{graph.edges.length} triplets</span>
+          <h3 className="ai-panel-title">
+            <Network size={16} className="ai-panel-title-icon" />
+            2D Scene Graph
+          </h3>
+          <span className="badge-counter">{graph.edges.length} triplets</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <select
-            className="select-input text-xs"
-            value={predicateFilter}
-            onChange={(e) => setPredicateFilter(e.target.value)}
-          >
-            <option value="all">All Predicates ({graph.edges.length})</option>
-            {CANONICAL_PREDICATES.map((p) => {
-              const count = graph.edges.filter((e) => e.predicate === p.canonical).length;
-              if (count === 0) return null;
-              return (
-                <option key={p.canonical} value={p.canonical}>
-                  {p.displayName} ({count})
-                </option>
-              );
-            })}
-          </select>
+          {/* Predicate Filter */}
+          <div className="flex items-center gap-1">
+            <Filter size={12} className="text-zinc-500" />
+            <select
+              className="domain-select text-xs py-1 px-2"
+              value={predicateFilter}
+              onChange={(e) => setPredicateFilter(e.target.value)}
+              title="Filter by relationship predicate"
+            >
+              <option value="all">All ({graph.edges.length})</option>
+              {CANONICAL_PREDICATES.map((p) => {
+                const count = graph.edges.filter((e) => e.predicate === p.canonical).length;
+                if (count === 0) return null;
+                return (
+                  <option key={p.canonical} value={p.canonical}>
+                    {p.displayName} ({count})
+                  </option>
+                );
+              })}
+            </select>
+          </div>
 
-          <div className="view-toggle">
+          {/* View Toggle */}
+          <div className="overlay-mode-segmented">
             <button
               type="button"
-              className={`view-toggle-btn ${viewMode === 'triplets' ? 'active' : ''}`}
+              className={`overlay-mode-chip ${viewMode === 'triplets' ? 'active' : ''}`}
               onClick={() => setViewMode('triplets')}
               title="Triplets List"
             >
-              <List size={14} />
+              <List size={12} />
             </button>
             <button
               type="button"
-              className={`view-toggle-btn ${viewMode === 'graph' ? 'active' : ''}`}
+              className={`overlay-mode-chip ${viewMode === 'graph' ? 'active' : ''}`}
               onClick={() => setViewMode('graph')}
               title="Graph View"
             >
-              <Share2 size={14} />
+              <Share2 size={12} />
             </button>
           </div>
         </div>
       </div>
 
+      {/* Content: Triplets List OR Node-Edge Graph */}
       {viewMode === 'triplets' ? (
-        <div className="triplets-list">
+        <div className="triplets-scroll-container">
           {filteredEdges.map((edge) => {
             const subjNode = nodeMap.get(edge.sourceId);
             const objNode = nodeMap.get(edge.targetId);
@@ -135,44 +145,48 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
             return (
               <div
                 key={edge.id}
-                className={`triplet-row ${isRowHovered ? 'triplet-hovered' : ''}`}
+                className={`triplet-item ${isRowHovered ? 'active' : ''}`}
                 onMouseEnter={() => onHoverNode(edge.sourceId)}
                 onMouseLeave={() => onHoverNode(null)}
               >
-                <div className="flex items-center gap-2 flex-1 min-w-0">
+                <div className="triplet-entities">
+                  {/* Subject Chip */}
                   <span
-                    className="node-chip transition-all duration-150"
+                    className="entity-chip"
                     style={{
-                      backgroundColor: `${subjColor}22`,
+                      backgroundColor: `${subjColor}1a`,
                       color: subjColor,
-                      border: `1px solid ${isSubjHovered ? subjColor : `${subjColor}55`}`,
-                      boxShadow: isSubjHovered ? `0 0 8px ${subjColor}77` : 'none',
+                      border: `1px solid ${isSubjHovered ? subjColor : `${subjColor}40`}`,
                     }}
+                    title={subjNode?.label || edge.sourceId}
                   >
                     {subjNode?.label || edge.sourceId}
                   </span>
 
-                  <span className="predicate-pill flex items-center gap-1">
-                    <ArrowRight size={11} className="text-zinc-400" />
+                  {/* Directed Predicate Badge */}
+                  <span className="predicate-badge">
+                    <ArrowRight size={10} className="text-cyan-400" />
                     {edge.predicate.replace(/_/g, ' ')}
                   </span>
 
+                  {/* Object Chip */}
                   <span
-                    className="node-chip transition-all duration-150"
+                    className="entity-chip"
                     style={{
-                      backgroundColor: `${objColor}22`,
+                      backgroundColor: `${objColor}1a`,
                       color: objColor,
-                      border: `1px solid ${isObjHovered ? objColor : `${objColor}55`}`,
-                      boxShadow: isObjHovered ? `0 0 8px ${objColor}77` : 'none',
+                      border: `1px solid ${isObjHovered ? objColor : `${objColor}40`}`,
                     }}
+                    title={objNode?.label || edge.targetId}
                   >
                     {objNode?.label || edge.targetId}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs">
-                  <span className="text-zinc-400">{(edge.confidence * 100).toFixed(0)}%</span>
-                  <span className={`source-badge ${edge.source === 'vlm' ? 'source-vlm' : 'source-sgg'}`}>
+                {/* Score & Source Metadata */}
+                <div className="flex items-center gap-2">
+                  <span className="triplet-score">{(edge.confidence * 100).toFixed(0)}%</span>
+                  <span className="badge-counter text-[10px] uppercase font-mono">
                     {edge.source}
                   </span>
                 </div>
@@ -182,17 +196,17 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
         </div>
       ) : (
         /* Interactive Node-Edge SVG Graph */
-        <div className="graph-container">
-          <svg className="w-full h-64" viewBox="0 0 500 240">
-            {filteredEdges.slice(0, 15).map((edge, i) => {
-              const total = Math.min(filteredEdges.length, 15);
+        <div className="bg-[#0B0D12] rounded-lg p-2 border border-zinc-800/80">
+          <svg className="w-full h-56" viewBox="0 0 460 220">
+            {filteredEdges.slice(0, 16).map((edge, i) => {
+              const total = Math.min(filteredEdges.length, 16);
               const angle1 = (i / total) * 2 * Math.PI;
               const angle2 = ((i + 1) / total) * 2 * Math.PI;
 
-              const x1 = 250 + 160 * Math.cos(angle1);
-              const y1 = 120 + 80 * Math.sin(angle1);
-              const x2 = edge.targetId.includes('surface') ? 250 : 250 + 160 * Math.cos(angle2);
-              const y2 = edge.targetId.includes('surface') ? 120 : 120 + 80 * Math.sin(angle2);
+              const x1 = 230 + 150 * Math.cos(angle1);
+              const y1 = 110 + 75 * Math.sin(angle1);
+              const x2 = edge.targetId.includes('surface') ? 230 : 230 + 150 * Math.cos(angle2);
+              const y2 = edge.targetId.includes('surface') ? 110 : 110 + 75 * Math.sin(angle2);
 
               const edgeColor = colorMap?.get(edge.sourceId) || '#38bdf8';
 
@@ -204,15 +218,17 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
                     x2={x2}
                     y2={y2}
                     stroke={edgeColor}
-                    strokeWidth="1.5"
-                    strokeOpacity="0.6"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.45"
                   />
                   <text
                     x={(x1 + x2) / 2}
-                    y={(y1 + y2) / 2 - 4}
+                    y={(y1 + y2) / 2 - 3}
                     fill={edgeColor}
-                    fontSize="9"
+                    fontSize="8.5"
+                    fontFamily="system-ui, sans-serif"
                     textAnchor="middle"
+                    fillOpacity="0.8"
                   >
                     {edge.predicate}
                   </text>
@@ -223,8 +239,8 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
             {graph.nodes.slice(0, 12).map((node, idx) => {
               const isSurface = node.isSurface;
               const angle = (idx / Math.min(graph.nodes.length, 12)) * 2 * Math.PI;
-              const cx = isSurface ? 250 : 250 + 160 * Math.cos(angle);
-              const cy = isSurface ? 120 : 120 + 80 * Math.sin(angle);
+              const cx = isSurface ? 230 : 230 + 150 * Math.cos(angle);
+              const cy = isSurface ? 110 : 110 + 75 * Math.sin(angle);
 
               const isHovered =
                 checkMatch(hoveredId, node.id) ||
@@ -246,23 +262,23 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
                   <circle
                     cx={cx}
                     cy={cy}
-                    r={isSurface ? 22 : 16}
-                    fill={`${nodeColor}28`}
+                    r={isSurface ? 20 : 14}
+                    fill={`${nodeColor}22`}
                     stroke={isHovered ? '#fbbf24' : nodeColor}
-                    strokeWidth={isHovered ? 2.5 : 1.8}
+                    strokeWidth={isHovered ? 2.2 : 1.5}
                     style={{
                       filter: isHovered ? `drop-shadow(0 0 6px ${nodeColor})` : 'none',
                     }}
                   />
                   <text
                     x={cx}
-                    y={cy + 4}
+                    y={cy + 3.5}
                     fill="#ffffff"
-                    fontSize="9"
+                    fontSize="8.5"
                     fontWeight="600"
                     textAnchor="middle"
                   >
-                    {node.label.slice(0, 7)}
+                    {node.label.slice(0, 6)}
                   </text>
                 </g>
               );

@@ -1,13 +1,17 @@
 /**
  * Main Application Component.
- * Integrates REACT++ SGG, 2D Scene Graph, IndexedDB Memory, NLQ Engine, and SmolVLM-500M WebGPU fallback.
+ * Complete UI/UX Redesign:
+ * - Wide, responsive .app-shell container (up to 1560px+)
+ * - Compact top navigation header with runtime status chips
+ * - Two-column workspace grid (65-68% observation viewer, 32-35% scene intelligence sidebar)
+ * - Prominent full-width Natural Language Query (NLQ) composer
+ * - Collapsible performance telemetry and diagnostics at bottom
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Sparkles, RefreshCw } from 'lucide-react';
+import { Layers } from 'lucide-react';
 import { ModelStatus } from '../components/ModelStatus';
-import { ImageUploader } from '../components/ImageUploader';
-import { ImageViewer } from '../components/ImageViewer';
+import { WorkspaceObservation } from '../components/WorkspaceObservation';
 import { SceneGraphPanel } from '../components/SceneGraphPanel';
 import { ObjectList } from '../components/ObjectList';
 import { QueryPanel } from '../components/QueryPanel';
@@ -20,7 +24,6 @@ import { SceneGraph } from '../graph/graphTypes';
 import { NLQResult } from '../nlq/queryTypes';
 import { FrameRecord, PersistentObjectInstance } from '../memory/memoryTypes';
 import { PipelineStage } from '../pipeline/pipelineTypes';
-import { generateId } from '../utils/ids';
 import { buildEntityColorMap } from '../utils/colors';
 
 export const App: React.FC = () => {
@@ -99,26 +102,14 @@ export const App: React.FC = () => {
       setFrames(fList);
       setInstances(iList);
     } catch (err) {
-      console.error('Failed to refresh memory state:', err);
+      console.error('Failed to load memory state:', err);
     }
-  };
-
-  const handleDomainChange = (domain: string) => {
-    setSelectedDomain(domain);
-    const newWsId = `ws_${domain}`;
-    setWorkspaceId(newWsId);
-    orchestratorRef.current?.setWorkspace(newWsId, domain);
-    refreshMemoryState();
   };
 
   const handleImageSelected = (fileOrBlob: File | Blob, filename: string) => {
-    if (currentImageSrc) {
-      URL.revokeObjectURL(currentImageSrc);
-    }
+    setCurrentImageBlob(fileOrBlob);
     const url = URL.createObjectURL(fileOrBlob);
     setCurrentImageSrc(url);
-    setCurrentImageBlob(fileOrBlob);
-    setQueryResult(null);
 
     // Read natural dimensions
     const img = new Image();
@@ -126,11 +117,24 @@ export const App: React.FC = () => {
       setImgDimensions({ width: img.naturalWidth, height: img.naturalHeight });
     };
     img.src = url;
+
+    // Reset previous frame predictions
+    setSggResult(null);
+    setObjects([]);
+    setRelationships([]);
+    setGraph(null);
+    setQueryResult(null);
+    setSelectedId(null);
+    setHoveredId(null);
+  };
+
+  const handleDomainChange = (domainId: string) => {
+    setSelectedDomain(domainId);
+    orchestratorRef.current?.initialize(workspaceId, domainId);
   };
 
   const handleRunSgg = async () => {
     if (!currentImageSrc || !orchestratorRef.current) return;
-
     try {
       const img = new Image();
       img.crossOrigin = 'anonymous';
@@ -144,7 +148,7 @@ export const App: React.FC = () => {
       await orchestratorRef.current.processImage(img, currentImageBlob || undefined);
       await refreshMemoryState();
     } catch (err: any) {
-      console.error('[App] Error during Scene Understanding:', err);
+      console.error('[App] Error running SGG pipeline:', err);
       alert('Error during Scene Understanding: ' + (err.message || String(err)));
     }
   };
@@ -156,22 +160,30 @@ export const App: React.FC = () => {
 
   const handleAskQuery = async (queryText: string) => {
     if (!orchestratorRef.current) return;
-    await orchestratorRef.current.answerQuery(queryText);
+    try {
+      await orchestratorRef.current.answerQuery(queryText);
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
   };
 
   const handleSelectHistoricalFrame = async (frameId: string) => {
     try {
+      const frame = await MemoryRepository.getFrame(frameId);
+      if (!frame) return;
+
       const obs = await MemoryRepository.getObservationsForFrame(frameId);
       const rels = await MemoryRepository.getRelationshipsForFrame(frameId);
-      const f = await MemoryRepository.getFrame(frameId);
 
-      if (f) {
-        setImgDimensions({ width: f.imageWidth, height: f.imageHeight });
+      if (frame.thumbnailDataUrl) {
+        setCurrentImageSrc(frame.thumbnailDataUrl);
       }
+      setImgDimensions({ width: frame.imageWidth, height: frame.imageHeight });
 
       setObjects(
         obs.map((o) => ({
           detectionId: o.annotationId,
+          instanceId: o.instanceId,
           modelLabel: o.categoryId,
           projectCategory: o.categoryId,
           bbox: o.bbox || [0, 0, 0, 0],
@@ -205,6 +217,8 @@ export const App: React.FC = () => {
       setObjects([]);
       setRelationships([]);
       setQueryResult(null);
+      setSelectedId(null);
+      setHoveredId(null);
     }
   };
 
@@ -214,18 +228,20 @@ export const App: React.FC = () => {
   }, [objects, graph]);
 
   return (
-    <div className="app-container">
+    <div className="app-shell">
+      {/* A. Compact Top Navigation Header */}
       <header className="app-header">
-        <div className="app-header-left">
-          <div className="app-title-row">
-            <h1 className="app-title">
-              <span className="text-cyan">Object Retrieval</span> in Dynamic Workspace Environments
-            </h1>
-            <span className="badge-tag">v1.0 Local-First</span>
+        <div className="app-brand">
+          <div className="brand-icon-wrapper">
+            <Layers size={20} />
           </div>
-          <p className="app-subtitle">
-            Browser-First Scene Graph Generation (REACT++), Persistent Memory (IndexedDB), and SmolVLM-500M WebGPU Fallback
-          </p>
+          <div className="app-title-group">
+            <div className="app-title-row">
+              <h1 className="app-title">Object Retrieval</h1>
+              <span className="badge-local-first">Local-First</span>
+            </div>
+            <p className="app-subtitle">Dynamic Workspace Intelligence</p>
+          </div>
         </div>
 
         <ModelStatus
@@ -236,22 +252,11 @@ export const App: React.FC = () => {
         />
       </header>
 
-      {/* Main Grid Layout */}
-      <main className="app-main-grid">
-        {/* Left Column: Image, Overlays, and Query Console */}
-        <section className="col-left">
-          <ImageUploader
-            onImageSelected={handleImageSelected}
-            onRunSgg={handleRunSgg}
-            onAddNextObservation={handleAddNextObservation}
-            selectedDomain={selectedDomain}
-            onDomainChange={handleDomainChange}
-            hasImage={!!currentImageSrc}
-            isRunning={pipelineStage === 'sgg_running'}
-            hasPriorObservations={frames.length > 0}
-          />
-
-          <ImageViewer
+      {/* B. Main Two-Column Workspace Grid */}
+      <main className="workspace-grid">
+        {/* Left Column (65-68%): Unified Workspace Observation */}
+        <section className="workspace-main">
+          <WorkspaceObservation
             imageSrc={currentImageSrc}
             imgWidth={imgDimensions.width}
             imgHeight={imgDimensions.height}
@@ -263,18 +268,18 @@ export const App: React.FC = () => {
             onSelect={setSelectedId}
             colorMap={entityColors.colorMap}
             isEntityMatch={entityColors.isEntityMatch}
-          />
-
-          <QueryPanel
-            onAskQuery={handleAskQuery}
-            queryResult={queryResult}
-            pipelineStage={pipelineStage}
-            isEnabled={objects.length > 0 || frames.length > 0}
+            onImageSelected={handleImageSelected}
+            onRunSgg={handleRunSgg}
+            onAddNextObservation={handleAddNextObservation}
+            selectedDomain={selectedDomain}
+            onDomainChange={handleDomainChange}
+            isRunning={pipelineStage === 'sgg_running'}
+            hasPriorObservations={frames.length > 0}
           />
         </section>
 
-        {/* Right Column: Scene Graph, Objects, and Timeline History */}
-        <section className="col-right">
+        {/* Right Column (32-35%): Scene Intelligence Sidebar */}
+        <aside className="workspace-sidebar">
           <SceneGraphPanel
             graph={graph}
             hoveredId={hoveredId}
@@ -300,11 +305,21 @@ export const App: React.FC = () => {
             onClearMemory={handleClearMemory}
             onRefreshHistory={refreshMemoryState}
           />
-        </section>
+        </aside>
       </main>
 
-      {/* Footer Diagnostics */}
-      <footer className="app-footer">
+      {/* C. Full-Width Prominent Natural Language Query Composer */}
+      <section className="nlq-section">
+        <QueryPanel
+          onAskQuery={handleAskQuery}
+          queryResult={queryResult}
+          pipelineStage={pipelineStage}
+          isEnabled={objects.length > 0 || frames.length > 0}
+        />
+      </section>
+
+      {/* D. Collapsible System Diagnostics & Telemetry */}
+      <footer className="diagnostics-section">
         <DiagnosticsPanel
           sggResult={sggResult}
           instanceCount={instances.length}

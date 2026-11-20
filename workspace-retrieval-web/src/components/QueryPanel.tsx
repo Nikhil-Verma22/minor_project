@@ -1,10 +1,12 @@
 /**
  * QueryPanel Component.
- * Natural Language Query console with example chips, step indicators, and answer display.
+ * Prominent Natural Language Query composer spanning the workspace.
+ * Features a comfortable search input, suggested query pills, live execution state,
+ * and a rich answer card with source attribution.
  */
 
 import React, { useState } from 'react';
-import { MessageSquare, Send, Sparkles, Loader2 } from 'lucide-react';
+import { MessageSquare, Send, Sparkles, Loader2, Search, ArrowRight } from 'lucide-react';
 import { NLQResult } from '../nlq/queryTypes';
 import { AnswerEvidence } from './AnswerEvidence';
 import { PipelineStage } from '../pipeline/pipelineTypes';
@@ -16,7 +18,7 @@ interface QueryPanelProps {
   isEnabled: boolean;
 }
 
-const EXAMPLE_QUERIES = [
+const SUGGESTED_QUERIES = [
   'Where is the laptop?',
   'What is beside the laptop?',
   'Where was my phone last seen?',
@@ -47,96 +49,126 @@ export const QueryPanel: React.FC<QueryPanelProps> = ({
     'vlm_reasoning',
   ].includes(pipelineStage);
 
+  const getSourceBadge = (source: string) => {
+    switch (source) {
+      case 'scene_graph':
+        return (
+          <span className="badge-source badge-source-sgg">
+            Scene Graph (Ground Truth)
+          </span>
+        );
+      case 'workspace_memory':
+        return (
+          <span className="badge-source badge-source-memory">
+            Workspace Memory Fact
+          </span>
+        );
+      case 'vlm_visual_reasoning':
+        return (
+          <span className="badge-source badge-source-vlm">
+            SmolVLM Visual Fallback
+          </span>
+        );
+      default:
+        return <span className="badge-source">{source}</span>;
+    }
+  };
+
   return (
-    <div className="panel-card">
-      <div className="panel-header">
-        <div className="flex items-center gap-2">
+    <div className="nlq-panel">
+      {/* Header */}
+      <div className="nlq-header">
+        <h3 className="nlq-title">
           <MessageSquare size={18} className="text-cyan-400" />
-          <h2 className="panel-title">Natural Language Query (NLQ)</h2>
-        </div>
+          Ask About Your Workspace
+        </h3>
+        <span className="text-xs text-zinc-400">
+          Deterministic 2D Scene Graph &bull; Temporal Memory &bull; SmolVLM Fallback
+        </span>
       </div>
 
-      {/* Example Chips */}
-      <div className="flex flex-wrap gap-1.5 mb-3">
-        {EXAMPLE_QUERIES.map((q) => (
-          <button
-            key={q}
-            type="button"
-            className="chip-example"
-            onClick={() => {
-              setQueryText(q);
-              if (isEnabled) onAskQuery(q);
-            }}
+      {/* Modern Wide Search Composer */}
+      <form onSubmit={handleSubmit} className="nlq-composer-form">
+        <div className="nlq-input-wrapper">
+          <Search size={16} className="nlq-input-icon" />
+          <input
+            type="text"
+            className="nlq-input"
+            placeholder={
+              isEnabled
+                ? 'Ask a question about object locations, spatial relationships, or movement...'
+                : 'Upload an observation image to enable queries'
+            }
+            value={queryText}
+            onChange={(e) => setQueryText(e.target.value)}
             disabled={!isEnabled || isQuerying}
-          >
-            {q}
-          </button>
-        ))}
-      </div>
+          />
+        </div>
 
-      {/* Query Input */}
-      <form onSubmit={handleSubmit} className="flex items-center gap-2 mb-3">
-        <input
-          type="text"
-          className="text-input flex-1"
-          placeholder={
-            isEnabled
-              ? 'Ask a question about objects, locations, or relations...'
-              : 'Upload an observation image to enable queries'
-          }
-          value={queryText}
-          onChange={(e) => setQueryText(e.target.value)}
-          disabled={!isEnabled || isQuerying}
-        />
         <button
           type="submit"
-          className="btn-primary flex items-center gap-1.5 px-4"
+          className="nlq-ask-btn"
           disabled={!isEnabled || !queryText.trim() || isQuerying}
         >
           {isQuerying ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              Reasoning...
+              <span>Reasoning...</span>
             </>
           ) : (
             <>
               <Send size={15} />
-              Ask
+              <span>Ask</span>
             </>
           )}
         </button>
       </form>
 
-      {/* Reasoning Steps Sequence Indicator */}
-      {isQuerying && (
-        <div className="reasoning-steps-bar mb-3">
-          <div className={`step-item ${pipelineStage === 'query_parsing' ? 'step-active' : 'step-done'}`}>
-            1. Parsing Query
+      {/* Suggested Query Chips */}
+      <div className="flex items-center gap-2 flex-wrap text-xs text-zinc-400 mt-2">
+        <span className="text-zinc-500 font-medium">Suggested:</span>
+        <div className="nlq-suggestions">
+          {SUGGESTED_QUERIES.map((q) => (
+            <button
+              key={q}
+              type="button"
+              className="nlq-suggestion-chip"
+              onClick={() => {
+                setQueryText(q);
+                if (isEnabled) onAskQuery(q);
+              }}
+              disabled={!isEnabled || isQuerying}
+            >
+              {q}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Query Result Presentation */}
+      {queryResult && (
+        <div className="nlq-answer-card">
+          <div className="flex items-center justify-between gap-4 mb-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+              Answer
+            </span>
+            {getSourceBadge(queryResult.evidence.source)}
           </div>
-          <div
-            className={`step-item ${
-              pipelineStage === 'graph_memory_reasoning'
-                ? 'step-active'
-                : pipelineStage === 'vlm_loading' || pipelineStage === 'vlm_reasoning'
-                ? 'step-done'
-                : 'step-pending'
-            }`}
-          >
-            2. Searching Scene Graph & Memory
+
+          <div className="nlq-answer-text">
+            {queryResult.answer}
           </div>
-          {(pipelineStage === 'vlm_loading' || pipelineStage === 'vlm_reasoning') && (
-            <div className="step-item step-vlm step-active flex items-center gap-1">
-              <Sparkles size={12} /> 3. SmolVLM Fallback
+
+          {/* Structured Evidence Readout */}
+          <AnswerEvidence evidence={queryResult.evidence} />
+
+          {/* VLM Fallback Rationale (if applicable) */}
+          {queryResult.requiresVLM && queryResult.vlmReason && (
+            <div className="mt-3 p-2.5 rounded bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 flex items-center gap-2">
+              <Sparkles size={14} className="text-amber-400 flex-shrink-0" />
+              <span>{queryResult.vlmReason}</span>
             </div>
           )}
-        </div>
-      )}
-
-      {/* Answer Output */}
-      {queryResult && (
-        <div className="answer-container">
-          <div className="answer-text mb-3">{queryResult.answer}</div>
-          <AnswerEvidence evidence={queryResult.evidence} />
         </div>
       )}
     </div>

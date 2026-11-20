@@ -1,6 +1,6 @@
 /**
  * ModelStatus Component.
- * Displays live status chips for REACT++, IndexedDB Memory, and SmolVLM-500M.
+ * Compact, unified status chips for REACT++, IndexedDB Memory, and SmolVLM-500M.
  */
 
 import React from 'react';
@@ -21,62 +21,65 @@ export const ModelStatus: React.FC<ModelStatusProps> = ({
   instanceCount,
   frameCount,
 }) => {
-  const getProviderBadge = (provider: string) => {
+  const getProviderText = (provider: string) => {
     switch (provider) {
       case 'webgpu':
-        return <span className="status-badge status-webgpu">WebGPU Primary</span>;
+        return 'WebGPU';
       case 'wasm':
-        return <span className="status-badge status-wasm">WASM SIMD CPU</span>;
+        return 'WASM SIMD';
       case 'local_service':
-        return <span className="status-badge status-local">Local Python Service</span>;
+        return 'Local Svc';
       default:
-        return <span className="status-badge status-unavailable">Unavailable</span>;
+        return 'Loading';
     }
   };
 
   return (
-    <div className="status-bar-container">
-      <div className="status-chip">
-        <Cpu className="status-icon text-cyan-400" size={18} />
-        <div>
-          <div className="status-title">REACT++ SGG</div>
-          <div className="status-subtitle flex items-center gap-1.5">
+    <div className="header-status-group">
+      {/* SGG Status */}
+      <div className="compact-status-chip" title="REACT++ YOLO12n Scene Graph Engine">
+        <Cpu size={14} className="text-cyan-400" />
+        <div className="flex flex-col">
+          <span className="chip-label">REACT++</span>
+          <span className="chip-value">
             {sggStatus.loaded ? (
-              <>
-                <CheckCircle2 size={13} className="text-emerald-400" />
-                {getProviderBadge(sggStatus.provider)}
-              </>
+              <span className="text-emerald-400 flex items-center gap-1">
+                <CheckCircle2 size={11} /> {getProviderText(sggStatus.provider)}
+              </span>
             ) : (
-              <span className="text-zinc-400">Loading checkpoint...</span>
+              <span className="text-zinc-400">Init...</span>
             )}
-          </div>
+          </span>
         </div>
       </div>
 
-      <div className="status-chip">
-        <Database className="status-icon text-indigo-400" size={18} />
-        <div>
-          <div className="status-title">Workspace Memory</div>
-          <div className="status-subtitle">
-            <span className="text-emerald-400 font-semibold">{instanceCount}</span> objects,{' '}
-            <span className="text-emerald-400 font-semibold">{frameCount}</span> frames (IndexedDB)
-          </div>
+      {/* Memory Status */}
+      <div className="compact-status-chip" title="Persistent Workspace Memory (IndexedDB)">
+        <Database size={14} className="text-indigo-400" />
+        <div className="flex flex-col">
+          <span className="chip-label">Memory</span>
+          <span className="chip-value">
+            <span className="text-indigo-300">
+              {instanceCount} obj{instanceCount === 1 ? '' : 's'} &bull; {frameCount} frame{frameCount === 1 ? '' : 's'}
+            </span>
+          </span>
         </div>
       </div>
 
-      <div className="status-chip">
-        <Sparkles className="status-icon text-amber-400" size={18} />
-        <div>
-          <div className="status-title">SmolVLM-500M Fallback</div>
-          <div className="status-subtitle">
+      {/* VLM Fallback Status */}
+      <div className="compact-status-chip" title="SmolVLM-500M Visual Fallback Engine">
+        <Sparkles size={14} className="text-amber-400" />
+        <div className="flex flex-col">
+          <span className="chip-label">SmolVLM</span>
+          <span className="chip-value">
             {vlmStatus.loaded ? (
-              <span className="status-badge status-webgpu">Active (WebGPU)</span>
+              <span className="text-cyan-400">WebGPU</span>
             ) : (
-              <span className="status-badge status-standby flex items-center gap-1">
-                <Clock size={11} /> Lazy Standby (&lt;2GB)
+              <span className="text-amber-400/90 flex items-center gap-1">
+                <Clock size={10} /> Standby
               </span>
             )}
-          </div>
+          </span>
         </div>
       </div>
     </div>
