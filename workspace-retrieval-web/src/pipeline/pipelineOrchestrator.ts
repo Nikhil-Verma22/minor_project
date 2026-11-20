@@ -305,6 +305,7 @@ export class PipelineOrchestrator {
         await MemoryRepository.saveVlmCandidate(vlmCandidateRecord);
       }
 
+      const hasCandidates = vlmResponse.candidate_relations.length > 0;
       const finalResult: NLQResult = {
         queryPlan: plan,
         answer: vlmResponse.answer,
@@ -315,8 +316,10 @@ export class PipelineOrchestrator {
           timestamps: this.currentGraph ? [this.currentGraph.timestamp] : [],
           objectInstanceIds: vlmResponse.candidate_relations.map((r) => r.subject_id),
           relationshipIds: [],
-          confidence: vlmResponse.candidate_relations[0]?.confidence ?? 0.7,
-          explanation: `Visual fallback reasoned over RGB image context. Found ${vlmResponse.candidate_relations.length} provisional candidate relation(s).`,
+          confidence: hasCandidates ? (vlmResponse.candidate_relations[0]?.confidence ?? 0.75) : 0.1,
+          explanation: hasCandidates
+            ? `Visual fallback reasoned over RGB image context. Found ${vlmResponse.candidate_relations.length} provisional candidate relation(s).`
+            : `Visual fallback found no conclusive evidence for target entity in current observation.`,
           provisional: true,
         },
         requiresVLM: false,

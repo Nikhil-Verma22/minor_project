@@ -20,8 +20,8 @@ export default defineConfig({
       name: 'serve-ort-dist',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
-          if (req.url && req.url.startsWith('/ort-dist/')) {
-            const cleanUrl = req.url.replace(/^\/ort-dist\//, '').split('?')[0];
+          if (req.url && (req.url.startsWith('/ort-dist/') || req.url.startsWith('/ort/'))) {
+            const cleanUrl = req.url.replace(/^\/(?:ort-dist|ort)\//, '').split('?')[0];
             const distDir = path.resolve(import.meta.dirname, 'node_modules/onnxruntime-web/dist');
             const filePath = path.resolve(distDir, cleanUrl);
             if (fs.existsSync(filePath)) {
