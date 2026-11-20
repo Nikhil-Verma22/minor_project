@@ -630,3 +630,114 @@ body {
   pointer-events: auto;
 }
 
+/* Overlay Toolbar & Controls */
+.overlay-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+}
+
+.overlay-mode-group {
+  display: flex;
+  background-color: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 0.4rem;
+  padding: 0.15rem;
+  gap: 0.15rem;
+}
+
+.overlay-mode-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.725rem;
+  font-weight: 500;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+}
+
+.overlay-mode-btn:hover {
+  color: #ffffff;
+  background-color: #27272a;
+}
+
+.overlay-mode-btn.active {
+  background-color: rgba(56, 189, 248, 0.18);
+  color: #38bdf8;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.overlay-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.725rem;
+}
+
+.overlay-slider {
+  width: 70px;
+  height: 4px;
+  accent-color: var(--accent-cyan);
+  cursor: pointer;
+}
+
+/* Selected Object Inspector Banner */
+.selected-inspector-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  color: #e2e8f0;
+}
+
+.selected-inspector-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.selected-inspector-pill {
+  font-weight: 600;
+  font-family: monospace;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+}
+
+.selected-inspector-clear-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.2rem;
+  border-radius: 0.25rem;
+  transition: color 0.15s;
+}
+
+.selected-inspector-clear-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
