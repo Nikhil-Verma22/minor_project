@@ -21,6 +21,7 @@ import { NLQResult } from '../nlq/queryTypes';
 import { FrameRecord, PersistentObjectInstance } from '../memory/memoryTypes';
 import { PipelineStage } from '../pipeline/pipelineTypes';
 import { generateId } from '../utils/ids';
+import { buildEntityColorMap } from '../utils/colors';
 
 export const App: React.FC = () => {
   const orchestratorRef = useRef<PipelineOrchestrator | null>(null);
@@ -207,6 +208,11 @@ export const App: React.FC = () => {
     }
   };
 
+  // Compute unified entity color map for synchronized highlighting across views
+  const entityColors = React.useMemo(() => {
+    return buildEntityColorMap(objects, graph?.nodes);
+  }, [objects, graph]);
+
   return (
     <div className="app-container">
       <header className="app-header">
@@ -255,6 +261,8 @@ export const App: React.FC = () => {
             onHover={setHoveredId}
             selectedId={selectedId}
             onSelect={setSelectedId}
+            colorMap={entityColors.colorMap}
+            isEntityMatch={entityColors.isEntityMatch}
           />
 
           <QueryPanel
@@ -271,6 +279,8 @@ export const App: React.FC = () => {
             graph={graph}
             hoveredId={hoveredId}
             onHoverNode={setHoveredId}
+            colorMap={entityColors.colorMap}
+            isEntityMatch={entityColors.isEntityMatch}
           />
 
           <ObjectList
@@ -279,6 +289,8 @@ export const App: React.FC = () => {
             onHover={setHoveredId}
             selectedId={selectedId}
             onSelect={setSelectedId}
+            colorMap={entityColors.colorMap}
+            isEntityMatch={entityColors.isEntityMatch}
           />
 
           <HistoryTimeline

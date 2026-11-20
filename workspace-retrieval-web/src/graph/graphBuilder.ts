@@ -24,6 +24,7 @@ export class GraphBuilder {
       nodesMap.set(obs.instanceId, {
         id: obs.instanceId,
         instanceId: obs.instanceId,
+        detectionId: obs.annotationId,
         categoryId: obs.categoryId,
         label: inst?.displayName || obs.categoryId,
         bbox: obs.bbox,

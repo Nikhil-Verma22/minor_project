@@ -1,6 +1,7 @@
 /**
  * SceneGraphPanel Component.
  * Visualizes 2D Scene Graph as categorized triplets and an interactive node-edge graph.
+ * Uses unified object colors matching the BoundingBoxOverlay and ObjectList.
  */
 
 import React, { useState } from 'react';
@@ -12,12 +13,16 @@ interface SceneGraphPanelProps {
   graph: SceneGraph | null;
   hoveredId: string | null;
   onHoverNode: (id: string | null) => void;
+  colorMap?: Map<string, string>;
+  isEntityMatch?: (id1: string | null | undefined, id2: string | null | undefined) => boolean;
 }
 
 export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
   graph,
   hoveredId,
   onHoverNode,
+  colorMap,
+  isEntityMatch,
 }) => {
   const [viewMode, setViewMode] = useState<'triplets' | 'graph'>('triplets');
   const [predicateFilter, setPredicateFilter] = useState<string>('all');
@@ -39,6 +44,12 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
   }
 
   const nodeMap = new Map(graph.nodes.map((n) => [n.id, n]));
+
+  const checkMatch = (targetId: string | null | undefined, candidateId: string | null | undefined) => {
+    if (!targetId || !candidateId) return false;
+    if (isEntityMatch) return isEntityMatch(targetId, candidateId);
+    return targetId === candidateId;
+  };
 
   const filteredEdges = graph.edges.filter((e) => {
     if (predicateFilter === 'all') return true;
@@ -98,26 +109,63 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
           {filteredEdges.map((edge) => {
             const subjNode = nodeMap.get(edge.sourceId);
             const objNode = nodeMap.get(edge.targetId);
-            const isHovered = hoveredId === edge.sourceId || hoveredId === edge.targetId;
+
+            const isSubjHovered =
+              checkMatch(hoveredId, edge.sourceId) ||
+              (subjNode?.detectionId ? checkMatch(hoveredId, subjNode.detectionId) : false);
+
+            const isObjHovered =
+              checkMatch(hoveredId, edge.targetId) ||
+              (objNode?.detectionId ? checkMatch(hoveredId, objNode.detectionId) : false);
+
+            const isRowHovered = isSubjHovered || isObjHovered;
+
+            const subjColor =
+              colorMap?.get(edge.sourceId) ||
+              (subjNode?.detectionId ? colorMap?.get(subjNode.detectionId) : undefined) ||
+              '#38bdf8';
+
+            const isSurface = objNode?.isSurface || edge.targetId.includes('surface');
+            const objColor = isSurface
+              ? '#34d399'
+              : colorMap?.get(edge.targetId) ||
+                (objNode?.detectionId ? colorMap?.get(objNode.detectionId) : undefined) ||
+                '#a78bfa';
 
             return (
               <div
                 key={edge.id}
-                className={`triplet-row ${isHovered ? 'triplet-hovered' : ''}`}
+                className={`triplet-row ${isRowHovered ? 'triplet-hovered' : ''}`}
                 onMouseEnter={() => onHoverNode(edge.sourceId)}
                 onMouseLeave={() => onHoverNode(null)}
               >
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <span className="node-chip node-subject">
+                  <span
+                    className="node-chip transition-all duration-150"
+                    style={{
+                      backgroundColor: `${subjColor}22`,
+                      color: subjColor,
+                      border: `1px solid ${isSubjHovered ? subjColor : `${subjColor}55`}`,
+                      boxShadow: isSubjHovered ? `0 0 8px ${subjColor}77` : 'none',
+                    }}
+                  >
                     {subjNode?.label || edge.sourceId}
                   </span>
 
                   <span className="predicate-pill flex items-center gap-1">
-                    <ArrowRight size={11} className="text-cyan-400" />
+                    <ArrowRight size={11} className="text-zinc-400" />
                     {edge.predicate.replace(/_/g, ' ')}
                   </span>
 
-                  <span className={`node-chip ${objNode?.isSurface ? 'node-surface' : 'node-object'}`}>
+                  <span
+                    className="node-chip transition-all duration-150"
+                    style={{
+                      backgroundColor: `${objColor}22`,
+                      color: objColor,
+                      border: `1px solid ${isObjHovered ? objColor : `${objColor}55`}`,
+                      boxShadow: isObjHovered ? `0 0 8px ${objColor}77` : 'none',
+                    }}
+                  >
                     {objNode?.label || edge.targetId}
                   </span>
                 </div>
@@ -146,6 +194,8 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
               const x2 = edge.targetId.includes('surface') ? 250 : 250 + 160 * Math.cos(angle2);
               const y2 = edge.targetId.includes('surface') ? 120 : 120 + 80 * Math.sin(angle2);
 
+              const edgeColor = colorMap?.get(edge.sourceId) || '#38bdf8';
+
               return (
                 <g key={edge.id}>
                   <line
@@ -153,14 +203,14 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
                     y1={y1}
                     x2={x2}
                     y2={y2}
-                    stroke="#38bdf8"
+                    stroke={edgeColor}
                     strokeWidth="1.5"
                     strokeOpacity="0.6"
                   />
                   <text
                     x={(x1 + x2) / 2}
                     y={(y1 + y2) / 2 - 4}
-                    fill="#38bdf8"
+                    fill={edgeColor}
                     fontSize="9"
                     textAnchor="middle"
                   >
@@ -175,7 +225,16 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
               const angle = (idx / Math.min(graph.nodes.length, 12)) * 2 * Math.PI;
               const cx = isSurface ? 250 : 250 + 160 * Math.cos(angle);
               const cy = isSurface ? 120 : 120 + 80 * Math.sin(angle);
-              const isHovered = hoveredId === node.id;
+
+              const isHovered =
+                checkMatch(hoveredId, node.id) ||
+                (node.detectionId ? checkMatch(hoveredId, node.detectionId) : false);
+
+              const nodeColor = isSurface
+                ? '#34d399'
+                : colorMap?.get(node.id) ||
+                  (node.detectionId ? colorMap?.get(node.detectionId) : undefined) ||
+                  '#38bdf8';
 
               return (
                 <g
@@ -188,9 +247,12 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
                     cx={cx}
                     cy={cy}
                     r={isSurface ? 22 : 16}
-                    fill={isSurface ? '#3b82f6' : isHovered ? '#f59e0b' : '#1e293b'}
-                    stroke={isHovered ? '#fbbf24' : '#64748b'}
-                    strokeWidth={isHovered ? 2.5 : 1.5}
+                    fill={`${nodeColor}28`}
+                    stroke={isHovered ? '#fbbf24' : nodeColor}
+                    strokeWidth={isHovered ? 2.5 : 1.8}
+                    style={{
+                      filter: isHovered ? `drop-shadow(0 0 6px ${nodeColor})` : 'none',
+                    }}
                   />
                   <text
                     x={cx}
@@ -200,7 +262,7 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
                     fontWeight="600"
                     textAnchor="middle"
                   >
-                    {node.label.slice(0, 5)}
+                    {node.label.slice(0, 7)}
                   </text>
                 </g>
               );

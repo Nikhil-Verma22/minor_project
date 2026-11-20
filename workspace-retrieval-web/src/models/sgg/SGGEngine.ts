@@ -6,6 +6,7 @@ import { CanonicalPredicate } from '../../config/predicates';
 
 export interface SGGObjectDetection {
   detectionId: string;
+  instanceId?: string;
   modelLabel: string;
   projectCategory?: string | null;
   bbox: [number, number, number, number]; // [x1, y1, x2, y2]

@@ -135,6 +135,14 @@ export class PipelineOrchestrator {
         sggResult.imageHeight
       );
 
+      // Attach associated instanceId to sggResult objects
+      for (const obj of sggResult.objects) {
+        const inst = association.instanceMap.get(obj.detectionId);
+        if (inst) {
+          obj.instanceId = inst.instanceId;
+        }
+      }
+
       // 3. Build Relationships Facts
       const relationshipFacts: RelationshipFact[] = [];
       for (const rel of sggResult.relationships) {

@@ -18,6 +18,8 @@ interface ImageViewerProps {
   onHover: (id: string | null) => void;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
+  colorMap?: Map<string, string>;
+  isEntityMatch?: (id1: string | null | undefined, id2: string | null | undefined) => boolean;
 }
 
 export const ImageViewer: React.FC<ImageViewerProps> = ({
@@ -30,6 +32,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   onHover,
   selectedId,
   onSelect,
+  colorMap,
+  isEntityMatch,
 }) => {
   const [showLabels, setShowLabels] = useState(true);
   const [showScores, setShowScores] = useState(true);
@@ -113,6 +117,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             onHover={onHover}
             selectedId={selectedId}
             onSelect={onSelect}
+            colorMap={colorMap}
+            isEntityMatch={isEntityMatch}
           />
         </div>
       </div>
