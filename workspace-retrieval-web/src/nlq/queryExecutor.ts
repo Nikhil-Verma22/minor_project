@@ -377,7 +377,7 @@ export class QueryExecutor {
           };
         }
 
-        if (matchingNodes.length === 1 && matchingNodes[0].bbox) {
+        if (matchingNodes.length >= 1 && matchingNodes[0].bbox) {
           const matchNode = matchingNodes[0];
           reasoningTrace.push(`Found match in 2D scene graph: ${matchNode.label} (${matchNode.id}).`);
 
@@ -664,7 +664,7 @@ export class QueryExecutor {
       reasoningTrace.push(`Reference object: '${refCategory || 'surface'}'`);
 
       // Special case: "Which objects are on the workspace surface?"
-      if (predicate === 'on' && (refCategory?.includes('surface') || refCategory?.includes('desk') || refCategory?.includes('table') || !refCategory)) {
+      if (predicate === 'on' && !targetCategory && !targetInstanceId && (refCategory?.includes('surface') || refCategory?.includes('desk') || refCategory?.includes('table') || !refCategory)) {
         const onSurfaceTriplets = currentGraph.edges.filter((e) => {
           const tgt = currentGraph.nodes.find((n) => n.id === e.targetId);
           return e.predicate === 'on' && (tgt?.isSurface || tgt?.id.includes('surface') || tgt?.categoryId.includes('table'));
