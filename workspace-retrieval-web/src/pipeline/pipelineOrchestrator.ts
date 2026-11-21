@@ -239,19 +239,37 @@ export class PipelineOrchestrator {
     queryText: string,
     context?: ConversationContext,
     scope: QueryScope = 'current',
-    forceVLM?: boolean
+    forceVLM?: boolean,
+    forceSGG?: boolean
   ): Promise<NLQResult> {
     try {
-      const isDirectVlm =
-        forceVLM === true ||
-        scope === 'vlm' ||
-        /^\s*\/(visual|vlm|inspect|image)\b/i.test(queryText);
+      const isDirectSgg =
+        forceSGG === true ||
+        scope === 'sgg' ||
+        /^\s*\/(sgg|graph)\b/i.test(queryText);
 
-      const cleanQueryText = queryText.replace(/^\s*\/(visual|vlm|inspect|image)\s+/i, '').trim() || queryText;
+      const isDirectVlm =
+        !isDirectSgg &&
+        (forceVLM === true ||
+          scope === 'vlm' ||
+          /^\s*\/(visual|vlm|inspect|image)\b/i.test(queryText));
+
+      const cleanQueryText = queryText
+        .replace(/^\s*\/(sgg|graph)\s+/i, '')
+        .replace(/^\s*\/(visual|vlm|inspect|image)\s+/i, '')
+        .trim() || queryText;
 
       this.setStage('query_parsing', `Understanding query: "${cleanQueryText}"`);
       const activeInstances = await MemoryRepository.getInstances(this.currentWorkspaceId);
-      const plan = this.parser.parseQuery(cleanQueryText, activeInstances, context, isDirectVlm ? 'vlm' : scope);
+      const plan = this.parser.parseQuery(
+        cleanQueryText,
+        activeInstances,
+        context,
+        isDirectSgg ? 'sgg' : (isDirectVlm ? 'vlm' : scope)
+      );
+      if (isDirectSgg) {
+        plan.forceSGG = true;
+      }
       if (isDirectVlm) {
         plan.forceVLM = true;
       }
@@ -264,7 +282,19 @@ export class PipelineOrchestrator {
         this.currentImageSource || this.currentImageBitmap
       );
 
-      if (isDirectVlm) {
+      if (isDirectSgg) {
+        nlqResult.requiresVLM = false;
+        nlqResult.reasoningTrace.push('Forced SGG mode: SmolVLM fallback bypassed; answering strictly from Scene Graph.');
+        if (
+          nlqResult.evidence.source === 'vlm' ||
+          nlqResult.certainty === 'provisional' ||
+          nlqResult.answer.startsWith('Inspecting visual context')
+        ) {
+          nlqResult.evidence.source = 'scene_graph';
+          nlqResult.certainty = 'insufficient';
+          nlqResult.answer = `Scene Graph verification: No confirmed facts for '${cleanQueryText}' are recorded in the structured 2D scene graph.`;
+        }
+      } else if (isDirectVlm) {
         nlqResult.requiresVLM = true;
         nlqResult.vlmReason = 'User explicitly requested direct visual inspection via SmolVLM.';
         nlqResult.reasoningTrace.push('Manual VLM trigger: Direct visual inspection requested by user.');
@@ -384,8 +414,9 @@ export class PipelineOrchestrator {
         certainty: vlmResponse.unresolved ? 'insufficient' : hasCandidates ? 'provisional' : 'insufficient',
         reasoningTrace: trace,
         followUpSuggestions: [
-          'Which objects are on the workspace surface?',
-          'What is visible in the current observation?',
+          `Where is the ${plan.targetObject?.mention || 'object'}?`,
+          `What is beside the ${plan.targetObject?.mention || 'object'}?`,
+          `What color is the ${plan.targetObject?.mention || 'object'}?`,
         ],
       };
 

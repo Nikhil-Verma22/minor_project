@@ -33,6 +33,7 @@ import {
   History,
   Activity,
   CheckCircle2,
+  Network,
 } from 'lucide-react';
 import {
   NLQResult,
@@ -44,7 +45,13 @@ import {
 import { PipelineStage } from '../pipeline/pipelineTypes';
 
 interface WorkspaceAssistantProps {
-  onAskQuery: (query: string, context?: ConversationContext, scope?: QueryScope, forceVLM?: boolean) => void;
+  onAskQuery: (
+    query: string,
+    context?: ConversationContext,
+    scope?: QueryScope,
+    forceVLM?: boolean,
+    forceSGG?: boolean
+  ) => void;
   queryResult: NLQResult | null;
   pipelineStage: PipelineStage;
   isEnabled: boolean;
@@ -85,6 +92,15 @@ const SUGGESTION_CATEGORIES: SuggestionCategory[] = [
       'Where was my phone last seen?',
       'What was next to the notebook previously?',
       'Which objects were visible in the previous observation?',
+    ],
+  },
+  {
+    title: 'Scene Graph Only (/sgg)',
+    icon: <Network size={13} className="text-cyan-400" />,
+    questions: [
+      '/sgg where is the laptop',
+      '/sgg what is beside the laptop',
+      '/sgg which objects are on the workspace surface',
     ],
   },
   {
@@ -178,12 +194,20 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSubmit = (e?: React.FormEvent, customQuery?: string, forceVLM?: boolean) => {
+  const handleSubmit = (
+    e?: React.FormEvent,
+    customQuery?: string,
+    forceVLM?: boolean,
+    forceSGG?: boolean
+  ) => {
     if (e) e.preventDefault();
     const finalQuery = (customQuery || queryText).trim();
     if (!finalQuery || !isEnabled) return;
 
-    const isDirectVlm = forceVLM || scope === 'vlm' || /^\s*\/(visual|vlm|inspect|image)\b/i.test(finalQuery);
+    const isDirectSgg = forceSGG || scope === 'sgg' || /^\s*\/(sgg|graph)\b/i.test(finalQuery);
+    const isDirectVlm =
+      !isDirectSgg &&
+      (forceVLM || scope === 'vlm' || /^\s*\/(visual|vlm|inspect|image)\b/i.test(finalQuery));
 
     // Add user message to conversation thread
     const userMsg: ConversationMessage = {
@@ -191,14 +215,20 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
       sender: 'user',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       text: finalQuery,
-      scope: isDirectVlm ? 'vlm' : scope,
+      scope: isDirectSgg ? 'sgg' : (isDirectVlm ? 'vlm' : scope),
     };
 
     setMessages((prev) => [...prev, userMsg]);
     setQueryText('');
 
     // Trigger pipeline query execution with active conversation context
-    onAskQuery(finalQuery, conversationContext, isDirectVlm ? 'vlm' : scope, isDirectVlm);
+    onAskQuery(
+      finalQuery,
+      conversationContext,
+      isDirectSgg ? 'sgg' : (isDirectVlm ? 'vlm' : scope),
+      isDirectVlm,
+      isDirectSgg
+    );
   };
 
   const handleVerifyWithVLM = (msg: ConversationMessage) => {
@@ -209,8 +239,24 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
         originalQuery = messages[idx - 1].text;
       }
     }
-    const clean = originalQuery ? originalQuery.replace(/^\s*\/(visual|vlm|inspect|image)\s+/i, '').trim() : msg.text;
-    handleSubmit(undefined, `/visual ${clean}`, true);
+    const clean = originalQuery
+      ? originalQuery.replace(/^\s*\/(sgg|graph|visual|vlm|inspect|image)\s+/i, '').trim()
+      : msg.text;
+    handleSubmit(undefined, `/visual ${clean}`, true, false);
+  };
+
+  const handleCheckWithSGG = (msg: ConversationMessage) => {
+    let originalQuery = msg.result?.queryPlan.rawQuery;
+    if (!originalQuery) {
+      const idx = messages.findIndex((m) => m.id === msg.id);
+      if (idx > 0 && messages[idx - 1].sender === 'user') {
+        originalQuery = messages[idx - 1].text;
+      }
+    }
+    const clean = originalQuery
+      ? originalQuery.replace(/^\s*\/(sgg|graph|visual|vlm|inspect|image)\s+/i, '').trim()
+      : msg.text;
+    handleSubmit(undefined, `/sgg ${clean}`, false, true);
   };
 
   const handleClearConversation = () => {
@@ -355,6 +401,15 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
                 onClick={() => setScope('all')}
               >
                 All Available Memory
+              </button>
+              <button
+                type="button"
+                className={`scope-chip ${scope === 'sgg' ? 'active sgg-active' : ''}`}
+                onClick={() => setScope('sgg')}
+                title="Strictly query REACT++ 2D Scene Graph ground truth facts only (no VLM)"
+              >
+                <Network size={11} className="text-cyan-400" />
+                <span>Scene Graph (SGG)</span>
               </button>
               <button
                 type="button"
@@ -532,6 +587,19 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
                               <span>Verify visually with VLM</span>
                             </button>
                           )}
+
+                          {/* Option to check Scene Graph facts if answered by VLM */}
+                          {msg.result.evidence.source === 'vlm' && (
+                            <button
+                              type="button"
+                              className="btn-prompt-sgg"
+                              onClick={() => handleCheckWithSGG(msg)}
+                              title="Check strictly verified facts in the Scene Graph only (/sgg)"
+                            >
+                              <Network size={12} className="text-cyan-400" />
+                              <span>Check SGG Ground Truth</span>
+                            </button>
+                          )}
                         </div>
 
                         {/* Collapsible "How did I answer?" Reasoning Trace */}
@@ -679,6 +747,12 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
       <form onSubmit={(e) => handleSubmit(e)} className="assistant-composer">
         <div className="assistant-input-wrapper">
           <Search size={16} className="assistant-input-icon text-zinc-500" />
+          {(scope === 'sgg' || /^\s*\/(sgg|graph)\b/i.test(queryText)) && (
+            <span className="sgg-mode-badge" title="Direct Scene Graph ground truth execution (no VLM)">
+              <Network size={11} className="text-cyan-400" />
+              <span>SGG</span>
+            </span>
+          )}
           {(scope === 'vlm' || /^\s*\/(visual|vlm|inspect)\b/i.test(queryText)) && (
             <span className="vlm-mode-badge" title="Direct SmolVLM-500M visual execution">
               <Sparkles size={11} className="text-amber-400" />
@@ -690,24 +764,40 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
             className="assistant-input"
             placeholder={
               isEnabled
-                ? 'Ask about workspace (or type /visual <question> to prompt VLM directly)...'
+                ? 'Ask about workspace (type /sgg for graph only, /visual for VLM)...'
                 : 'Upload an observation image to enable queries'
             }
             value={queryText}
             onChange={(e) => setQueryText(e.target.value)}
             disabled={!isEnabled || isQuerying}
           />
-          {isEnabled && !/^\s*\/(visual|vlm)\b/i.test(queryText) && scope !== 'vlm' && (
-            <button
-              type="button"
-              className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-zinc-800 text-amber-400 hover:bg-zinc-700 transition-colors mr-1 flex-shrink-0"
-              onClick={() =>
-                setQueryText((prev) => (prev ? `/visual ${prev.replace(/^\s*\/(visual|vlm)\s*/i, '')}` : '/visual '))
-              }
-              title="Prefix query with /visual to prompt VLM directly"
-            >
-              /visual
-            </button>
+          {isEnabled && (
+            <div className="flex items-center gap-1 mr-1 flex-shrink-0">
+              <button
+                type="button"
+                className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-zinc-800 text-cyan-400 hover:bg-zinc-700 transition-colors"
+                onClick={() =>
+                  setQueryText((prev) =>
+                    prev ? `/sgg ${prev.replace(/^\s*\/(sgg|graph|visual|vlm)\s*/i, '')}` : '/sgg '
+                  )
+                }
+                title="Prefix query with /sgg to answer strictly from Scene Graph facts"
+              >
+                /sgg
+              </button>
+              <button
+                type="button"
+                className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-zinc-800 text-amber-400 hover:bg-zinc-700 transition-colors"
+                onClick={() =>
+                  setQueryText((prev) =>
+                    prev ? `/visual ${prev.replace(/^\s*\/(sgg|graph|visual|vlm)\s*/i, '')}` : '/visual '
+                  )
+                }
+                title="Prefix query with /visual to prompt VLM directly"
+              >
+                /visual
+              </button>
+            </div>
           )}
         </div>
 

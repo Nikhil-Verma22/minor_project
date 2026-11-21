@@ -162,11 +162,12 @@ export const App: React.FC = () => {
     queryText: string,
     context?: ConversationContext,
     scope?: QueryScope,
-    forceVLM?: boolean
+    forceVLM?: boolean,
+    forceSGG?: boolean
   ) => {
     if (!orchestratorRef.current) return;
     try {
-      await orchestratorRef.current.answerQuery(queryText, context, scope, forceVLM);
+      await orchestratorRef.current.answerQuery(queryText, context, scope, forceVLM, forceSGG);
     } catch (err) {
       console.error('Error executing query:', err);
     }

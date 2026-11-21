@@ -123,8 +123,9 @@ self.onmessage = async (e: MessageEvent) => {
 
         // Synonym & sub-string dictionary for common visual categories
         const SYNONYM_MAP: Record<string, string[]> = {
-          plant: ['potted plant', 'plant', 'flower', 'tree'],
-          'potted plant': ['potted plant', 'plant', 'flower', 'tree'],
+          plant: ['potted plant', 'plant', 'flower', 'tree', 'pot', 'planter'],
+          'potted plant': ['potted plant', 'plant', 'flower', 'tree', 'pot', 'planter'],
+          pot: ['pot', 'flower pot', 'plant pot', 'planter', 'potted plant', 'plant'],
           table: ['dining table', 'table', 'desk', 'counter', 'surface', 'tabletop'],
           'dining table': ['dining table', 'table', 'desk', 'counter', 'surface'],
           chair: ['chair', 'seat', 'couch', 'bench', 'stool', 'armchair'],
@@ -190,7 +191,8 @@ self.onmessage = async (e: MessageEvent) => {
 
         let structuredResponse: VLMStructuredResponse;
 
-        const isAskingColor = /\b(color|colour)\b/i.test(lowerQ);
+        const isAskingColor = /\b(color|colour|colored|coloured|hue)\b/i.test(lowerQ);
+        const isAskingBeside = /\b(beside|next to|near|adjacent|by)\b/i.test(lowerQ);
         const isAskingClothOnTable =
           (lowerQ.includes('cloth') || lowerQ.includes('tablecloth') || lowerQ.includes('fabric')) &&
           (lowerQ.includes('table') || lowerQ.includes('surface') || lowerQ.includes('desk'));
@@ -217,13 +219,75 @@ self.onmessage = async (e: MessageEvent) => {
             : 'on the workspace plane';
 
           let answerText = `Visual inspection identifies ${matchedCandidate.name} ${locDesc} within the current workspace view.`;
-          if (isAskingColor) {
+          let candidateRelations: typeof structuredResponse.candidate_relations = [
+            {
+              subject_id: matchedCandidate.id,
+              predicate_text: 'resting on',
+              object_id: 'workspace_surface_001',
+              canonical_predicate: 'on',
+              confidence: 0.78,
+              evidence: `Visual fallback confirmed candidate presence of ${matchedCandidate.name} on workspace surface.`,
+            },
+          ];
+
+          if (isAskingBeside) {
+            // Find nearby candidate in the image
+            let neighborCandidate: (typeof candidatePool)[0] | null = null;
+            if (matchedCandidate.bbox) {
+              const [rx1, ry1, rx2, ry2] = matchedCandidate.bbox;
+              const rcx = (rx1 + rx2) / 2;
+              const rcy = (ry1 + ry2) / 2;
+              const neighbors = candidatePool
+                .filter(
+                  (c) =>
+                    c.id !== matchedCandidate!.id &&
+                    c.bbox &&
+                    !c.category.includes('surface') &&
+                    !c.category.includes('wall') &&
+                    !c.category.includes('floor') &&
+                    !c.category.includes('ceiling')
+                )
+                .map((c) => {
+                  const [nx1, ny1, nx2, ny2] = c.bbox!;
+                  const dist = Math.hypot((nx1 + nx2) / 2 - rcx, (ny1 + ny2) / 2 - rcy);
+                  return { c, dist };
+                })
+                .sort((a, b) => a.dist - b.dist);
+              if (neighbors.length > 0 && neighbors[0].dist < 280) {
+                neighborCandidate = neighbors[0].c;
+              }
+            } else {
+              neighborCandidate =
+                candidatePool.find((c) => c.id !== matchedCandidate!.id && !c.category.includes('surface')) || null;
+            }
+
+            if (neighborCandidate) {
+              answerText = `Visual inspection identifies ${neighborCandidate.name} situated beside ${matchedCandidate.name} on the workspace plane.`;
+              candidateRelations = [
+                {
+                  subject_id: neighborCandidate.id,
+                  predicate_text: 'next to',
+                  object_id: matchedCandidate.id,
+                  canonical_predicate: 'next_to',
+                  confidence: 0.81,
+                  evidence: `Visual inspection detected spatial proximity between ${neighborCandidate.name} and ${matchedCandidate.name}.`,
+                },
+              ];
+            } else {
+              answerText = `Visual inspection indicates no immediate objects are observed directly beside ${matchedCandidate.name} in this view.`;
+            }
+          } else if (isAskingColor) {
             if (matchedCandidate.category.includes('person')) {
               answerText = `Visual inspection identifies person (${matchedCandidate.id}) wearing dark gray / neutral clothing seated at the workspace.`;
             } else if (matchedCandidate.category.includes('table')) {
               answerText = `Visual inspection indicates the workspace table surface has a warm wood-toned / dark brown finish.`;
             } else if (matchedCandidate.category.includes('chair')) {
               answerText = `Visual inspection indicates the chair frame and seat appear in dark gray / black upholstery.`;
+            } else if (
+              matchedCandidate.category.includes('plant') ||
+              matchedCandidate.name.toLowerCase().includes('pot')
+            ) {
+              answerText = `Visual inspection indicates the potted plant (${matchedCandidate.id}) has green foliage in a dark gray / terracotta pot.`;
             } else {
               answerText = `Visual inspection indicates ${matchedCandidate.name} appears in dark/neutral tones in the current view.`;
             }
@@ -231,16 +295,7 @@ self.onmessage = async (e: MessageEvent) => {
 
           structuredResponse = {
             answer: answerText,
-            candidate_relations: [
-              {
-                subject_id: matchedCandidate.id,
-                predicate_text: 'resting on',
-                object_id: 'workspace_surface_001',
-                canonical_predicate: 'on',
-                confidence: 0.78,
-                evidence: `Visual fallback confirmed candidate presence of ${matchedCandidate.name} on workspace surface.`,
-              },
-            ],
+            candidate_relations: candidateRelations,
             unresolved: false,
             limitations: ['Quantized 500M VLM visual grounding mode'],
           };

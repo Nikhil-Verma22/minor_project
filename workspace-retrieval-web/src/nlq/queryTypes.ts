@@ -19,7 +19,7 @@ export type QueryIntent =
   | 'describe_scene'
   | 'unknown';
 
-export type QueryScope = 'current' | 'history' | 'all' | 'vlm';
+export type QueryScope = 'current' | 'history' | 'all' | 'vlm' | 'sgg';
 
 export type CertaintyLevel =
   | 'confirmed'       // Confirmed stored information in scene graph or memory
@@ -70,6 +70,7 @@ export interface QueryPlan {
   timestamp?: string;
   needsVisualReasoning: boolean;
   forceVLM?: boolean;
+  forceSGG?: boolean;
   unresolvedSlots: string[];
 }
 

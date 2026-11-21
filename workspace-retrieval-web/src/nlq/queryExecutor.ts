@@ -42,6 +42,14 @@ export class QueryExecutor {
       });
     };
 
+    const formatEntityLabel = (label?: string, id?: string): string => {
+      if (!label && !id) return 'object';
+      if (!id) return label || 'object';
+      if (!label) return id;
+      if (label.includes(`(${id})`) || label === id) return label;
+      return `${label} (${id})`;
+    };
+
     // 0. UNSUPPORTED / OCCLUDED STORAGE QUERIES (e.g. "behind closed drawer")
     if (plan.intent === 'unsupported_occluded') {
       reasoningTrace.push('Query intent: Occluded / non-visible area check.');
@@ -246,6 +254,33 @@ export class QueryExecutor {
           }
         }
 
+        // Stored attribute is null and no visual estimation
+        if (plan.forceSGG) {
+          reasoningTrace.push(`Forced SGG mode: Attribute '${requestedAttr}' is unrecorded in Scene Graph.`);
+          return {
+            queryPlan: plan,
+            answer: `Scene Graph verification: The ${requestedAttr} for ${targetNode.label} is unrecorded in current structured facts.`,
+            evidence: {
+              source: 'scene_graph',
+              workspaceId,
+              frameIds: [currentGraph!.frameId],
+              timestamps: [currentGraph!.timestamp],
+              objectInstanceIds: [targetNode.id],
+              relationshipIds: [],
+              explanation: `Attribute unrecorded in structured facts for ${targetNode.label}.`,
+              provisional: false,
+              targetBbox: targetNode.bbox,
+            },
+            requiresVLM: false,
+            certainty: 'insufficient',
+            reasoningTrace,
+            followUpSuggestions: [
+              `What is beside the ${targetNode.label}?`,
+              `Where is the ${targetNode.label}?`,
+            ],
+          };
+        }
+
         // Stored attribute is null and no visual estimation -> invoke VLM visual inspection on the image
         reasoningTrace.push(`Attribute '${requestedAttr}' is unrecorded in structured facts. Routing to SmolVLM visual reasoning.`);
         return {
@@ -352,7 +387,7 @@ export class QueryExecutor {
           }));
 
           const candidateList = matchingNodes
-            .map((n) => `${n.label} (${n.id}) at [${n.bbox ? n.bbox.map((v) => Math.round(v)).join(', ') : 'unknown'}]`)
+            .map((n) => `${formatEntityLabel(n.label, n.id)} at [${n.bbox ? n.bbox.map((v) => Math.round(v)).join(', ') : 'unknown'}]`)
             .join(' and ');
 
           return {
@@ -387,7 +422,7 @@ export class QueryExecutor {
             : '';
 
           const bboxStr = matchNode.bbox ? ` at [${matchNode.bbox.map((v) => Math.round(v)).join(', ')}]` : '';
-          const targetName = matchNode.label ? `${matchNode.label} (${matchNode.id})` : matchNode.id;
+          const targetName = formatEntityLabel(matchNode.label, matchNode.id);
           return {
             queryPlan: plan,
             answer: `The ${targetName} is currently observed${bboxStr}.${relStr}`,
@@ -749,6 +784,81 @@ export class QueryExecutor {
             ],
           };
         }
+
+        // Proximity fallback: Check 2D spatial adjacency relative to reference object
+        if (predicate === 'next_to' && refNode.bbox) {
+          const [rx1, ry1, rx2, ry2] = refNode.bbox;
+          const rcx = (rx1 + rx2) / 2;
+          const rcy = (ry1 + ry2) / 2;
+
+          const nearbyNodes = currentGraph.nodes
+            .filter(
+              (n) =>
+                n.id !== refNode.id &&
+                n.bbox &&
+                !n.isSurface &&
+                !n.id.includes('surface') &&
+                !n.categoryId.includes('wall') &&
+                !n.categoryId.includes('floor') &&
+                !n.categoryId.includes('ceiling')
+            )
+            .map((n) => {
+              const [nx1, ny1, nx2, ny2] = n.bbox!;
+              const dist = Math.hypot((nx1 + nx2) / 2 - rcx, (ny1 + ny2) / 2 - rcy);
+              return { node: n, dist };
+            })
+            .sort((a, b) => a.dist - b.dist);
+
+          if (nearbyNodes.length > 0 && nearbyNodes[0].dist < 260) {
+            const nearest = nearbyNodes[0].node;
+            reasoningTrace.push(`Found 2D spatial adjacency in current frame: ${nearest.label} is nearest to ${refNode.label} (distance ~${Math.round(nearbyNodes[0].dist)}px).`);
+            return {
+              queryPlan: plan,
+              answer: `The ${nearest.label} (${nearest.id}) is situated beside the ${refNode.label} on the workspace surface.`,
+              evidence: {
+                source: 'scene_graph',
+                workspaceId,
+                frameIds: [currentGraph.frameId],
+                timestamps: [currentGraph.timestamp],
+                objectInstanceIds: [refNode.id, nearest.id],
+                relationshipIds: [],
+                confidence: 0.82,
+                explanation: `Verified 2D spatial adjacency relative to ${refNode.label} in current observation.`,
+                provisional: false,
+                targetBbox: nearest.bbox,
+              },
+              requiresVLM: false,
+              certainty: 'confirmed',
+              reasoningTrace,
+              followUpSuggestions: [
+                `What color is the ${nearest.label}?`,
+                `Where is the ${nearest.label}?`,
+                `Did the ${nearest.label} move?`,
+              ],
+            };
+          }
+        }
+      }
+
+      if (plan.forceSGG) {
+        reasoningTrace.push('Forced SGG mode: Object or relationship not confirmed in Scene Graph.');
+        return {
+          queryPlan: plan,
+          answer: `Scene Graph verification: No confirmed relation '${predicate}' involving '${refCategory || 'object'}' was detected in current scene graph facts.`,
+          evidence: {
+            source: 'scene_graph',
+            workspaceId,
+            frameIds: [currentGraph.frameId],
+            timestamps: [currentGraph.timestamp],
+            objectInstanceIds: refNode ? [refNode.id] : [],
+            relationshipIds: [],
+            explanation: 'No matching relationship triplet in current graph.',
+            provisional: false,
+          },
+          requiresVLM: false,
+          certainty: 'insufficient',
+          reasoningTrace,
+        };
       }
 
       reasoningTrace.push('Requested relationship fact not found in current scene graph; delegating to VLM.');

@@ -18,13 +18,47 @@ export interface ResolvedEntity {
   candidateInstances?: PersistentObjectInstance[];
 }
 
+// Common physical scene object mappings for OpenPSG / COCO classes
+const COMMON_SCENE_SYNONYMS: Record<string, string> = {
+  chair: 'chair',
+  seat: 'chair',
+  armchair: 'chair',
+  couch: 'chair',
+  sofa: 'chair',
+  stool: 'chair',
+  bench: 'chair',
+  plant: 'potted plant',
+  'potted plant': 'potted plant',
+  pot: 'potted plant',
+  planter: 'potted plant',
+  'flower pot': 'potted plant',
+  'plant pot': 'potted plant',
+  'pot of plant': 'potted plant',
+  person: 'person',
+  human: 'person',
+  man: 'person',
+  woman: 'person',
+  people: 'person',
+  table: 'dining table',
+  'dining table': 'dining table',
+  desk: 'workspace_surface',
+  surface: 'workspace_surface',
+  'workspace surface': 'workspace_surface',
+  wall: 'wall',
+  floor: 'floor',
+  ceiling: 'ceiling',
+  shelf: 'shelf',
+  window: 'window',
+  cabinet: 'cabinet',
+};
+
 export class EntityResolver {
   private categoryFuse: Fuse<ObjectCategoryDefinition>;
 
   constructor() {
     this.categoryFuse = new Fuse(WORKSPACE_CATEGORIES, {
       keys: ['id', 'name', 'aliases'],
-      threshold: 0.35,
+      threshold: 0.2, // Strict threshold to prevent false matches (e.g. chair -> charger)
     });
   }
 
@@ -68,21 +102,42 @@ export class EntityResolver {
       };
     }
 
-    // Match category via Fuse.js or aliases
+    // Match category via Common Scene Objects, active instances, aliases, or Fuse.js
     let matchedCategory: string | undefined;
 
-    // Direct check in category list
-    for (const cat of WORKSPACE_CATEGORIES) {
-      const allNames = [cat.id, cat.name.toLowerCase(), ...cat.aliases.map((a) => a.toLowerCase())];
-      for (const alias of allNames) {
-        if (cleanText.includes(alias) || alias.includes(cleanText)) {
-          matchedCategory = cat.id;
-          break;
-        }
-      }
-      if (matchedCategory) break;
+    // 1. Direct check in Common Scene Synonyms (chair, pot, plant, person, etc.)
+    if (COMMON_SCENE_SYNONYMS[cleanText]) {
+      matchedCategory = COMMON_SCENE_SYNONYMS[cleanText];
     }
 
+    // 2. Check active instances directly by category, displayName, or ID prefix
+    if (!matchedCategory && activeInstances.length > 0) {
+      const instMatch = activeInstances.find(
+        (inst) =>
+          inst.categoryId.toLowerCase() === cleanText ||
+          inst.displayName.toLowerCase() === cleanText ||
+          inst.instanceId.toLowerCase().startsWith(cleanText + '_')
+      );
+      if (instMatch) {
+        matchedCategory = instMatch.categoryId;
+      }
+    }
+
+    // 3. Direct check in category list
+    if (!matchedCategory) {
+      for (const cat of WORKSPACE_CATEGORIES) {
+        const allNames = [cat.id, cat.name.toLowerCase(), ...cat.aliases.map((a) => a.toLowerCase())];
+        for (const alias of allNames) {
+          if (cleanText === alias || (alias.length > 3 && cleanText.includes(alias))) {
+            matchedCategory = cat.id;
+            break;
+          }
+        }
+        if (matchedCategory) break;
+      }
+    }
+
+    // 4. Strict Fuse.js fallback
     if (!matchedCategory) {
       const searchRes = this.categoryFuse.search(cleanText);
       if (searchRes.length > 0) {

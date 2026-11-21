@@ -20,8 +20,12 @@ export class QueryParser {
     scope: QueryScope = 'current'
   ): QueryPlan {
     const text = rawQuery.trim();
+    const isDirectSgg = /^\s*\/(sgg|graph)\b/i.test(text) || scope === 'sgg';
     const isDirectVlm = /^\s*\/(visual|vlm|inspect|image)\b/i.test(text) || scope === 'vlm';
-    const cleanText = text.replace(/^\s*\/(visual|vlm|inspect|image)\s+/i, '').trim();
+    const cleanText = text
+      .replace(/^\s*\/(sgg|graph)\s+/i, '')
+      .replace(/^\s*\/(visual|vlm|inspect|image)\s+/i, '')
+      .trim();
     const lower = (cleanText || text).toLowerCase();
 
     // 1. Check for Occluded / Non-visible Storage Query (e.g. "behind closed drawer")
@@ -66,17 +70,18 @@ export class QueryParser {
       lower.match(/\bwhat\s+(?:is|are)\s+(?:the\s+)?([a-z0-9_\s-]+?)\s+(?:sitting|seated|resting)\s+on\b/i);
 
     // A. Attribute lookup: "What color is the table?", "What is the color of the shirt?", "cloth color on the table"
+    const isAskingColor = /\b(color|colour|colored|coloured|hue)\b/i.test(lower);
     if (
-      /\b(what|which)\s+(is\s+the\s+)?(color|colour|type|material|kind)\s+(of\s+)?/i.test(lower) ||
-      /\b(color|colour)\s+(is|of)\b/i.test(lower) ||
-      /\b(color|colour)\b/i.test(lower) ||
+      /\b(what|which)\s+(is\s+the\s+)?(color|colour|colored|type|material|kind)\s+(of\s+)?/i.test(lower) ||
+      /\b(color|colour|colored)\s+(is|of)\b/i.test(lower) ||
+      isAskingColor ||
       /\b(what\s+is\s+the\s+person\s+wearing|what\s+color\s+shirt)\b/i.test(lower)
     ) {
       intent = 'object_attribute';
       if (/\b(shirt|clothes|clothing|pants|top|t-shirt|wearing)\b/i.test(lower)) {
         requestedAttribute = 'shirt_color';
       } else {
-        requestedAttribute = /\b(color|colour)\b/i.test(lower) ? 'color' : 'type';
+        requestedAttribute = isAskingColor ? 'color' : 'type';
       }
     }
     // B. Relational location query: "Where is the person sitting?"
@@ -137,13 +142,35 @@ export class QueryParser {
           targetMention = 'shirt';
         }
       } else {
-        const matchOf = lower.match(/(?:color|colour|type|material|kind)\s+(?:is|of)\s+(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i);
-        const matchPrefix = lower.match(/(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)\s+(?:color|colour|type|material|kind)\b/i);
-        if (matchOf) {
+        // Strip conversational prefix like "what is the", "what are", "tell me the", "what's the"
+        const cleanForAttr = lower
+          .replace(/^(?:what\s+is\s+(?:the\s+|a\s+|my\s+|an\s+)?|what's\s+(?:the\s+|a\s+|my\s+|an\s+)?|what\s+are\s+(?:the\s+)?|tell\s+me\s+(?:the\s+)?)/i, '')
+          .trim();
+
+        // 1. "what color is the [target]"
+        const matchWhatColorIs = lower.match(/\bwhat\s+(?:color|colour)\s+(?:is|was|are|were)\s+(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)(?:\s+(?:on|in|at)\s+.*|\?|$)/i);
+        // 2. "color/type of (the) [target]"
+        const matchOf = lower.match(/(?:color|colour|colored|type|material|kind)\s+(?:is|of|for)?\s+(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)(?:\s+(?:on|in|at)\s+.*|\?|$)/i);
+        // 3. "what is the [target] color/colored"
+        const matchWhatIsTargetColor = lower.match(/what\s+(?:is|was)\s+(?:the\s+|a\s+|an\s+|my\s+)?([a-z0-9_\s-]+?)\s+(?:color|colour|colored|coloured)\b/i);
+        // 4. "[target] color" (e.g. "pot color", "plant color", "chair color")
+        const matchPrefix = cleanForAttr.match(/(?:the\s+|my\s+|a\s+|an\s+)?([a-z0-9_\s-]+?)\s+(?:color|colour|colored|coloured|type|material|kind)\b/i);
+
+        if (matchWhatColorIs) {
+          targetMention = matchWhatColorIs[1].trim();
+        } else if (matchOf) {
           targetMention = matchOf[1].trim();
+        } else if (matchWhatIsTargetColor) {
+          targetMention = matchWhatIsTargetColor[1].trim();
         } else if (matchPrefix) {
           targetMention = matchPrefix[1].trim();
+        } else if (explicitIdMatch) {
+          targetMention = explicitIdMatch[1];
         }
+
+        // Clean targetMention of any stray trailing prepositions or qualifiers
+        targetMention = targetMention.replace(/\s+(on|in|at|near|beside)\s+.*$/i, '').trim();
+
         // Extract reference if spatial qualifier present (e.g. "cloth color on the table")
         if (/\bon\s+(?:the\s+|a\s+|my\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i.test(lower)) {
           const matchRef = lower.match(/\bon\s+(?:the\s+|a\s+|my\s+)?([a-z0-9_\s-]+?)(?:\?|$)/i);
@@ -250,7 +277,7 @@ export class QueryParser {
     return {
       rawQuery: text,
       intent,
-      scope,
+      scope: isDirectSgg ? 'sgg' : (isDirectVlm ? 'vlm' : scope),
       targetObject: targetResolved
         ? {
           category: targetResolved.category,
@@ -279,6 +306,7 @@ export class QueryParser {
       predicate: detectedPredicate,
       timeScope,
       forceVLM: isDirectVlm,
+      forceSGG: isDirectSgg,
       needsVisualReasoning: isDirectVlm,
       unresolvedSlots: [],
     };

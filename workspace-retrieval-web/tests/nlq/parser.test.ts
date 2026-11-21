@@ -81,5 +81,29 @@ export function testQueryParser() {
     throw new Error(`Failed on '/visual cloth color on the table': expected forceVLM to be true: ${JSON.stringify(p10)}`);
   }
 
+  // 11. Pot color query
+  const p11 = parser.parseQuery('what is the pot color');
+  if (p11.intent !== 'object_attribute' || p11.targetObject?.requestedAttribute !== 'color' || p11.targetObject?.mention !== 'pot') {
+    throw new Error(`Failed on 'what is the pot color': ${JSON.stringify(p11)}`);
+  }
+
+  // 12. Pot of plant colored
+  const p12 = parser.parseQuery('what is the pot of plant colored');
+  if (p12.intent !== 'object_attribute' || p12.targetObject?.requestedAttribute !== 'color' || p12.targetObject?.mention !== 'pot of plant') {
+    throw new Error(`Failed on 'what is the pot of plant colored': ${JSON.stringify(p12)}`);
+  }
+
+  // 13. Color of chair (must resolve to chair, NOT charger)
+  const p13 = parser.parseQuery('what is the color of chair');
+  if (p13.intent !== 'object_attribute' || p13.targetObject?.requestedAttribute !== 'color' || p13.targetObject?.category === 'charger' || p13.targetObject?.mention !== 'chair') {
+    throw new Error(`Failed on 'what is the color of chair' (resolved to charger): ${JSON.stringify(p13)}`);
+  }
+
+  // 14. Manual /sgg slash command for strictly Scene Graph only
+  const p14 = parser.parseQuery('/sgg where is laptop');
+  if (!p14.forceSGG || p14.scope !== 'sgg') {
+    throw new Error(`Failed on '/sgg where is laptop': expected forceSGG: true, scope: 'sgg': ${JSON.stringify(p14)}`);
+  }
+
   console.log('✓ QueryParser tests passed!');
 }

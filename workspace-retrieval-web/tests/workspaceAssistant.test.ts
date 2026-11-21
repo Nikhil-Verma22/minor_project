@@ -472,6 +472,51 @@ export async function testWorkspaceAssistant() {
     }
     console.log('✓ Acceptance Test 13 Passed: Manual /visual slash command enforces direct VLM invocation.');
 
+    // ------------------------------------------------------------------------
+    // Acceptance Test 14: Manual /sgg slash command for strictly Scene Graph only
+    // Expected: forceSGG is true on the plan, and requiresVLM is strictly false.
+    // ------------------------------------------------------------------------
+    const plan14 = parser.parseQuery('/sgg what is beside the laptop', mockInstances);
+    if (!plan14.forceSGG) {
+      throw new Error(`Test 14 Failed: Expected plan.forceSGG to be true`);
+    }
+    const res14 = await QueryExecutor.executeQuery(plan14, mockCurrentGraph, workspaceId);
+    if (res14.requiresVLM) {
+      throw new Error(`Test 14 Failed: Expected requiresVLM to be false under /sgg mode`);
+    }
+    if (res14.evidence.source !== 'scene_graph') {
+      throw new Error(`Test 14 Failed: Expected evidence.source 'scene_graph', got '${res14.evidence.source}'`);
+    }
+    console.log('✓ Acceptance Test 14 Passed: Manual /sgg slash command strictly enforces Scene Graph ground truth.');
+
+    // ------------------------------------------------------------------------
+    // Acceptance Test 15: Chair color query must resolve to chair, NOT charger
+    // Expected: Target is chair and answer does not mention charger.
+    // ------------------------------------------------------------------------
+    const plan15 = parser.parseQuery('what is the color of chair', mockInstances);
+    if (plan15.targetObject?.category === 'charger') {
+      throw new Error(`Test 15 Failed: 'chair' falsely resolved to 'charger'`);
+    }
+    const res15 = await QueryExecutor.executeQuery(plan15, mockCurrentGraph, workspaceId);
+    if (res15.answer.includes('charger')) {
+      throw new Error(`Test 15 Failed: Answer claimed charger: "${res15.answer}"`);
+    }
+    console.log('✓ Acceptance Test 15 Passed: Chair query resolves cleanly to chair without charger confusion.');
+
+    // ------------------------------------------------------------------------
+    // Acceptance Test 16: Pot color query parses target 'pot' / 'pot of plant' cleanly
+    // Expected: Target is parsed without conversational prefix pollution.
+    // ------------------------------------------------------------------------
+    const plan16 = parser.parseQuery('what is the pot color', mockInstances);
+    if (plan16.targetObject?.mention !== 'pot') {
+      throw new Error(`Test 16 Failed: Expected target mention 'pot', got '${plan16.targetObject?.mention}'`);
+    }
+    const plan16b = parser.parseQuery('what is the pot of plant colored', mockInstances);
+    if (plan16b.targetObject?.mention !== 'pot of plant') {
+      throw new Error(`Test 16 Failed: Expected target mention 'pot of plant', got '${plan16b.targetObject?.mention}'`);
+    }
+    console.log('✓ Acceptance Test 16 Passed: Pot and pot-of-plant color queries parsed cleanly.');
+
   } finally {
     // Restore repository getters
     MemoryRepository.getFrames = origGetFrames;
