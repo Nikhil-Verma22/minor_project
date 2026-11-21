@@ -94,3 +94,43 @@ export function canvasToFloatTensor(canvas: HTMLCanvasElement | OffscreenCanvas)
 export async function blobToImageBitmap(blob: Blob): Promise<ImageBitmap> {
   return createImageBitmap(blob);
 }
+
+/**
+ * Encodes an image source or blob into a data URL for persistent frame storage.
+ */
+export async function imageSourceToDataUrl(
+  source: HTMLImageElement | ImageBitmap | HTMLCanvasElement,
+  blob?: Blob | null,
+  maxWidth = 960
+): Promise<string> {
+  if (blob && blob.size < 1_500_000) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve((reader.result as string) || '');
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  try {
+    const origW = 'videoWidth' in source ? (source as any).videoWidth : source.width;
+    const origH = 'videoHeight' in source ? (source as any).videoHeight : source.height;
+    if (!origW || !origH) return '';
+
+    const scale = Math.min(1.0, maxWidth / Math.max(origW, origH));
+    const w = Math.round(origW * scale);
+    const h = Math.round(origH * scale);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return '';
+
+    ctx.drawImage(source, 0, 0, origW, origH, 0, 0, w, h);
+    return canvas.toDataURL('image/jpeg', 0.85);
+  } catch (err) {
+    console.warn('[imageSourceToDataUrl] Failed to generate data URL:', err);
+    return '';
+  }
+}

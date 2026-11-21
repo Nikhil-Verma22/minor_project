@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { Box, Check, HelpCircle, Eye, ChevronDown, ChevronRight } from 'lucide-react';
+import { Box, Check, Layers, ChevronDown, ChevronRight } from 'lucide-react';
 import { SGGObjectDetection } from '../models/sgg/SGGEngine';
 import { getPaletteColor } from '../utils/colors';
 
@@ -104,7 +104,7 @@ export const ObjectList: React.FC<ObjectListProps> = ({
             >
               {/* Row 1: Label, Dot, Score */}
               <div className="object-card-row-top">
-                <div className="object-card-label-group">
+                <div className="object-card-label-group flex items-center gap-1.5 min-w-0">
                   <span
                     className="w-2.5 h-2.5 rounded-full inline-block flex-shrink-0"
                     style={{
@@ -112,30 +112,37 @@ export const ObjectList: React.FC<ObjectListProps> = ({
                       boxShadow: `0 0 6px ${color}88`,
                     }}
                   />
-                  <span className="object-card-title capitalize">
-                    {obj.modelLabel}
+                  <span className="object-card-title capitalize font-medium text-zinc-100 flex items-center gap-1.5 min-w-0">
+                    <span className="truncate">{obj.modelLabel}</span>
+                    <span className="font-mono text-[11px] font-semibold text-cyan-400 bg-cyan-950/70 border border-cyan-800/60 px-1.5 py-0.5 rounded lowercase flex-shrink-0">
+                      {obj.instanceId || obj.detectionId}
+                    </span>
                   </span>
                 </div>
-                <span className="object-card-score">
+                <span className="object-card-score flex-shrink-0">
                   {(obj.confidence * 100).toFixed(0)}%
                 </span>
               </div>
 
-              {/* Row 2: Detection ID, Workspace Category Tag, View Action */}
+              {/* Row 2: Instance Identity, Category Tag, BBox Action */}
               <div className="object-card-row-bottom">
-                <div className="object-card-meta">
-                  <span className="font-mono text-[11px] text-zinc-400">
-                    {obj.detectionId}
-                  </span>
-                  <span>&bull;</span>
+                <div className="object-card-meta flex items-center gap-1.5 flex-wrap">
                   {obj.projectCategory ? (
                     <span className="category-tag">
                       <Check size={11} /> {obj.projectCategory}
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-zinc-500 text-[11px]">
-                      <HelpCircle size={10} /> unmapped
+                    <span className="inline-flex items-center gap-1 text-zinc-400 text-[11px] px-1.5 py-0.5 rounded bg-zinc-800/60 border border-zinc-700/50">
+                      <Layers size={10} className="text-zinc-400" /> Detected Entity
                     </span>
+                  )}
+                  {obj.instanceId && obj.detectionId !== obj.instanceId && (
+                    <>
+                      <span>&bull;</span>
+                      <span className="font-mono text-[10px] text-zinc-500">
+                        slot: {obj.detectionId}
+                      </span>
+                    </>
                   )}
                 </div>
 

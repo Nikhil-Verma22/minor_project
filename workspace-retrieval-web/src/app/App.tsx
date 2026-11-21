@@ -25,6 +25,7 @@ import { NLQResult, ConversationContext, QueryScope } from '../nlq/queryTypes';
 import { FrameRecord, PersistentObjectInstance } from '../memory/memoryTypes';
 import { PipelineStage } from '../pipeline/pipelineTypes';
 import { buildEntityColorMap } from '../utils/colors';
+import { VocabularyAdapter } from '../models/sgg/vocabularyAdapter';
 
 export const App: React.FC = () => {
   const orchestratorRef = useRef<PipelineOrchestrator | null>(null);
@@ -66,12 +67,23 @@ export const App: React.FC = () => {
       },
       onSggResult: (res) => {
         setSggResult(res);
-        setObjects(res.objects);
-        setRelationships(res.relationships);
+        setObjects([...res.objects]);
+        setRelationships([...res.relationships]);
         setImgDimensions({ width: res.imageWidth, height: res.imageHeight });
       },
       onGraphUpdate: (g) => {
         setGraph(g);
+        setObjects((prev) =>
+          prev.map((obj) => {
+            const matchingNode = g.nodes.find(
+              (n) => n.detectionId === obj.detectionId || n.id === obj.instanceId || n.id === obj.detectionId
+            );
+            return {
+              ...obj,
+              instanceId: matchingNode?.instanceId || obj.instanceId || (matchingNode && !matchingNode.isSurface ? matchingNode.id : undefined),
+            };
+          })
+        );
         refreshMemoryState();
       },
       onQueryResult: (res) => {
@@ -173,43 +185,57 @@ export const App: React.FC = () => {
     }
   };
 
-  const handleSelectHistoricalFrame = async (frameId: string) => {
+  const handleSelectHistoricalFrame = async (frameId: string, targetObjectId?: string) => {
     try {
       const frame = await MemoryRepository.getFrame(frameId);
-      if (!frame) return;
+      if (frame) {
+        if (frame.thumbnailDataUrl) {
+          setCurrentImageSrc(frame.thumbnailDataUrl);
+        }
+        setImgDimensions({ width: frame.imageWidth, height: frame.imageHeight });
 
-      const obs = await MemoryRepository.getObservationsForFrame(frameId);
-      const rels = await MemoryRepository.getRelationshipsForFrame(frameId);
+        const obs = await MemoryRepository.getObservationsForFrame(frameId);
+        const rels = await MemoryRepository.getRelationshipsForFrame(frameId);
 
-      if (frame.thumbnailDataUrl) {
-        setCurrentImageSrc(frame.thumbnailDataUrl);
+        setObjects(
+          obs.map((o) => {
+            const cleanLabel = o.categoryId.replace(/_[0-9]+$/, '');
+            const mapped = VocabularyAdapter.mapObjectCategory(cleanLabel);
+            return {
+              detectionId: o.instanceId || o.annotationId,
+              instanceId: o.instanceId,
+              modelLabel: cleanLabel,
+              projectCategory: mapped.mapped ? mapped.projectCategory : null,
+              bbox: o.bbox || [0, 0, 0, 0],
+              confidence: o.confidence || 0.9,
+              attributes: o.attributes,
+            };
+          })
+        );
+
+        setRelationships(
+          rels.map((r) => ({
+            relationId: r.relationshipId,
+            subjectDetectionId: r.subjectId,
+            predicateModelLabel: r.predicate,
+            canonicalPredicate: r.predicate,
+            objectDetectionId: r.objectId,
+            confidence: r.confidence,
+            source: r.source as any,
+            provisional: r.provisional,
+          }))
+        );
       }
-      setImgDimensions({ width: frame.imageWidth, height: frame.imageHeight });
 
-      setObjects(
-        obs.map((o) => ({
-          detectionId: o.annotationId,
-          instanceId: o.instanceId,
-          modelLabel: o.categoryId,
-          projectCategory: o.categoryId,
-          bbox: o.bbox || [0, 0, 0, 0],
-          confidence: o.confidence || 0.9,
-          attributes: o.attributes,
-        }))
-      );
+      if (targetObjectId) {
+        setSelectedId(targetObjectId);
+      }
 
-      setRelationships(
-        rels.map((r) => ({
-          relationId: r.relationshipId,
-          subjectDetectionId: r.subjectId,
-          predicateModelLabel: r.predicate,
-          canonicalPredicate: r.predicate,
-          objectDetectionId: r.objectId,
-          confidence: r.confidence,
-          source: r.source as any,
-          provisional: r.provisional,
-        }))
-      );
+      // Smooth scroll image viewer into view
+      const elem = document.querySelector('.workspace-main');
+      if (elem) {
+        elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     } catch (err) {
       console.error('Failed to load historical frame:', err);
     }
@@ -321,7 +347,13 @@ export const App: React.FC = () => {
           queryResult={queryResult}
           pipelineStage={pipelineStage}
           isEnabled={objects.length > 0 || frames.length > 0}
-          onSelectEntity={(id) => setSelectedId(id)}
+          onSelectEntity={(id) => {
+            setSelectedId(id);
+            const elem = document.querySelector('.workspace-main');
+            if (elem) {
+              elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }}
           onSelectHistoricalFrame={handleSelectHistoricalFrame}
           availableFramesCount={frames.length}
         />

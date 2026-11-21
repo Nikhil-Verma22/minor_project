@@ -19,6 +19,7 @@ import { NLQResult, ConversationContext, QueryScope } from '../nlq/queryTypes';
 import { generateId, formatFrameId } from '../utils/ids';
 import { getCurrentIsoTimestamp } from '../utils/time';
 import { logMessage } from '../utils/logging';
+import { imageSourceToDataUrl } from '../utils/image';
 import {
   WorkspaceRecord,
   SequenceRecord,
@@ -108,8 +109,6 @@ export class PipelineOrchestrator {
 
       const sggResult = await this.sggEngine.infer(imageSource);
       this.latestSggResult = sggResult;
-      this.callbacks.onSggResult?.(sggResult);
-      this.setStage('sgg_completed', `Detected ${sggResult.objects.length} objects, ${sggResult.relationships.length} relations`);
 
       // 2. Identity Association
       this.setStage('identity_association', 'Associating object identities against workspace memory...');
@@ -144,6 +143,10 @@ export class PipelineOrchestrator {
           obj.instanceId = inst.instanceId;
         }
       }
+
+      // Emit onSggResult with instanceIds fully populated so downstream views and color maps match
+      this.callbacks.onSggResult?.(sggResult);
+      this.setStage('sgg_completed', `Detected ${sggResult.objects.length} objects, ${sggResult.relationships.length} relations`);
 
       // 3. Build Relationships Facts
       const relationshipFacts: RelationshipFact[] = [];
@@ -201,6 +204,8 @@ export class PipelineOrchestrator {
         createdAt: timestamp,
       };
 
+      const thumbnailDataUrl = await imageSourceToDataUrl(imageSource, imageBlob);
+
       const frameRecord: FrameRecord = {
         frameId,
         sequenceId: this.currentSequenceId,
@@ -209,6 +214,7 @@ export class PipelineOrchestrator {
         timestamp,
         imageWidth: sggResult.imageWidth,
         imageHeight: sggResult.imageHeight,
+        thumbnailDataUrl,
         filename,
       };
 
@@ -394,6 +400,12 @@ export class PipelineOrchestrator {
         }
       }
 
+      const candSubjectId = vlmResponse.candidate_relations[0]?.subject_id;
+      const targetGraphNode = this.currentGraph?.nodes.find(
+        (n) => n.id === candSubjectId || n.instanceId === candSubjectId || n.detectionId === candSubjectId
+      );
+      const vlmTargetBbox = targetGraphNode?.bbox || nlqResult.evidence.targetBbox || null;
+
       const finalResult: NLQResult = {
         queryPlan: plan,
         answer: finalAnswer,
@@ -409,6 +421,7 @@ export class PipelineOrchestrator {
             ? `Visual reasoning grounded candidate presence in RGB image context.`
             : `Visual reasoning found no conclusive evidence for target entity in current observation.`,
           provisional: true,
+          targetBbox: vlmTargetBbox,
         },
         requiresVLM: false,
         certainty: vlmResponse.unresolved ? 'insufficient' : hasCandidates ? 'provisional' : 'insufficient',

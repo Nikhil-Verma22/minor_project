@@ -72,7 +72,13 @@ export const BoundingBoxOverlay: React.FC<BoundingBoxOverlayProps> = ({
     return targetId === candidateId;
   };
 
-  const boxMap = new Map<string, SGGObjectDetection>(objects.map((o) => [o.detectionId, o]));
+  const boxMap = new Map<string, SGGObjectDetection>();
+  objects.forEach((o) => {
+    boxMap.set(o.detectionId, o);
+    if (o.instanceId) {
+      boxMap.set(o.instanceId, o);
+    }
+  });
 
   // Active target is locked selection if set, otherwise temporary hover
   const activeId = selectedId || hoveredId;
@@ -290,7 +296,8 @@ export const BoundingBoxOverlay: React.FC<BoundingBoxOverlayProps> = ({
         // Label details for Level 1 focus
         const baseName = obj.projectCategory || obj.modelLabel;
         const scorePercent = (obj.confidence * 100).toFixed(0);
-        const fullLabelText = `${baseName} · ${scorePercent}% · ${obj.detectionId}`;
+        const identityStr = obj.instanceId || obj.detectionId;
+        const fullLabelText = `${baseName} (${identityStr}) · ${scorePercent}%`;
 
         // Width calculation
         const labelPillWidth = fullLabelText.length * 6.8 + 24;

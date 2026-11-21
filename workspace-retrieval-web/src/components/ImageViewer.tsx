@@ -172,8 +172,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
                 boxShadow: `0 0 6px ${selectedColor}99`,
               }}
             />
-            <span className="font-semibold text-white">
-              {selectedObj.projectCategory || selectedObj.modelLabel}
+            <span className="font-semibold text-white capitalize">
+              {selectedObj.modelLabel || selectedObj.projectCategory}
             </span>
             <span
               className="selected-inspector-pill"
@@ -183,8 +183,13 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
                 border: `1px solid ${selectedColor}50`,
               }}
             >
-              {selectedObj.detectionId}
+              {selectedObj.instanceId || selectedObj.detectionId}
             </span>
+            {selectedObj.instanceId && selectedObj.detectionId !== selectedObj.instanceId && (
+              <span className="text-zinc-500 font-mono text-[10px]">
+                ({selectedObj.detectionId})
+              </span>
+            )}
             <span className="text-zinc-400">
               Score: <strong className="text-cyan-400">{(selectedObj.confidence * 100).toFixed(0)}%</strong>
             </span>

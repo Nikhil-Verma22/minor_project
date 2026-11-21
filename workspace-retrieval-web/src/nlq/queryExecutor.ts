@@ -629,10 +629,10 @@ export class QueryExecutor {
       if (predicate === 'on' && (targetCategory || targetInstanceId)) {
         let subjectNodes = targetInstanceId
           ? currentGraph.nodes.filter(
-              (n) =>
-                n.id.toLowerCase() === targetInstanceId.toLowerCase() ||
-                n.instanceId?.toLowerCase() === targetInstanceId.toLowerCase()
-            )
+            (n) =>
+              n.id.toLowerCase() === targetInstanceId.toLowerCase() ||
+              n.instanceId?.toLowerCase() === targetInstanceId.toLowerCase()
+          )
           : currentGraph.nodes.filter((n) => matchesTarget(targetCategory, [n.categoryId, n.label]));
 
         if (subjectNodes.length > 0) {

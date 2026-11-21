@@ -56,7 +56,7 @@ interface WorkspaceAssistantProps {
   pipelineStage: PipelineStage;
   isEnabled: boolean;
   onSelectEntity?: (id: string | null) => void;
-  onSelectHistoricalFrame?: (frameId: string) => void;
+  onSelectHistoricalFrame?: (frameId: string, targetObjectId?: string) => void;
   availableFramesCount?: number;
 }
 
@@ -530,8 +530,13 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
                                 <button
                                   type="button"
                                   className="evidence-action-link"
-                                  onClick={() => onSelectHistoricalFrame(msg.result!.evidence.frameIds[0])}
-                                  title="View this historical frame observation"
+                                  onClick={() =>
+                                    onSelectHistoricalFrame(
+                                      msg.result!.evidence.frameIds[0],
+                                      msg.result!.evidence.objectInstanceIds[0]
+                                    )
+                                  }
+                                  title="View this frame observation and focus detected object"
                                 >
                                   View Frame
                                 </button>
