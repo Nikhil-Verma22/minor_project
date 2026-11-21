@@ -164,24 +164,38 @@ self.onmessage = async (e: MessageEvent) => {
           }
         }
 
-        // Search for matching target entity using synonym and substring matching
+        // Search for matching target entity: first priority to explicit instance ID (e.g. chair_008)
         let matchedCandidate: { id: string; name: string; category: string; bbox?: number[] | null } | null = null;
         let matchedTerm = '';
 
-        for (const [key, synonyms] of Object.entries(SYNONYM_MAP)) {
-          for (const syn of synonyms) {
-            if (lowerQ.includes(syn)) {
-              matchedTerm = syn;
-              const found = candidatePool.find(
-                (c) => c.category.includes(key) || c.name.toLowerCase().includes(key) || synonyms.some((s) => c.category.includes(s))
-              );
-              if (found) {
-                matchedCandidate = found;
-                break;
+        const explicitIdMatch = lowerQ.match(/\b([a-z]+(?:_[a-z]+)*_[0-9]+)\b/i) || lowerQ.match(/\b(det_[0-9]+(?:_[0-9]+)?)\b/i);
+        if (explicitIdMatch) {
+          const targetId = explicitIdMatch[1].toLowerCase();
+          const exact = candidatePool.find(
+            (c) => c.id.toLowerCase() === targetId || c.name.toLowerCase().includes(targetId)
+          );
+          if (exact) {
+            matchedCandidate = exact;
+            matchedTerm = targetId;
+          }
+        }
+
+        if (!matchedCandidate) {
+          for (const [key, synonyms] of Object.entries(SYNONYM_MAP)) {
+            for (const syn of synonyms) {
+              if (lowerQ.includes(syn)) {
+                matchedTerm = syn;
+                const found = candidatePool.find(
+                  (c) => c.category.includes(key) || c.name.toLowerCase().includes(key) || synonyms.some((s) => c.category.includes(s))
+                );
+                if (found) {
+                  matchedCandidate = found;
+                  break;
+                }
               }
             }
+            if (matchedCandidate) break;
           }
-          if (matchedCandidate) break;
         }
 
         // Direct fallback scan if no synonym group matched
@@ -214,11 +228,8 @@ self.onmessage = async (e: MessageEvent) => {
             limitations: ['Quantized 500M VLM surface grounding mode'],
           };
         } else if (matchedCandidate) {
-          const locDesc = matchedCandidate.bbox
-            ? `at coordinates [${matchedCandidate.bbox.map((v) => Math.round(v)).join(', ')}]`
-            : 'on the workspace plane';
-
-          let answerText = `Visual inspection identifies ${matchedCandidate.name} ${locDesc} within the current workspace view.`;
+          // VLM fallback provides symbolic presence only; never marks coordinates or pixel positions in the frame
+          let answerText = `Visual inspection identifies ${matchedCandidate.name} within the current workspace view.`;
           let candidateRelations: typeof structuredResponse.candidate_relations = [
             {
               subject_id: matchedCandidate.id,
@@ -226,7 +237,7 @@ self.onmessage = async (e: MessageEvent) => {
               object_id: 'workspace_surface_001',
               canonical_predicate: 'on',
               confidence: 0.78,
-              evidence: `Visual fallback confirmed candidate presence of ${matchedCandidate.name} on workspace surface.`,
+              evidence: `Visual fallback noted presence of ${matchedCandidate.name} in workspace view (unlocalized).`,
             },
           ];
 
@@ -282,7 +293,7 @@ self.onmessage = async (e: MessageEvent) => {
             } else if (matchedCandidate.category.includes('table')) {
               answerText = `Visual inspection indicates the workspace table surface has a warm wood-toned / dark brown finish.`;
             } else if (matchedCandidate.category.includes('chair')) {
-              answerText = `Visual inspection indicates the chair frame and seat appear in dark gray / black upholstery.`;
+              answerText = `Visual inspection indicates the chair (${matchedCandidate.id}) frame and seat appear in dark gray / black upholstery.`;
             } else if (
               matchedCandidate.category.includes('plant') ||
               matchedCandidate.name.toLowerCase().includes('pot')

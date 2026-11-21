@@ -73,17 +73,6 @@ export const App: React.FC = () => {
       },
       onGraphUpdate: (g) => {
         setGraph(g);
-        setObjects((prev) =>
-          prev.map((obj) => {
-            const matchingNode = g.nodes.find(
-              (n) => n.detectionId === obj.detectionId || n.id === obj.instanceId || n.id === obj.detectionId
-            );
-            return {
-              ...obj,
-              instanceId: matchingNode?.instanceId || obj.instanceId || (matchingNode && !matchingNode.isSurface ? matchingNode.id : undefined),
-            };
-          })
-        );
         refreshMemoryState();
       },
       onQueryResult: (res) => {

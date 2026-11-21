@@ -533,10 +533,10 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
                                   onClick={() =>
                                     onSelectHistoricalFrame(
                                       msg.result!.evidence.frameIds[0],
-                                      msg.result!.evidence.objectInstanceIds[0]
+                                      msg.result?.evidence.source === 'vlm' ? undefined : msg.result!.evidence.objectInstanceIds[0]
                                     )
                                   }
-                                  title="View this frame observation and focus detected object"
+                                  title="View this frame observation"
                                 >
                                   View Frame
                                 </button>
@@ -549,22 +549,29 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
                               <Layers size={11} className="text-cyan-400" />
                               <span>Objects:</span>
                               <div className="flex items-center gap-1">
-                                {msg.result.evidence.objectInstanceIds.map((id) => (
-                                  <button
-                                    key={id}
-                                    type="button"
-                                    className="object-tag-btn"
-                                    onClick={() => onSelectEntity?.(id)}
-                                    title="Click to focus object in image viewer"
-                                  >
-                                    {id}
-                                  </button>
-                                ))}
+                                {msg.result.evidence.objectInstanceIds.map((id) => {
+                                  const isVlm = msg.result?.evidence.source === 'vlm';
+                                  return (
+                                    <button
+                                      key={id}
+                                      type="button"
+                                      className={`object-tag-btn ${isVlm ? 'vlm-tag-btn cursor-default pointer-events-none opacity-85' : ''}`}
+                                      onClick={() => {
+                                        if (!isVlm) {
+                                          onSelectEntity?.(id);
+                                        }
+                                      }}
+                                      title={isVlm ? `${id} (Identified by visual reasoning without frame bounding box)` : 'Click to focus object in image viewer'}
+                                    >
+                                      {id}
+                                    </button>
+                                  );
+                                })}
                               </div>
                             </span>
                           )}
 
-                          {msg.result.evidence.targetBbox && onSelectEntity && (
+                          {msg.result.evidence.source !== 'vlm' && msg.result.evidence.targetBbox && onSelectEntity && (
                             <button
                               type="button"
                               className="btn-inspect-image"

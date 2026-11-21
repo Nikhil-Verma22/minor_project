@@ -400,12 +400,9 @@ export class PipelineOrchestrator {
         }
       }
 
-      const candSubjectId = vlmResponse.candidate_relations[0]?.subject_id;
-      const targetGraphNode = this.currentGraph?.nodes.find(
-        (n) => n.id === candSubjectId || n.instanceId === candSubjectId || n.detectionId === candSubjectId
-      );
-      const vlmTargetBbox = targetGraphNode?.bbox || nlqResult.evidence.targetBbox || null;
-
+      // Strictly DO NOT set targetBbox or attach frame coordinates for VLM answers.
+      // SGG model is the sole authority for bounding boxes and frame geometry.
+      // VLM only records unlocalized symbolic facts in memory without disrupting SGG boxes.
       const finalResult: NLQResult = {
         queryPlan: plan,
         answer: finalAnswer,
@@ -418,10 +415,10 @@ export class PipelineOrchestrator {
           relationshipIds: [],
           confidence: hasCandidates ? (vlmResponse.candidate_relations[0]?.confidence ?? 0.75) : 0.1,
           explanation: hasCandidates
-            ? `Visual reasoning grounded candidate presence in RGB image context.`
+            ? `Visual reasoning identified candidate presence in RGB image context without bounding box localization.`
             : `Visual reasoning found no conclusive evidence for target entity in current observation.`,
           provisional: true,
-          targetBbox: vlmTargetBbox,
+          targetBbox: null, // Strictly null: VLM never places a bounding box on the image
         },
         requiresVLM: false,
         certainty: vlmResponse.unresolved ? 'insufficient' : hasCandidates ? 'provisional' : 'insufficient',
