@@ -77,6 +77,8 @@ export class PipelineOrchestrator {
   async initialize(workspaceId = 'ws_default', domainId = 'student_workspace'): Promise<ModelStatus> {
     this.currentWorkspaceId = workspaceId;
     this.currentDomainId = domainId;
+    const existingFrames = await MemoryRepository.getFrames(workspaceId);
+    this.frameCount = existingFrames.length;
     this.setStage('idle', 'Initializing REACT++...');
     const status = await this.sggEngine.initialize();
     return status;
@@ -210,12 +212,13 @@ export class PipelineOrchestrator {
         frameId,
         sequenceId: this.currentSequenceId,
         workspaceId: this.currentWorkspaceId,
-        frameIndex: this.frameCount - 1,
+        frameIndex: this.frameCount,
         timestamp,
         imageWidth: sggResult.imageWidth,
         imageHeight: sggResult.imageHeight,
         thumbnailDataUrl,
         filename,
+        status: 'completed',
       };
 
       await MemoryRepository.saveObservationFrameTransaction({
@@ -246,7 +249,8 @@ export class PipelineOrchestrator {
     context?: ConversationContext,
     scope: QueryScope = 'current',
     forceVLM?: boolean,
-    forceSGG?: boolean
+    forceSGG?: boolean,
+    selectedFrameIds?: string[]
   ): Promise<NLQResult> {
     try {
       const isDirectSgg =
@@ -285,7 +289,8 @@ export class PipelineOrchestrator {
         plan,
         this.currentGraph,
         this.currentWorkspaceId,
-        this.currentImageSource || this.currentImageBitmap
+        this.currentImageSource || this.currentImageBitmap,
+        selectedFrameIds
       );
 
       if (isDirectSgg) {

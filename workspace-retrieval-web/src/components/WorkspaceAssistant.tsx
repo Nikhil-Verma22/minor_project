@@ -50,7 +50,8 @@ interface WorkspaceAssistantProps {
     context?: ConversationContext,
     scope?: QueryScope,
     forceVLM?: boolean,
-    forceSGG?: boolean
+    forceSGG?: boolean,
+    selectedFrameIds?: string[]
   ) => void;
   queryResult: NLQResult | null;
   pipelineStage: PipelineStage;
@@ -58,6 +59,7 @@ interface WorkspaceAssistantProps {
   onSelectEntity?: (id: string | null) => void;
   onSelectHistoricalFrame?: (frameId: string, targetObjectId?: string) => void;
   availableFramesCount?: number;
+  selectedFrameIds?: string[];
 }
 
 interface SuggestionCategory {
@@ -122,6 +124,7 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
   onSelectEntity,
   onSelectHistoricalFrame,
   availableFramesCount = 0,
+  selectedFrameIds = [],
 }) => {
   const [queryText, setQueryText] = useState('');
   const [scope, setScope] = useState<QueryScope>('current');
@@ -221,13 +224,14 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
     setMessages((prev) => [...prev, userMsg]);
     setQueryText('');
 
-    // Trigger pipeline query execution with active conversation context
+    // Trigger pipeline query execution with active conversation context and selected frame context
     onAskQuery(
       finalQuery,
       conversationContext,
       isDirectSgg ? 'sgg' : (isDirectVlm ? 'vlm' : scope),
       isDirectVlm,
-      isDirectSgg
+      isDirectSgg,
+      selectedFrameIds
     );
   };
 
@@ -437,6 +441,21 @@ export const WorkspaceAssistant: React.FC<WorkspaceAssistantProps> = ({
           )}
         </div>
       </div>
+
+      {/* Active Frame Context Indicator */}
+      {selectedFrameIds.length > 0 && (
+        <div className="active-context-banner">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="font-semibold text-xs text-cyan-300">
+              Active Context: {selectedFrameIds.length} of {availableFramesCount || selectedFrameIds.length} frame(s) selected
+            </span>
+          </div>
+          <span className="text-[11px] text-zinc-400 font-mono">
+            Answering strictly from {selectedFrameIds.length} selected observation{selectedFrameIds.length === 1 ? '' : 's'}
+          </span>
+        </div>
+      )}
 
       {/* 2. Conversation Thread Container */}
       <div className="assistant-thread-container">

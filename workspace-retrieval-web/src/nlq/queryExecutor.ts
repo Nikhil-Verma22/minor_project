@@ -9,8 +9,9 @@ import { QueryPlan, NLQResult, AmbiguousOption } from './queryTypes';
 import { SceneGraph } from '../graph/graphTypes';
 import { MemoryRepository } from '../memory/memoryRepository';
 import { PersistentObjectInstance } from '../memory/memoryTypes';
-import { formatHumanTime } from '../utils/time';
+import { formatHumanTime, getCurrentIsoTimestamp } from '../utils/time';
 import { GraphReasoner } from '../graph/graphReasoner';
+import { GraphBuilder } from '../graph/graphBuilder';
 import { VisualAttributeEstimator } from '../utils/visualAttributeEstimator';
 
 export class QueryExecutor {
@@ -18,11 +19,18 @@ export class QueryExecutor {
     plan: QueryPlan,
     currentGraph: SceneGraph | null,
     workspaceId: string,
-    imageSource?: CanvasImageSource | null
+    imageSource?: CanvasImageSource | null,
+    selectedFrameIds?: string[]
   ): Promise<NLQResult> {
     const instances = await MemoryRepository.getInstances(workspaceId);
     const frames = await MemoryRepository.getFrames(workspaceId);
     const reasoningTrace: string[] = [];
+
+    // Filter frames strictly to selectedFrameIds if provided
+    const activeFrameIds: string[] = (selectedFrameIds && selectedFrameIds.length > 0)
+      ? selectedFrameIds
+      : (currentGraph ? [currentGraph.frameId] : frames.map((f) => f.frameId));
+    const isMultiFrame = activeFrameIds.length > 1;
 
     // Helper for fuzzy category/mention matching
     const matchesTarget = (catOrMention: string | undefined, testStrings: (string | undefined)[]) => {
@@ -359,6 +367,102 @@ export class QueryExecutor {
       reasoningTrace.push('Query intent: Locate current object.');
       reasoningTrace.push(`Searching for target: '${targetCategory || 'unspecified'}'`);
 
+      if (isMultiFrame) {
+        reasoningTrace.push(`Multi-frame object location query across ${activeFrameIds.length} frames.`);
+        const allObs = await MemoryRepository.getObservationsForFrames(activeFrameIds);
+        const allRels = await MemoryRepository.getRelationshipsForFrames(activeFrameIds);
+        const instMap = new Map(instances.map((i) => [i.instanceId, i]));
+
+        const frameLocations: string[] = [];
+        const foundFrameIds: string[] = [];
+        const foundInstanceIds = new Set<string>();
+
+        for (const fId of activeFrameIds) {
+          const fRecord = frames.find((f) => f.frameId === fId);
+          const fIndex = fRecord?.frameIndex ?? fId;
+          const frameObs = allObs.filter((o) => o.frameId === fId);
+
+          const matchingObs = frameObs.filter((o) => {
+            const inst = instMap.get(o.instanceId);
+            if (targetInstanceId) return o.instanceId.toLowerCase() === targetInstanceId.toLowerCase();
+            return matchesTarget(targetCategory, [o.instanceId, o.categoryId, inst?.displayName]);
+          });
+
+          if (matchingObs.length > 0) {
+            foundFrameIds.push(fId);
+            const obsDesc = matchingObs.map((o) => {
+              foundInstanceIds.add(o.instanceId);
+              const inst = instMap.get(o.instanceId);
+              const label = inst?.displayName || o.categoryId;
+              const bboxStr = o.bbox ? ` at [${o.bbox.map((v) => Math.round(v)).join(', ')}]` : '';
+              const rel = allRels.find((r) => r.frameId === fId && (r.subjectId === o.instanceId || r.objectId === o.instanceId));
+              let relStr = '';
+              if (rel) {
+                const otherId = rel.subjectId === o.instanceId ? rel.objectId : rel.subjectId;
+                const otherName = instMap.get(otherId)?.displayName || otherId;
+                relStr = rel.subjectId === o.instanceId
+                  ? ` (${rel.predicate.replace(/_/g, ' ')} ${otherName})`
+                  : ` (${otherName} is ${rel.predicate.replace(/_/g, ' ')} it)`;
+              }
+              return `${label}${bboxStr}${relStr}`;
+            });
+            frameLocations.push(`In Frame ${fIndex}: ${obsDesc.join(' and ')}.`);
+          }
+        }
+
+        if (frameLocations.length > 0) {
+          return {
+            queryPlan: plan,
+            answer: `Across the selected observations:\n${frameLocations.map((s) => `• ${s}`).join('\n')}`,
+            evidence: {
+              source: 'scene_graph',
+              workspaceId,
+              frameIds: foundFrameIds,
+              timestamps: foundFrameIds.map((fId) => frames.find((f) => f.frameId === fId)?.timestamp || ''),
+              objectInstanceIds: Array.from(foundInstanceIds),
+              relationshipIds: [],
+              explanation: `Observed location retrieved across selected frames (${foundFrameIds.join(', ')}).`,
+              provisional: false,
+            },
+            requiresVLM: false,
+            certainty: 'confirmed',
+            reasoningTrace: [
+              `Target searched across frames ${activeFrameIds.join(', ')}.`,
+              ...reasoningTrace,
+            ],
+            followUpSuggestions: [
+              'What changed between these observations?',
+              `What is beside the ${targetCategory || 'object'}?`,
+            ],
+          };
+        } else {
+          return {
+            queryPlan: plan,
+            answer: `The ${targetCategory || 'object'} was not detected in any of the currently selected observations (${activeFrameIds.join(', ')}).`,
+            evidence: {
+              source: 'workspace_memory',
+              workspaceId,
+              frameIds: activeFrameIds,
+              timestamps: activeFrameIds.map((fId) => frames.find((f) => f.frameId === fId)?.timestamp || ''),
+              objectInstanceIds: [],
+              relationshipIds: [],
+              explanation: `Target not detected in any active selected frame.`,
+              provisional: false,
+            },
+            requiresVLM: false,
+            certainty: 'insufficient',
+            reasoningTrace: [
+              `No detection matched '${targetCategory || targetInstanceId}' in selected frames.`,
+              ...reasoningTrace,
+            ],
+            followUpSuggestions: [
+              'Which objects are visible in the selected observations?',
+              'Where was my phone last seen?',
+            ],
+          };
+        }
+      }
+
       // Check current frame
       if (currentGraph) {
         let matchingNodes: typeof currentGraph.nodes = [];
@@ -560,7 +664,35 @@ export class QueryExecutor {
       if (matchingInstances.length > 0) {
         const inst = matchingInstances[0];
         const obsHistory = await MemoryRepository.getObservationsForInstance(inst.instanceId);
-        const validObs = obsHistory.filter((o) => o.bbox !== null);
+        const validObs = obsHistory.filter(
+          (o) => o.bbox !== null && (!selectedFrameIds || selectedFrameIds.length === 0 || activeFrameIds.includes(o.frameId))
+        );
+
+        if (validObs.length === 0) {
+          reasoningTrace.push(`Instance ${inst.displayName} was not observed in any of the selected frames (${activeFrameIds.join(', ')}).`);
+          return {
+            queryPlan: plan,
+            answer: `The ${inst.displayName} was not observed in any of the currently selected observations (${activeFrameIds.join(', ')}).`,
+            evidence: {
+              source: 'workspace_memory',
+              workspaceId,
+              frameIds: activeFrameIds,
+              timestamps: activeFrameIds.map((fId) => frames.find((f) => f.frameId === fId)?.timestamp || ''),
+              objectInstanceIds: [],
+              relationshipIds: [],
+              explanation: `Search restricted to active frame selection (${activeFrameIds.join(', ')}).`,
+              provisional: false,
+            },
+            requiresVLM: false,
+            certainty: 'insufficient',
+            reasoningTrace,
+            followUpSuggestions: [
+              'Which objects are in the selected observations?',
+              'Compare these frames',
+            ],
+          };
+        }
+
         const lastObs = validObs[validObs.length - 1];
 
         if (lastObs) {
@@ -616,14 +748,90 @@ export class QueryExecutor {
     }
 
     // 4. FIND CURRENT SPATIAL RELATIONSHIPS (e.g. "What is beside the laptop?", "Which objects are on the surface?", "Where is the person sitting?")
-    if (plan.intent === 'spatial_relationship' && currentGraph) {
+    if (plan.intent === 'spatial_relationship') {
       const targetCategory = plan.targetObject?.category || plan.targetObject?.mention;
       const targetInstanceId = plan.targetObject?.instanceId;
       const refCategory = plan.referenceObject?.category || plan.referenceObject?.mention;
       const refInstanceId = plan.referenceObject?.instanceId;
       const predicate = plan.predicate || 'next_to';
 
-      reasoningTrace.push(`Query intent: Current spatial relationship check (${predicate}).`);
+      reasoningTrace.push(`Query intent: Spatial relationship check (${predicate}).`);
+
+      if (isMultiFrame) {
+        reasoningTrace.push(`Multi-frame spatial query across ${activeFrameIds.length} frames.`);
+        const allRels = await MemoryRepository.getRelationshipsForFrames(activeFrameIds);
+        const instMap = new Map(instances.map((i) => [i.instanceId, i]));
+
+        const frameSummaries: string[] = [];
+        const matchedInstances = new Set<string>();
+        const matchedRelIds: string[] = [];
+
+        for (const fId of activeFrameIds) {
+          const fRecord = frames.find((f) => f.frameId === fId);
+          const fIndex = fRecord?.frameIndex ?? fId;
+          const frameRels = allRels.filter((r) => r.frameId === fId);
+
+          const matches = frameRels.filter((r) => {
+            const sName = instMap.get(r.subjectId)?.displayName || r.subjectId;
+            const oName = instMap.get(r.objectId)?.displayName || r.objectId;
+            const sCat = instMap.get(r.subjectId)?.categoryId;
+            const oCat = instMap.get(r.objectId)?.categoryId;
+
+            if (targetCategory || targetInstanceId) {
+              const sMatch = targetInstanceId
+                ? r.subjectId.toLowerCase() === targetInstanceId.toLowerCase()
+                : matchesTarget(targetCategory, [r.subjectId, sName, sCat]);
+              const oMatch = targetInstanceId
+                ? r.objectId.toLowerCase() === targetInstanceId.toLowerCase()
+                : matchesTarget(targetCategory, [r.objectId, oName, oCat]);
+              return (sMatch || oMatch) && ((predicate as string) === 'all' || r.predicate === predicate || predicate === 'next_to' || predicate === 'on');
+            }
+            return (predicate as string) === 'all' || r.predicate === predicate;
+          });
+
+          if (matches.length > 0) {
+            const relDescs = matches.map((r) => {
+              matchedRelIds.push(r.relationshipId);
+              matchedInstances.add(r.subjectId);
+              matchedInstances.add(r.objectId);
+              const sName = instMap.get(r.subjectId)?.displayName || r.subjectId;
+              const oName = instMap.get(r.objectId)?.displayName || r.objectId;
+              return `${sName} was ${r.predicate.replace(/_/g, ' ')} ${oName}`;
+            });
+            frameSummaries.push(`In Frame ${fIndex}: ${relDescs.join(', ')}.`);
+          }
+        }
+
+        if (frameSummaries.length > 0) {
+          return {
+            queryPlan: plan,
+            answer: `Across the selected observations:\n${frameSummaries.map((s) => `• ${s}`).join('\n')}`,
+            evidence: {
+              source: 'scene_graph',
+              workspaceId,
+              frameIds: activeFrameIds,
+              timestamps: activeFrameIds.map((fId) => frames.find((f) => f.frameId === fId)?.timestamp || ''),
+              objectInstanceIds: Array.from(matchedInstances).filter((id) => id !== 'workspace_surface_001'),
+              relationshipIds: matchedRelIds,
+              explanation: `Aggregated relationship facts across ${activeFrameIds.length} selected frames.`,
+              provisional: false,
+            },
+            requiresVLM: false,
+            certainty: 'confirmed',
+            reasoningTrace: [
+              `Queried relationships across selected frames: ${activeFrameIds.join(', ')}.`,
+              ...reasoningTrace,
+            ],
+            followUpSuggestions: [
+              'What changed between these observations?',
+              'Which objects are on the workspace surface?',
+            ],
+          };
+        }
+      }
+
+      // Check current frame
+      if (currentGraph) {
 
       // Special case: Sitting / support check for a subject (e.g. "Where is the person sitting?", "Where is person_001 sitting?")
       if (predicate === 'on' && (targetCategory || targetInstanceId)) {
@@ -880,6 +1088,7 @@ export class QueryExecutor {
         certainty: 'insufficient',
         reasoningTrace,
       };
+      }
     }
 
     // 5. FIND HISTORICAL RELATIONSHIPS (e.g. "What was next to the notebook previously?", "What was next to it?")
@@ -986,10 +1195,186 @@ export class QueryExecutor {
       };
     }
 
-    // 6. COMPARE OBJECT STATE (e.g. "Did the screwdriver move?")
+    // 6. COMPARE OBJECT STATE / TEMPORAL DIFF (e.g. "Did the screwdriver move?", "What changed between these observations?", "Compare these frames")
     if (plan.intent === 'object_change') {
       const targetCategory = plan.targetObject?.category || plan.targetObject?.mention;
       reasoningTrace.push('Query intent: Object state / movement comparison.');
+
+      // Multi-frame comparative diff when no specific target is named or comparison is requested across frames
+      const isComparativeDiff =
+        !targetCategory ||
+        (activeFrameIds.length >= 2 && !plan.targetObject?.instanceId && (
+          plan.rawQuery?.toLowerCase().includes('change') ||
+          plan.rawQuery?.toLowerCase().includes('compare') ||
+          plan.rawQuery?.toLowerCase().includes('difference') ||
+          targetCategory === 'change' ||
+          targetCategory === 'workspace'
+        ));
+
+      if (isComparativeDiff) {
+        if (activeFrameIds.length < 2) {
+          reasoningTrace.push('Comparative diff requires at least 2 selected frames.');
+          return {
+            queryPlan: plan,
+            answer: 'At least two observation frames must be selected to compare workspace changes. Please select multiple frames in the timeline above.',
+            evidence: {
+              source: 'workspace_memory',
+              workspaceId,
+              frameIds: activeFrameIds,
+              timestamps: activeFrameIds.map((fId) => frames.find((f) => f.frameId === fId)?.timestamp || ''),
+              objectInstanceIds: [],
+              relationshipIds: [],
+              explanation: 'At least two observations required for comparative analysis.',
+              provisional: false,
+            },
+            requiresVLM: false,
+            certainty: 'insufficient',
+            reasoningTrace,
+            followUpSuggestions: [
+              'Which objects are on the workspace surface?',
+              'Where is the laptop?',
+            ],
+          };
+        }
+
+        // Sort frames chronologically
+        const sortedFrames = [...activeFrameIds].sort((a, b) => {
+          const fa = frames.find((f) => f.frameId === a);
+          const fb = frames.find((f) => f.frameId === b);
+          return (fa?.frameIndex ?? 0) - (fb?.frameIndex ?? 0);
+        });
+
+        const frame1Id = sortedFrames[0];
+        const frame2Id = sortedFrames[sortedFrames.length - 1];
+        const f1Index = frames.find((f) => f.frameId === frame1Id)?.frameIndex ?? 1;
+        const f2Index = frames.find((f) => f.frameId === frame2Id)?.frameIndex ?? 2;
+
+        const obs1 = await MemoryRepository.getObservationsForFrames([frame1Id]);
+        const obs2 = await MemoryRepository.getObservationsForFrames([frame2Id]);
+        const rels1 = await MemoryRepository.getRelationshipsForFrames([frame1Id]);
+        const rels2 = await MemoryRepository.getRelationshipsForFrames([frame2Id]);
+
+        const map1 = new Map(obs1.map((o) => [o.instanceId, o]));
+        const map2 = new Map(obs2.map((o) => [o.instanceId, o]));
+        const instMap = new Map(instances.map((i) => [i.instanceId, i]));
+
+        // 1. Newly appeared objects
+        const appeared: string[] = [];
+        for (const [id, o] of map2) {
+          if (!map1.has(id) && id !== 'workspace_surface_001') {
+            const name = instMap.get(id)?.displayName || id;
+            appeared.push(name);
+          }
+        }
+
+        // 2. Disappeared objects
+        const disappeared: string[] = [];
+        for (const [id, o] of map1) {
+          if (!map2.has(id) && id !== 'workspace_surface_001') {
+            const name = instMap.get(id)?.displayName || id;
+            disappeared.push(name);
+          }
+        }
+
+        // 3. Moved vs Stable objects
+        const movedList: string[] = [];
+        const stableList: string[] = [];
+        for (const [id, o2] of map2) {
+          if (id === 'workspace_surface_001') continue;
+          const o1 = map1.get(id);
+          if (o1 && o1.bbox && o2.bbox) {
+            const c1x = (o1.bbox[0] + o1.bbox[2]) / 2;
+            const c1y = (o1.bbox[1] + o1.bbox[3]) / 2;
+            const c2x = (o2.bbox[0] + o2.bbox[2]) / 2;
+            const c2y = (o2.bbox[1] + o2.bbox[3]) / 2;
+            const dist = Math.hypot(c1x - c2x, c1y - c2y);
+            const name = instMap.get(id)?.displayName || id;
+            if (dist > 35) {
+              movedList.push(`${name} (shifted ~${Math.round(dist)}px)`);
+            } else {
+              stableList.push(name);
+            }
+          }
+        }
+
+        // 4. Relationship changes
+        const relKey = (r: any) => `${r.subjectId}__${r.predicate}__${r.objectId}`;
+        const set1 = new Set(rels1.map(relKey));
+        const set2 = new Set(rels2.map(relKey));
+
+        const newRels: string[] = [];
+        const endedRels: string[] = [];
+
+        for (const r of rels2) {
+          if (!set1.has(relKey(r))) {
+            const subj = instMap.get(r.subjectId)?.displayName || r.subjectId;
+            const obj = instMap.get(r.objectId)?.displayName || r.objectId;
+            newRels.push(`${subj} is now ${r.predicate.replace(/_/g, ' ')} ${obj}`);
+          }
+        }
+        for (const r of rels1) {
+          if (!set2.has(relKey(r))) {
+            const subj = instMap.get(r.subjectId)?.displayName || r.subjectId;
+            const obj = instMap.get(r.objectId)?.displayName || r.objectId;
+            endedRels.push(`${subj} was ${r.predicate.replace(/_/g, ' ')} ${obj}`);
+          }
+        }
+
+        const lines: string[] = [
+          `Comparative analysis between Frame ${f1Index} and Frame ${f2Index}:`,
+        ];
+
+        if (newRels.length > 0 || endedRels.length > 0) {
+          lines.push('• Relationship Changes:');
+          if (newRels.length > 0) lines.push(`  - Formed: ${newRels.join('; ')}`);
+          if (endedRels.length > 0) lines.push(`  - Discontinued: ${endedRels.join('; ')}`);
+        }
+        if (appeared.length > 0) {
+          lines.push(`• Newly Appeared: ${appeared.join(', ')}.`);
+        }
+        if (disappeared.length > 0) {
+          lines.push(`• Disappeared / Removed: ${disappeared.join(', ')}.`);
+        }
+        if (movedList.length > 0) {
+          lines.push(`• Moved Objects: ${movedList.join(', ')}.`);
+        }
+        if (stableList.length > 0) {
+          lines.push(`• Stable Objects: ${stableList.join(', ')} remained stationary.`);
+        }
+
+        if (lines.length === 1) {
+          lines.push('No significant differences or changes detected between the selected observations.');
+        }
+
+        return {
+          queryPlan: plan,
+          answer: lines.join('\n'),
+          evidence: {
+            source: 'workspace_memory',
+            workspaceId,
+            frameIds: [frame1Id, frame2Id],
+            timestamps: [
+              frames.find((f) => f.frameId === frame1Id)?.timestamp || '',
+              frames.find((f) => f.frameId === frame2Id)?.timestamp || '',
+            ],
+            objectInstanceIds: [...map1.keys(), ...map2.keys()].filter((id) => id !== 'workspace_surface_001'),
+            relationshipIds: [...rels1.map((r) => r.relationshipId), ...rels2.map((r) => r.relationshipId)],
+            explanation: `Computed temporal delta between Frame ${f1Index} and Frame ${f2Index} across instances, bounding boxes, and scene graph edges.`,
+            provisional: false,
+          },
+          requiresVLM: false,
+          certainty: 'confirmed',
+          reasoningTrace: [
+            `Identified ${obs1.length} detections in Frame ${f1Index} and ${obs2.length} in Frame ${f2Index}.`,
+            `Analyzed instance persistence, centroid shifts, and predicate transitions.`,
+            ...reasoningTrace,
+          ],
+          followUpSuggestions: [
+            `Which objects are in Frame ${f2Index}?`,
+            `Where was my phone last seen?`,
+          ],
+        };
+      }
 
       const matchingInstances = instances.filter(
         (inst) => (plan.targetObject?.instanceId && inst.instanceId === plan.targetObject.instanceId) ||

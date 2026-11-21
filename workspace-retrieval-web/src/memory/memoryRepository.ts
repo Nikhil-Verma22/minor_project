@@ -103,6 +103,72 @@ export class MemoryRepository {
     return db.get(STORES.FRAMES, frameId);
   }
 
+  static async saveFrame(frame: FrameRecord): Promise<void> {
+    const db = await getDatabase();
+    await db.put(STORES.FRAMES, frame);
+  }
+
+  static async updateFrameStatus(frameId: string, status: 'pending' | 'processing' | 'completed' | 'failed'): Promise<void> {
+    const db = await getDatabase();
+    const frame = await db.get(STORES.FRAMES, frameId);
+    if (frame) {
+      frame.status = status;
+      await db.put(STORES.FRAMES, frame);
+    }
+  }
+
+  static async deleteFrame(frameId: string): Promise<void> {
+    const db = await getDatabase();
+    const tx = db.transaction(
+      [
+        STORES.FRAMES,
+        STORES.OBJECT_OBSERVATIONS,
+        STORES.RELATIONSHIPS,
+        STORES.GRAPH_EVENTS,
+        STORES.VLM_CANDIDATES,
+      ],
+      'readwrite'
+    );
+
+    // Delete frame
+    await tx.objectStore(STORES.FRAMES).delete(frameId);
+
+    // Delete observations for this frame
+    const obsIndex = tx.objectStore(STORES.OBJECT_OBSERVATIONS).index('frameId');
+    let obsCursor = await obsIndex.openCursor(frameId);
+    while (obsCursor) {
+      await obsCursor.delete();
+      obsCursor = await obsCursor.continue();
+    }
+
+    // Delete relationships for this frame
+    const relIndex = tx.objectStore(STORES.RELATIONSHIPS).index('frameId');
+    let relCursor = await relIndex.openCursor(frameId);
+    while (relCursor) {
+      await relCursor.delete();
+      relCursor = await relCursor.continue();
+    }
+
+    // Delete graph events for this frame
+    const evIndex = tx.objectStore(STORES.GRAPH_EVENTS).index('frameId');
+    let evCursor = await evIndex.openCursor(frameId);
+    while (evCursor) {
+      await evCursor.delete();
+      evCursor = await evCursor.continue();
+    }
+
+    // Delete vlm candidates for this frame
+    const vlmIndex = tx.objectStore(STORES.VLM_CANDIDATES).index('frameId');
+    let vlmCursor = await vlmIndex.openCursor(frameId);
+    while (vlmCursor) {
+      await vlmCursor.delete();
+      vlmCursor = await vlmCursor.continue();
+    }
+
+    await tx.done;
+    logMessage('info', 'MemoryRepository', `Successfully deleted frame ${frameId} and its frame-specific observations/relations`);
+  }
+
   static async getInstances(workspaceId: string): Promise<PersistentObjectInstance[]> {
     const db = await getDatabase();
     const index = db.transaction(STORES.OBJECT_INSTANCES).store.index('workspaceId');
@@ -113,6 +179,15 @@ export class MemoryRepository {
     const db = await getDatabase();
     const index = db.transaction(STORES.OBJECT_OBSERVATIONS).store.index('frameId');
     return index.getAll(frameId);
+  }
+
+  static async getObservationsForFrames(frameIds: string[]): Promise<ObjectObservation[]> {
+    const results: ObjectObservation[] = [];
+    for (const fid of frameIds) {
+      const obs = await this.getObservationsForFrame(fid);
+      results.push(...obs);
+    }
+    return results;
   }
 
   static async getObservationsForInstance(instanceId: string): Promise<ObjectObservation[]> {
@@ -126,6 +201,15 @@ export class MemoryRepository {
     const db = await getDatabase();
     const index = db.transaction(STORES.RELATIONSHIPS).store.index('frameId');
     return index.getAll(frameId);
+  }
+
+  static async getRelationshipsForFrames(frameIds: string[]): Promise<RelationshipFact[]> {
+    const results: RelationshipFact[] = [];
+    for (const fid of frameIds) {
+      const rels = await this.getRelationshipsForFrame(fid);
+      results.push(...rels);
+    }
+    return results;
   }
 
   static async getRelationshipsForInstance(instanceId: string): Promise<RelationshipFact[]> {

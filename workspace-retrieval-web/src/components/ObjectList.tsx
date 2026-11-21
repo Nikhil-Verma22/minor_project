@@ -18,6 +18,7 @@ interface ObjectListProps {
   onSelect: (id: string | null) => void;
   colorMap?: Map<string, string>;
   isEntityMatch?: (id1: string | null | undefined, id2: string | null | undefined) => boolean;
+  selectedFrames?: { frameId: string; frameIndex: number }[];
 }
 
 export const ObjectList: React.FC<ObjectListProps> = ({
@@ -28,8 +29,11 @@ export const ObjectList: React.FC<ObjectListProps> = ({
   onSelect,
   colorMap,
   isEntityMatch,
+  selectedFrames = [],
 }) => {
   const [expandedBboxId, setExpandedBboxId] = useState<string | null>(null);
+
+  const uniqueInstancesCount = new Set(objects.map((o) => o.instanceId || o.detectionId)).size;
 
   if (objects.length === 0) {
     return (
@@ -62,7 +66,13 @@ export const ObjectList: React.FC<ObjectListProps> = ({
             <Box size={16} className="ai-panel-title-icon" />
             Detected Objects
           </h3>
-          <span className="badge-counter">{objects.length} objects</span>
+          {selectedFrames.length > 1 ? (
+            <span className="badge-counter text-[11px] font-mono text-cyan-300 bg-cyan-950/80 border border-cyan-800/60">
+              {selectedFrames.length} Frames &bull; {objects.length} Detections &bull; {uniqueInstancesCount} Instances
+            </span>
+          ) : (
+            <span className="badge-counter">{objects.length} objects</span>
+          )}
         </div>
         <span className="text-[11px] text-zinc-500">Click to focus</span>
       </div>

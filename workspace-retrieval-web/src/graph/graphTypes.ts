@@ -28,6 +28,8 @@ export interface SceneGraphEdge {
   confidence: number;
   source: 'reactpp' | 'vlm' | 'manual';
   provisional: boolean;
+  frameId?: string;
+  observedFrames?: string[];
 }
 
 export interface SceneGraph {

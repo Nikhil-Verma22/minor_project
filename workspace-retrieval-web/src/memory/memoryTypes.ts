@@ -28,7 +28,9 @@ export interface FrameRecord {
   imageWidth: number;
   imageHeight: number;
   thumbnailDataUrl?: string;
+  imageDataUrl?: string;
   filename?: string;
+  status?: 'pending' | 'processing' | 'completed' | 'failed';
 }
 
 export interface PersistentObjectInstance {

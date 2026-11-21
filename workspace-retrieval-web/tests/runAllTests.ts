@@ -8,6 +8,7 @@ import { testPostprocessing } from './sgg/postprocess.test';
 import { testIdentityAssociation } from './memory/identityAssociation.test';
 import { testQueryParser } from './nlq/parser.test';
 import { testWorkspaceAssistant } from './workspaceAssistant.test';
+import { testMultiFrame } from './multiFrame.test';
 
 async function run() {
   console.log('==================================================');
@@ -20,9 +21,10 @@ async function run() {
     testIdentityAssociation();
     testQueryParser();
     await testWorkspaceAssistant();
+    await testMultiFrame();
 
     console.log('\n==================================================');
-    console.log('ALL TESTS PASSED SUCCESSFULLY! (5 suites, 0 failures)');
+    console.log('ALL TESTS PASSED SUCCESSFULLY! (6 suites, 0 failures)');
     console.log('==================================================');
     process.exit(0);
   } catch (err: any) {

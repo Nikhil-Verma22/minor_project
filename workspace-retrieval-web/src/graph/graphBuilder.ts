@@ -59,6 +59,7 @@ export class GraphBuilder {
       confidence: rel.confidence,
       source: rel.source,
       provisional: rel.provisional,
+      frameId: rel.frameId || frameId,
     }));
 
     return {

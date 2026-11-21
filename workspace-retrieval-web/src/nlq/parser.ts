@@ -89,9 +89,13 @@ export class QueryParser {
       intent = 'spatial_relationship';
       detectedPredicate = 'on';
     }
-    // C. Object movement / state change: "Did the screwdriver move?", "Which objects changed their locations?"
-    else if (/\b(did|has|have)\b.*\b(move|moved|change position|reappear)\b/i.test(lower) ||
-      /\b(which|what)\s+objects\s+(changed|moved|reappeared)\b/i.test(lower)) {
+    // C. Object movement / state change: "Did the screwdriver move?", "What changed between these observations?"
+    else if (
+      /\b(did|has|have)\b.*\b(move|moved|change position|reappear)\b/i.test(lower) ||
+      /\b(which|what)\s+objects\s+(changed|moved|reappeared)\b/i.test(lower) ||
+      /\bwhat\s+(?:has\s+)?changed(?:\s+between\s+.*)?\b/i.test(lower) ||
+      /\b(compare|differences|changes)\b/i.test(lower)
+    ) {
       intent = 'object_change';
     }
     // D. Standard location queries: "Where is/was X?"
@@ -183,7 +187,11 @@ export class QueryParser {
       targetMention = sittingMatch[1].trim();
     } else if (intent === 'object_change') {
       const match = lower.match(/\b(did|has)\s+(the|my|a|an)?\s*([a-z0-9_\s-]+?)\s+(move|moved)\b/i);
-      if (match) targetMention = match[3].trim();
+      if (match) {
+        targetMention = match[3].trim();
+      } else if (explicitIdMatch) {
+        targetMention = explicitIdMatch[1];
+      }
     } else if (intent === 'object_location' || intent === 'last_seen_location') {
       if (explicitIdMatch) {
         targetMention = explicitIdMatch[1];

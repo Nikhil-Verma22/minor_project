@@ -15,6 +15,7 @@ interface SceneGraphPanelProps {
   onHoverNode: (id: string | null) => void;
   colorMap?: Map<string, string>;
   isEntityMatch?: (id1: string | null | undefined, id2: string | null | undefined) => boolean;
+  selectedFrames?: { frameId: string; frameIndex: number }[];
 }
 
 export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
@@ -23,9 +24,11 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
   onHoverNode,
   colorMap,
   isEntityMatch,
+  selectedFrames = [],
 }) => {
   const [viewMode, setViewMode] = useState<'triplets' | 'graph'>('triplets');
   const [predicateFilter, setPredicateFilter] = useState<string>('all');
+  const [frameFilter, setFrameFilter] = useState<string>('all');
 
   if (!graph || graph.edges.length === 0) {
     return (
@@ -52,8 +55,13 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
   };
 
   const filteredEdges = graph.edges.filter((e) => {
-    if (predicateFilter === 'all') return true;
-    return e.predicate === predicateFilter;
+    if (predicateFilter !== 'all' && e.predicate !== predicateFilter) return false;
+    if (frameFilter !== 'all') {
+      if (e.frameId && e.frameId !== frameFilter) {
+        if (!e.observedFrames || !e.observedFrames.includes(frameFilter)) return false;
+      }
+    }
+    return true;
   });
 
   return (
@@ -69,6 +77,28 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Frame Filter (if multi-frame) */}
+          {selectedFrames.length > 1 && (
+            <select
+              className="domain-select text-xs py-1 px-2"
+              value={frameFilter}
+              onChange={(e) => setFrameFilter(e.target.value)}
+              title="Filter by observation frame"
+            >
+              <option value="all">All Frames ({graph.edges.length})</option>
+              {selectedFrames.map((f) => {
+                const count = graph.edges.filter(
+                  (e) => e.frameId === f.frameId || e.observedFrames?.includes(f.frameId)
+                ).length;
+                return (
+                  <option key={f.frameId} value={f.frameId}>
+                    Frame {f.frameIndex} ({count})
+                  </option>
+                );
+              })}
+            </select>
+          )}
+
           {/* Predicate Filter */}
           <div className="flex items-center gap-1">
             <Filter size={12} className="text-zinc-500" />
@@ -185,6 +215,21 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
 
                 {/* Score & Source Metadata */}
                 <div className="flex items-center gap-2">
+                  {edge.observedFrames && edge.observedFrames.length > 1 ? (
+                    <span
+                      className="badge-counter text-[10px] font-mono text-cyan-400 bg-cyan-950/70 border border-cyan-800/60"
+                      title={`Observed in: ${edge.observedFrames.join(', ')}`}
+                    >
+                      {edge.observedFrames.length} frames
+                    </span>
+                  ) : edge.frameId ? (
+                    <span
+                      className="badge-counter text-[10px] font-mono text-zinc-400"
+                      title={`Observed in frame ${edge.frameId}`}
+                    >
+                      {edge.frameId.replace('seq_001_', '')}
+                    </span>
+                  ) : null}
                   <span className="triplet-score">{(edge.confidence * 100).toFixed(0)}%</span>
                   <span className="badge-counter text-[10px] uppercase font-mono">
                     {edge.source}
