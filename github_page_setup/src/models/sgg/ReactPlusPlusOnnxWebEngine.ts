@@ -17,12 +17,23 @@ export class ReactPlusPlusOnnxWebEngine implements SGGEngine {
   private directSession: ort.InferenceSession | null = null;
   private pendingRequests = new Map<string, { resolve: (val: any) => void; reject: (err: any) => void; timeout: any }>();
   private status: ModelStatus = { loaded: false, provider: 'unavailable', variant: 'yolo12n' };
+  private initPromise: Promise<ModelStatus> | null = null;
   private objClasses: string[] = OPENPSG_OBJ_CLASSES;
   private relClasses: string[] = OPENPSG_REL_CLASSES;
 
   constructor(private variant: 'yolo12n' = 'yolo12n') {}
 
   async initialize(): Promise<ModelStatus> {
+    if (this.status.loaded) return this.status;
+    if (this.initPromise) return this.initPromise;
+
+    this.initPromise = this.runInitialize().finally(() => {
+      this.initPromise = null;
+    });
+    return this.initPromise;
+  }
+
+  private async runInitialize(): Promise<ModelStatus> {
     const startTime = performance.now();
     const config = SGG_VARIANTS[this.variant];
 
@@ -66,8 +77,8 @@ export class ReactPlusPlusOnnxWebEngine implements SGGEngine {
       const res = await this.sendWorkerRequest('INIT', {
         modelPath: resolvedModelPath,
         wasmPaths: resolvedWasmPaths,
-        preferredProvider: 'webgpu',
-      }, 60000);
+        preferredProvider: 'wasm',
+      }, 180000);
 
       this.objClasses = res.objClasses;
       this.relClasses = res.relClasses;
@@ -158,7 +169,10 @@ export class ReactPlusPlusOnnxWebEngine implements SGGEngine {
     options?: { boxConf?: number; relConf?: number }
   ): Promise<SGGInferenceResult> {
     if (!this.status.loaded) {
-      throw new Error('SGG Engine is not initialized yet. Please wait for model loading.');
+      const initStatus = await this.initialize();
+      if (!initStatus.loaded) {
+        throw new Error(initStatus.error || 'SGG Engine failed to initialize.');
+      }
     }
 
     const totalStart = performance.now();

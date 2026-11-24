@@ -10,7 +10,7 @@
  */
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { Layers, Upload } from 'lucide-react';
+import { AlertCircle, Layers, Loader2, Upload, X } from 'lucide-react';
 import { ModelStatus } from '../components/ModelStatus';
 import { WorkspaceObservation } from '../components/WorkspaceObservation';
 import { FrameItem } from '../components/FrameSelector';
@@ -56,6 +56,8 @@ export const App: React.FC = () => {
 
   // Global Drag-and-Drop State
   const [isGlobalDragging, setIsGlobalDragging] = useState(false);
+  const [uploadStatusMsg, setUploadStatusMsg] = useState<string | null>(null);
+  const [uploadErrorMsg, setUploadErrorMsg] = useState<string | null>(null);
   const dragCounterRef = useRef(0);
 
   // Multi-Frame Sequence & Selection State
@@ -200,7 +202,11 @@ export const App: React.FC = () => {
   };
 
   const handleImageSelected = (fileOrBlob: File | Blob, name = 'uploaded_image.jpg') => {
-    addImagesToObservationSequence([fileOrBlob as File]);
+    const normalizedFile =
+      fileOrBlob instanceof File
+        ? fileOrBlob
+        : new File([fileOrBlob], name, { type: fileOrBlob.type || 'image/jpeg' });
+    addImagesToObservationSequence([normalizedFile]);
   };
 
   const handleDomainChange = (domainId: string) => {
@@ -224,6 +230,9 @@ export const App: React.FC = () => {
 
     const res = await orchestratorRef.current.processImage(img, fileOrBlob, filename);
     const frameId = res.graph.frameId;
+    setSggStatus((prev: any) =>
+      prev.loaded ? prev : { loaded: true, provider: res.sggResult.executionProvider, variant: 'yolo12n' }
+    );
 
     const frameData: FrameObservationData = {
       frameId,
@@ -248,54 +257,71 @@ export const App: React.FC = () => {
 
     const newlyAddedFrameIds: string[] = [];
     const uploadBatchId = `batch_${Date.now()}`;
-    const validExtensions = ['.png', '.jpg', '.jpeg', '.webp'];
+    const validExtensions = ['.png', '.jpg', '.jpeg', '.webp', '.bmp', '.gif'];
+    setUploadErrorMsg(null);
+    setUploadStatusMsg(
+      sggStatus.loaded
+        ? `Processing ${fileArray.length} image(s) with REACT++...`
+        : 'Waiting for REACT++ model initialization (45.4 MB) before processing image...'
+    );
 
     sessionLogger.info('upload', 'UPLOAD_BATCH_STARTED', `Starting upload of ${fileArray.length} image(s)`, {
       batchId: uploadBatchId,
       fileCount: fileArray.length,
-      filenames: fileArray.map((f) => f.name),
+      filenames: fileArray.map((f) => f.name || 'uploaded_image.jpg'),
     });
 
     for (let i = 0; i < fileArray.length; i++) {
-      const file = fileArray[i];
-      const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+      const rawFile = fileArray[i];
+      const safeName = rawFile.name || `uploaded_image_${i + 1}.jpg`;
+      const file =
+        rawFile instanceof File && rawFile.name
+          ? rawFile
+          : new File([rawFile], safeName, { type: rawFile.type || 'image/jpeg' });
+
+      const dotIdx = safeName.lastIndexOf('.');
+      const ext = dotIdx >= 0 ? safeName.substring(dotIdx).toLowerCase() : '';
       const isValid = file.type.startsWith('image/') || validExtensions.includes(ext);
 
       if (!isValid) {
-        sessionLogger.warn('upload', 'IMAGE_VALIDATION_FAILED', `Unsupported file type for '${file.name}'`, {
-          filename: file.name,
+        sessionLogger.warn('upload', 'IMAGE_VALIDATION_FAILED', `Unsupported file type for '${safeName}'`, {
+          filename: safeName,
           type: file.type,
           size: file.size,
         });
-        alert(`File '${file.name}' is not a supported image (PNG, JPG, WebP). Skipping.`);
+        setUploadErrorMsg(`File '${safeName}' is not a supported image (PNG, JPG, WebP). Skipping.`);
         continue;
       }
 
-      sessionLogger.info('upload', 'IMAGE_UPLOAD_STARTED', `Ingesting image '${file.name}' (${Math.round(file.size / 1024)} KB)`, {
+      sessionLogger.info('upload', 'IMAGE_UPLOAD_STARTED', `Ingesting image '${safeName}' (${Math.round(file.size / 1024)} KB)`, {
         batchId: uploadBatchId,
-        filename: file.name,
+        filename: safeName,
         type: file.type,
         sizeBytes: file.size,
       });
 
       try {
-        const fId = await processSingleImage(file, file.name);
+        setUploadStatusMsg(`Running REACT++ scene understanding on '${safeName}'...`);
+        const fId = await processSingleImage(file, safeName);
         if (fId) {
           newlyAddedFrameIds.push(fId);
-          sessionLogger.info('upload', 'IMAGE_UPLOAD_COMPLETED', `Successfully stored frame ${fId} for '${file.name}'`, {
+          sessionLogger.info('upload', 'IMAGE_UPLOAD_COMPLETED', `Successfully stored frame ${fId} for '${safeName}'`, {
             frameId: fId,
-            filename: file.name,
+            filename: safeName,
           });
         }
       } catch (err: any) {
-        sessionLogger.error('upload', 'IMAGE_UPLOAD_FAILED', `Failed to process image '${file.name}': ${err.message || String(err)}`, {
-          filename: file.name,
-          error: err.message || String(err),
+        const msg = err.message || String(err);
+        sessionLogger.error('upload', 'IMAGE_UPLOAD_FAILED', `Failed to process image '${safeName}': ${msg}`, {
+          filename: safeName,
+          error: msg,
         });
-        console.error(`Error processing file ${file.name}:`, err);
+        console.error(`Error processing file ${safeName}:`, err);
+        setUploadErrorMsg(`Failed to process '${safeName}': ${msg}`);
       }
     }
 
+    setUploadStatusMsg(null);
     if (newlyAddedFrameIds.length > 0) {
       setSelectedFrameIds(newlyAddedFrameIds);
       sessionLogger.info('frame', 'FRAME_SELECTION_CHANGED', `Active selection updated to ${newlyAddedFrameIds.length} newly added frame(s)`, {
@@ -578,6 +604,28 @@ export const App: React.FC = () => {
       <main className="workspace-grid">
         {/* Left Column (65-68%): Unified Workspace Observation */}
         <section className="workspace-main">
+          {uploadStatusMsg && (
+            <div className="mb-2 px-3 py-2 rounded-lg bg-cyan-950/60 border border-cyan-700/60 text-cyan-200 text-xs flex items-center gap-2">
+              <Loader2 size={14} className="animate-spin text-cyan-400 flex-shrink-0" />
+              <span>{uploadStatusMsg}</span>
+            </div>
+          )}
+          {uploadErrorMsg && (
+            <div className="mb-2 px-3 py-2 rounded-lg bg-rose-950/70 border border-rose-700/60 text-rose-200 text-xs flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <AlertCircle size={14} className="text-rose-400 flex-shrink-0" />
+                <span>{uploadErrorMsg}</span>
+              </div>
+              <button
+                type="button"
+                className="text-rose-300 hover:text-white p-0.5"
+                onClick={() => setUploadErrorMsg(null)}
+                aria-label="Dismiss error"
+              >
+                <X size={13} />
+              </button>
+            </div>
+          )}
           <WorkspaceObservation
             frames={frameItems}
             selectedFrameIds={selectedFrameIds}
@@ -602,7 +650,7 @@ export const App: React.FC = () => {
             onRunSgg={handleRunSgg}
             selectedDomain={selectedDomain}
             onDomainChange={handleDomainChange}
-            isRunning={pipelineStage === 'sgg_running'}
+            isRunning={Boolean(uploadStatusMsg) || pipelineStage === 'sgg_running' || pipelineStage === 'image_loaded'}
             hasPriorObservations={frames.length > 0}
           />
         </section>

@@ -46,12 +46,35 @@ self.onmessage = async (e: MessageEvent) => {
           }
         }
 
-        // Fetch model buffer
-        const response = await fetch(modelPath);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch model from ${modelPath}: HTTP ${response.status}`);
+        // Fetch model buffer (with persistent Cache API caching for fast reload on GitHub Pages)
+        let modelBuffer: ArrayBuffer;
+        try {
+          if (typeof caches !== 'undefined') {
+            const cache = await caches.open('reactpp-onnx-v1');
+            let cached = await cache.match(modelPath);
+            if (!cached) {
+              const fetched = await fetch(modelPath);
+              if (!fetched.ok) {
+                throw new Error(`Failed to fetch model from ${modelPath}: HTTP ${fetched.status}`);
+              }
+              await cache.put(modelPath, fetched.clone());
+              cached = fetched;
+            }
+            modelBuffer = await cached.arrayBuffer();
+          } else {
+            const response = await fetch(modelPath);
+            if (!response.ok) {
+              throw new Error(`Failed to fetch model from ${modelPath}: HTTP ${response.status}`);
+            }
+            modelBuffer = await response.arrayBuffer();
+          }
+        } catch (fetchErr) {
+          const response = await fetch(modelPath);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch model from ${modelPath}: HTTP ${response.status}`);
+          }
+          modelBuffer = await response.arrayBuffer();
         }
-        const modelBuffer = await response.arrayBuffer();
 
         try {
           session = await ort.InferenceSession.create(modelBuffer, {
