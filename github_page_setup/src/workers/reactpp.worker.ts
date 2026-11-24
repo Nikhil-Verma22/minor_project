@@ -1,9 +1,10 @@
 /**
  * REACT++ ONNX Web Worker.
- * Handles ONNX Runtime Web session initialization and forward passes off the main UI thread.
+ * Handles ONNX Runtime Web (WASM) session initialization with streaming Cache API caching
+ * and forward passes off the main UI thread.
  */
 
-import * as ort from 'onnxruntime-web';
+import * as ort from 'onnxruntime-web/wasm';
 import { OPENPSG_OBJ_CLASSES, OPENPSG_REL_CLASSES } from '../config/openpsgVocab';
 
 // Configure local WASM binaries (respecting Vite BASE_URL / GitHub Pages subpath)
@@ -21,74 +22,124 @@ self.onerror = (e) => {
   console.error('[REACT++ Worker] Global error in worker:', e);
 };
 
+async function fetchModelWithProgress(
+  id: string,
+  modelPath: string,
+  expectedBytes = 45362728
+): Promise<ArrayBuffer> {
+  // 1. Check Cache API first for instant reload on subsequent visits
+  if (typeof caches !== 'undefined') {
+    try {
+      const cache = await caches.open('reactpp-onnx-v1');
+      const cached = await cache.match(modelPath);
+      if (cached) {
+        self.postMessage({
+          id,
+          type: 'INIT_PROGRESS',
+          payload: { stage: 'loading_cache', percent: 100, message: 'Loading cached REACT++ model...' },
+        });
+        return await cached.arrayBuffer();
+      }
+    } catch {
+      // Cache API unavailable; fall through to network fetch
+    }
+  }
+
+  // 2. Network fetch with streaming progress
+  const response = await fetch(modelPath);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch model from ${modelPath}: HTTP ${response.status}`);
+  }
+
+  const contentLengthHeader = response.headers.get('content-length');
+  const totalBytes = contentLengthHeader ? parseInt(contentLengthHeader, 10) : expectedBytes;
+
+  let modelBuffer: ArrayBuffer;
+  if (response.body) {
+    const reader = response.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let receivedBytes = 0;
+    let lastEmit = 0;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) {
+        chunks.push(value);
+        receivedBytes += value.byteLength;
+        const now = performance.now();
+        if (now - lastEmit > 250 || receivedBytes >= totalBytes) {
+          lastEmit = now;
+          const pct = Math.min(99, Math.round((receivedBytes / Math.max(1, totalBytes)) * 100));
+          const loadedMB = (receivedBytes / (1024 * 1024)).toFixed(1);
+          const totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
+          self.postMessage({
+            id,
+            type: 'INIT_PROGRESS',
+            payload: {
+              stage: 'downloading',
+              percent: pct,
+              message: `Downloading REACT++ (${loadedMB}/${totalMB} MB • ${pct}%)`,
+            },
+          });
+        }
+      }
+    }
+
+    const merged = new Uint8Array(receivedBytes);
+    let offset = 0;
+    for (const chunk of chunks) {
+      merged.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    modelBuffer = merged.buffer;
+  } else {
+    modelBuffer = await response.arrayBuffer();
+  }
+
+  // 3. Persist downloaded buffer in Cache API for future visits
+  if (typeof caches !== 'undefined') {
+    try {
+      const cache = await caches.open('reactpp-onnx-v1');
+      await cache.put(
+        modelPath,
+        new Response(modelBuffer.slice(0), {
+          headers: { 'Content-Type': 'application/octet-stream' },
+        })
+      );
+    } catch {
+      // Ignore cache quota errors
+    }
+  }
+
+  return modelBuffer;
+}
+
 self.onmessage = async (e: MessageEvent) => {
   const { id, type, payload } = e.data;
 
   try {
     switch (type) {
       case 'INIT': {
-        const { modelPath, wasmPaths, preferredProvider } = payload;
+        const { modelPath, wasmPaths } = payload;
         if (wasmPaths) {
           ort.env.wasm.wasmPaths = wasmPaths;
         }
         const startTime = performance.now();
 
-        // Check WebGPU availability if requested
-        let epList: string[] = ['wasm'];
-        if (preferredProvider === 'webgpu' && 'gpu' in navigator && (navigator as any).gpu) {
-          try {
-            const adapter = await (navigator as any).gpu.requestAdapter();
-            if (adapter) {
-              epList = ['webgpu', 'wasm'];
-            }
-          } catch {
-            epList = ['wasm'];
-          }
-        }
+        const modelBuffer = await fetchModelWithProgress(id, modelPath);
 
-        // Fetch model buffer (with persistent Cache API caching for fast reload on GitHub Pages)
-        let modelBuffer: ArrayBuffer;
-        try {
-          if (typeof caches !== 'undefined') {
-            const cache = await caches.open('reactpp-onnx-v1');
-            let cached = await cache.match(modelPath);
-            if (!cached) {
-              const fetched = await fetch(modelPath);
-              if (!fetched.ok) {
-                throw new Error(`Failed to fetch model from ${modelPath}: HTTP ${fetched.status}`);
-              }
-              await cache.put(modelPath, fetched.clone());
-              cached = fetched;
-            }
-            modelBuffer = await cached.arrayBuffer();
-          } else {
-            const response = await fetch(modelPath);
-            if (!response.ok) {
-              throw new Error(`Failed to fetch model from ${modelPath}: HTTP ${response.status}`);
-            }
-            modelBuffer = await response.arrayBuffer();
-          }
-        } catch (fetchErr) {
-          const response = await fetch(modelPath);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch model from ${modelPath}: HTTP ${response.status}`);
-          }
-          modelBuffer = await response.arrayBuffer();
-        }
+        self.postMessage({
+          id,
+          type: 'INIT_PROGRESS',
+          payload: { stage: 'compiling', percent: 100, message: 'Initializing WASM runtime...' },
+        });
 
-        try {
-          session = await ort.InferenceSession.create(modelBuffer, {
-            executionProviders: epList,
-            graphOptimizationLevel: 'all',
-          });
-          activeProvider = epList.includes('webgpu') ? 'webgpu' : 'wasm';
-        } catch (gpuErr) {
-          console.warn('[REACT++ Worker] Failed to load with preferred provider, falling back to WASM:', gpuErr);
-          session = await ort.InferenceSession.create(modelBuffer, {
-            executionProviders: ['wasm'],
-          });
-          activeProvider = 'wasm';
-        }
+        session = await ort.InferenceSession.create(modelBuffer, {
+          executionProviders: ['wasm'],
+          graphOptimizationLevel: 'all',
+        });
+        activeProvider = 'wasm';
 
         // Parse custom metadata
         try {
@@ -143,7 +194,6 @@ self.onmessage = async (e: MessageEvent) => {
               inferenceMs,
             },
           },
-          // Transfer typed array buffers for zero-copy performance
           [(boxesTensor.data as Float32Array).buffer, (relsTensor.data as Float32Array).buffer]
         );
         break;

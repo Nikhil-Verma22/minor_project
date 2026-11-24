@@ -14,6 +14,7 @@ interface ModelStatusProps {
   vlmStatus: VLMStatus;
   instanceCount: number;
   frameCount: number;
+  stageMessage?: string;
 }
 
 export const ModelStatus: React.FC<ModelStatusProps> = ({
@@ -21,6 +22,7 @@ export const ModelStatus: React.FC<ModelStatusProps> = ({
   vlmStatus,
   instanceCount,
   frameCount,
+  stageMessage,
 }) => {
   const getProviderText = (provider: string) => {
     switch (provider) {
@@ -47,8 +49,14 @@ export const ModelStatus: React.FC<ModelStatusProps> = ({
               <span className="text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 size={11} /> {getProviderText(sggStatus.provider)}
               </span>
+            ) : sggStatus.provider === 'unavailable' && sggStatus.error ? (
+              <span className="text-rose-400" title={sggStatus.error}>Failed</span>
             ) : (
-              <span className="text-zinc-400">Init...</span>
+              <span className="text-cyan-300" title={stageMessage || 'Initializing REACT++...'}>
+                {stageMessage && stageMessage.includes('%')
+                  ? stageMessage.match(/\d+%/)?.[0] || 'Loading...'
+                  : 'Init...'}
+              </span>
             )}
           </span>
         </div>

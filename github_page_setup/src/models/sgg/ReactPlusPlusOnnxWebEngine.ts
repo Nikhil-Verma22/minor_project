@@ -3,7 +3,7 @@
  * Orchestrates REACT++ inference in the browser via Web Worker with automatic Direct-Thread Fallback.
  */
 
-import * as ort from 'onnxruntime-web';
+import * as ort from 'onnxruntime-web/wasm';
 import { SGGEngine, SGGInferenceResult, ModelInfo, ModelStatus } from './SGGEngine';
 import { preprocessReactppImage } from './reactppPreprocess';
 import { postprocessReactppOutput } from './reactppPostprocess';
@@ -18,12 +18,16 @@ export class ReactPlusPlusOnnxWebEngine implements SGGEngine {
   private pendingRequests = new Map<string, { resolve: (val: any) => void; reject: (err: any) => void; timeout: any }>();
   private status: ModelStatus = { loaded: false, provider: 'unavailable', variant: 'yolo12n' };
   private initPromise: Promise<ModelStatus> | null = null;
+  private onProgressCallback?: (progress: { stage: string; percent: number; message: string }) => void;
   private objClasses: string[] = OPENPSG_OBJ_CLASSES;
   private relClasses: string[] = OPENPSG_REL_CLASSES;
 
   constructor(private variant: 'yolo12n' = 'yolo12n') {}
 
-  async initialize(): Promise<ModelStatus> {
+  async initialize(
+    onProgress?: (progress: { stage: string; percent: number; message: string }) => void
+  ): Promise<ModelStatus> {
+    if (onProgress) this.onProgressCallback = onProgress;
     if (this.status.loaded) return this.status;
     if (this.initPromise) return this.initPromise;
 
@@ -45,6 +49,10 @@ export class ReactPlusPlusOnnxWebEngine implements SGGEngine {
 
       this.worker.onmessage = (e: MessageEvent) => {
         const { id, type, payload, error } = e.data;
+        if (type === 'INIT_PROGRESS') {
+          this.onProgressCallback?.(payload);
+          return;
+        }
         const pending = this.pendingRequests.get(id);
         if (!pending) return;
 
@@ -78,7 +86,7 @@ export class ReactPlusPlusOnnxWebEngine implements SGGEngine {
         modelPath: resolvedModelPath,
         wasmPaths: resolvedWasmPaths,
         preferredProvider: 'wasm',
-      }, 180000);
+      }, 240000);
 
       this.objClasses = res.objClasses;
       this.relClasses = res.relClasses;

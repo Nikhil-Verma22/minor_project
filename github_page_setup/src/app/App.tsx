@@ -597,6 +597,7 @@ export const App: React.FC = () => {
           vlmStatus={vlmStatus}
           instanceCount={instances.length}
           frameCount={frames.length}
+          stageMessage={stageMessage}
         />
       </header>
 
@@ -607,7 +608,9 @@ export const App: React.FC = () => {
           {uploadStatusMsg && (
             <div className="mb-2 px-3 py-2 rounded-lg bg-cyan-950/60 border border-cyan-700/60 text-cyan-200 text-xs flex items-center gap-2">
               <Loader2 size={14} className="animate-spin text-cyan-400 flex-shrink-0" />
-              <span>{uploadStatusMsg}</span>
+              <span>
+                {!sggStatus.loaded && stageMessage ? stageMessage : uploadStatusMsg}
+              </span>
             </div>
           )}
           {uploadErrorMsg && (

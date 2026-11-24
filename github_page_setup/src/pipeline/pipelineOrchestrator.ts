@@ -81,7 +81,9 @@ export class PipelineOrchestrator {
     const existingFrames = await MemoryRepository.getFrames(workspaceId);
     this.frameCount = existingFrames.length;
     this.setStage('idle', 'Initializing REACT++...');
-    const status = await this.sggEngine.initialize();
+    const status = await (this.sggEngine as any).initialize((progress: { message: string }) => {
+      this.setStage('idle', progress.message);
+    });
     return status;
   }
 
