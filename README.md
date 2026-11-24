@@ -19,6 +19,7 @@
 | Directory / Deliverable | Purpose |
 | :--- | :--- |
 | [`workspace-retrieval-web/`](workspace-retrieval-web/README.md) | Local-first React + TypeScript + ONNX Runtime Web prototype (REACT++ SGG, IndexedDB v2 memory, multi-frame comparative reasoning, NLQ Workspace Assistant, SmolVLM-500M WebGPU fallback, and Session Audit Logging). |
+| [`github_page_setup/`](github_page_setup/README.md) | GitHub Pages deployment build of the web prototype ([Live Demo](https://nikhil-verma22.github.io/minor_project/)). |
 | [`Object_Retrieval_Product_Demo.mp4`](Object_Retrieval_Product_Demo.mp4) | Synchronized technical product demonstration documentary showcasing the full browser pipeline. |
 | [`experiments/`](experiments/) & [`results/`](results/) | 16-run multi-model × multi-dataset empirical SGG benchmark evaluation scripts, metrics, and reproducibility records. |
 | [`evaluation_sets/`](evaluation_sets/) | Frozen 200-image benchmark subsets (PSG, VG150, IndoorVG, OpenImages V6). |

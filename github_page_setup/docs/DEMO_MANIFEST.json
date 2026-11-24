@@ -1,0 +1,349 @@
+{
+  "project_name": "Object Retrieval in Dynamic Workspace Environments — Browser Demonstrator",
+  "documentation_date": "2026-11-24",
+  "application_version": "1.0.0",
+  "frontend_stack": {
+    "framework": "React 19.3.1",
+    "language": "TypeScript 5.9.3",
+    "bundler": "Vite 8.3.8",
+    "styling": "Tailwind CSS + Custom CSS Variables (App.css dark theme)",
+    "icons": "lucide-react 1.77.0",
+    "fuzzy_search": "fuse.js 7.5.0",
+    "indexeddb_wrapper": "idb 8.0.4"
+  },
+  "runtime_environment": {
+    "execution_target": "Client Browser (100% In-Browser, Zero-Server Backend)",
+    "inference_providers": [
+      {
+        "provider": "WASM SIMD Threaded",
+        "library": "onnxruntime-web 1.31.1",
+        "threads": 4,
+        "binary": "dist/assets/ort-wasm-simd-threaded.jsep-Dt5UNR3U.wasm",
+        "binary_size_bytes": 29520970,
+        "status": "implemented_and_working"
+      },
+      {
+        "provider": "WebGPU (JSEP)",
+        "library": "onnxruntime-web 1.31.1",
+        "acceleration": "Direct GPU Shader Evaluation",
+        "status": "implemented_and_working"
+      },
+      {
+        "provider": "ExecuTorch WebGPU",
+        "library": "ExecuTorch WebGPU Runtime",
+        "target_model": "SmolVLM-500M-Instruct",
+        "status": "implemented_and_working"
+      }
+    ],
+    "storage_engine": "Browser IndexedDB (workspace_retrieval_db v1)"
+  },
+  "models": [
+    {
+      "model_name": "REACT++ YOLOv12n (PSG Checkpoint)",
+      "repository": "https://github.com/maelic/REACTPlusPlus",
+      "checkpoint": "maelic/REACTPlusPlus_PSG",
+      "revision": "cvpr2025_release",
+      "format": "ONNX",
+      "size_bytes": 45362728,
+      "size_human": "45.4 MB",
+      "precision": "FP32",
+      "runtime": "ONNX Runtime Web 1.31.1 via Web Worker (reactpp.worker.ts)",
+      "provider": "WASM SIMD Threaded / WebGPU",
+      "input_format": {
+        "dimensions": [1, 3, 640, 640],
+        "data_type": "float32",
+        "color_order": "RGB",
+        "normalization": "pixel / 255.0",
+        "padding": "Aspect-ratio preserving letterbox with RGB(114, 114, 114)"
+      },
+      "output_format": {
+        "boxes": "[N, 6] -> [x1, y1, x2, y2, class_idx_1based, score]",
+        "rels": "[M, 5] -> [subj_idx, obj_idx, rel_class_0based, triplet_score, rel_score]"
+      },
+      "purpose": "Primary Scene Graph Generation (SGG): simultaneous object detection and spatial relationship prediction.",
+      "loading_behaviour": "Eager on application startup / Standby in Web Worker",
+      "memory_use": "Measured ~140 MB WebAssembly Heap (runtime)",
+      "license": "Apache-2.0"
+    },
+    {
+      "model_name": "SmolVLM-500M-Instruct",
+      "repository": "https://huggingface.co/HuggingFaceTB/SmolVLM-500M-Instruct",
+      "checkpoint": "executorch-community/SmolVLM-500M-Instruct-ExecuTorch-WebGPU",
+      "revision": "main",
+      "format": "ExecuTorch PTE / WebGPU",
+      "size_bytes": 520192000,
+      "size_human": "496.1 MB",
+      "precision": "FP16 / INT4 quantized weights",
+      "runtime": "ExecuTorch WebGPU via Web Worker (smolvlm.worker.ts)",
+      "provider": "WebGPU with CPU WASM fallback",
+      "input_format": {
+        "image": "RGBA Canvas Blob scaled to max 512x512",
+        "prompt": "Structured JSON zero-coordinate prompt template",
+        "tokenizer": "smolvlm_tokenizer.json (2.1 MB)"
+      },
+      "output_format": {
+        "structure": "JSON: { found, entity_label, description, confidence, candidate_relations }",
+        "coordinate_generation": "STRICTLY FALSE (targetBbox = null safeguard)"
+      },
+      "purpose": "Conditional Visual Language Model (VLM) fallback for out-of-vocabulary objects, attributes (color/material/state), and explicit user /visual queries.",
+      "loading_behaviour": "Lazy-loaded on first fallback invocation with persistent Cache API ('smolvlm-execu-v1')",
+      "memory_use": "Estimated ~680 MB GPU VRAM / Shared Buffer",
+      "license": "Apache-2.0"
+    }
+  ],
+  "features": [
+    {
+      "feature": "REACT++ SGG Inference",
+      "description": "Single-pass forward inference generating 2D object bounding boxes and directed relationship triplets.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/models/sgg/ReactPlusPlusOnnxWebEngine.ts", "src/workers/reactpp.worker.ts"],
+      "dependencies": ["onnxruntime-web"]
+    },
+    {
+      "feature": "Image Pre/Postprocessing & Letterboxing",
+      "description": "Canvas letterboxing with aspect-ratio preservation and inverse coordinate un-padding back to native observation pixels.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/models/sgg/reactppPreprocess.ts", "src/models/sgg/reactppPostprocess.ts"],
+      "dependencies": []
+    },
+    {
+      "feature": "Vocabulary & Predicate Adapter",
+      "description": "Maps 133 OpenPSG classes into 39 workspace classes and 57 OpenPSG predicates into 6 canonical predicates with unmapped tagging.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/models/sgg/vocabularyAdapter.ts"],
+      "dependencies": []
+    },
+    {
+      "feature": "Multi-Frame Observation Management",
+      "description": "Supports sequential image appending, batch image uploads, per-frame deletion, and selective frame activation.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/FrameSelector.tsx", "src/app/App.tsx"],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "feature": "Responsive Multi-Frame Grid Canvas",
+      "description": "Renders 1-col (single frame), 2-col (side-by-side comparative), or 3+-col grid with coordinate-isolated SVG viewports.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/WorkspaceObservation.tsx", "src/app/App.css"],
+      "dependencies": []
+    },
+    {
+      "feature": "Hierarchical Bounding Box Vector Overlay",
+      "description": "Visual hierarchy with 3 attention levels (Level 1 focus, Level 2 connected neighbors, Level 3 dimmed background) across 4 viewing modes.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/BoundingBoxOverlay.tsx"],
+      "dependencies": []
+    },
+    {
+      "feature": "High-Density Object List",
+      "description": "Dense object cards displaying color chips, confidence score, instance ID tag, category tag, and expandable BBox accordion.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/ObjectList.tsx"],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "feature": "Scene Graph Triplet Inspector",
+      "description": "Lists subject-predicate-object triplets with confidence badges, source attribution ('sgg' vs 'vlm'), and multi-frame attribution.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/SceneGraphPanel.tsx"],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "feature": "IndexedDB Persistent Memory",
+      "description": "10 relational object stores persisting workspaces, sequences, frames, object instances, observations, relationships, events, and queries.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/memory/db.ts", "src/memory/dbSchema.ts", "src/memory/memoryRepository.ts"],
+      "dependencies": ["idb"]
+    },
+    {
+      "feature": "Identity Association & Tracking Engine",
+      "description": "IoU (>0.30) and normalized center-distance (<0.45) tracking linking detections across frames into persistent physical instances.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/memory/identityAssociation.ts"],
+      "dependencies": []
+    },
+    {
+      "feature": "Temporal Change & Comparative Diff Engine",
+      "description": "Detects displaced objects (>0.08 normalized shift), newly appeared objects, and disappeared objects across selected observations.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/nlq/queryExecutor.ts"],
+      "dependencies": []
+    },
+    {
+      "feature": "Deterministic NLQ Parser & Grammar",
+      "description": "Extracts query intent, target mention, reference mention, attributes, time scope, and disambiguation criteria.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/nlq/parser.ts", "src/nlq/entityResolver.ts"],
+      "dependencies": ["fuse.js"]
+    },
+    {
+      "feature": "NLQ Query Executor & Spatial Reasoning",
+      "description": "Executes 8 distinct query intents against active scene graphs, historical memory, and comparative frame selections.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/nlq/queryExecutor.ts"],
+      "dependencies": []
+    },
+    {
+      "feature": "Evidence Attribution & Provenance Badges",
+      "description": "Displays verified provenance ('Confirmed stored information' vs 'Provisional inference'), frame provenance, and follow-up chips.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/WorkspaceAssistant.tsx", "src/components/AnswerEvidence.tsx"],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "feature": "Interactive Disambiguation Cards",
+      "description": "Generates interactive selection cards when multiple candidates match a query, allowing single-click disambiguation.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/WorkspaceAssistant.tsx"],
+      "dependencies": []
+    },
+    {
+      "feature": "Provenance Frame Navigation ('View Frame')",
+      "description": "Clicking 'View Frame' in assistant messages switches to the source frame, locks the object selection, and scrolls into view.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/WorkspaceAssistant.tsx", "src/app/App.tsx"],
+      "dependencies": []
+    },
+    {
+      "feature": "Conditional SmolVLM Fallback Router",
+      "description": "Routes unknown objects, visual attributes (color/material/state), or explicit '/visual' queries to SmolVLM-500M.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/models/vlm/SmolVLMExecuTorchEngine.ts", "src/workers/smolvlm.worker.ts"],
+      "dependencies": []
+    },
+    {
+      "feature": "VLM Zero-Coordinate Safeguard",
+      "description": "Decouples VLM from spatial coordinates (targetBbox = null), preventing hallucinated coordinates from corrupting SGG vectors.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/nlq/queryExecutor.ts", "src/models/vlm/vlmPrompts.ts"],
+      "dependencies": []
+    },
+    {
+      "feature": "Diagnostics & Hardware Telemetry Panel",
+      "description": "Live bottom drawer reporting SGG latency, VLM status, execution provider, object memory counts, and system capabilities.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["src/components/DiagnosticsPanel.tsx"],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "feature": "Automated Verification Test Suite",
+      "description": "26 automated unit and acceptance tests covering vocabulary, postprocessing, storage, tracking, parsing, and multi-frame reasoning.",
+      "implementation_status": "implemented_and_working",
+      "main_source_files": ["tests/runAllTests.ts"],
+      "dependencies": ["tsx"]
+    },
+    {
+      "feature": "JSON Memory Export / Import",
+      "description": "Serialization and deserialization of complete IndexedDB workspace memory graphs.",
+      "implementation_status": "partially_implemented",
+      "main_source_files": ["src/memory/memoryRepository.ts"],
+      "dependencies": []
+    },
+    {
+      "feature": "Incremental SGG Spatial Diff",
+      "description": "Re-inferring only changed bounding box patches rather than full 640x640 frame re-inference.",
+      "implementation_status": "planned_or_not_implemented",
+      "main_source_files": [],
+      "dependencies": []
+    },
+    {
+      "feature": "Dedicated 39-Class Fine-Tuned Model",
+      "description": "Fine-tuned REACT++ head trained on custom indoor workspace datasets.",
+      "implementation_status": "planned_or_not_implemented",
+      "main_source_files": [],
+      "dependencies": []
+    },
+    {
+      "feature": "3D Oriented Bounding Box Point Cloud Lifting",
+      "description": "RGB-D camera stream lifting 2D pixel boxes into 3D metric bounding boxes.",
+      "implementation_status": "planned_or_not_implemented",
+      "main_source_files": [],
+      "dependencies": []
+    }
+  ],
+  "storage": {
+    "engine": "IndexedDB via idb 8.0.4",
+    "database_name": "workspace_retrieval_db",
+    "schema_version": 1,
+    "object_stores": [
+      { "name": "workspaces", "key_path": "workspaceId", "indexes": ["updatedAt"] },
+      { "name": "sequences", "key_path": "sequenceId", "indexes": ["workspaceId", "startedAt"] },
+      { "name": "frames", "key_path": "frameId", "indexes": ["sequenceId", "timestamp"] },
+      { "name": "objectInstances", "key_path": "instanceId", "indexes": ["workspaceId", "categoryId", "lastSeenTimestamp", "status"] },
+      { "name": "objectObservations", "key_path": "annotationId", "indexes": ["frameId", "instanceId", "timestamp"] },
+      { "name": "relationships", "key_path": "relationId", "indexes": ["frameId", "subjectId", "objectId", "canonicalPredicate"] },
+      { "name": "graphEvents", "key_path": "eventId", "indexes": ["workspaceId", "instanceId", "eventType", "timestamp"] },
+      { "name": "vlmCandidates", "key_path": "candidateId", "indexes": ["frameId", "timestamp"] },
+      { "name": "queryHistory", "key_path": "queryId", "indexes": ["workspaceId", "timestamp", "intent"] },
+      { "name": "appSettings", "key_path": "key", "indexes": [] }
+    ]
+  },
+  "major_modules": [
+    { "name": "App Shell & State Coordinator", "path": "src/app/App.tsx", "role": "Top-level layout, multi-frame state orchestration, and UI dispatch." },
+    { "name": "Workspace Observation Canvas", "path": "src/components/WorkspaceObservation.tsx", "role": "Observation image rendering, multi-frame grid, dropzone, and overlay container." },
+    { "name": "Frame Selector", "path": "src/components/FrameSelector.tsx", "role": "Thumbnail strip, frame selection toggles, and multi-frame controls." },
+    { "name": "Hierarchical Bounding Box Overlay", "path": "src/components/BoundingBoxOverlay.tsx", "role": "SVG vector overlays, Level 1/2/3 visual hierarchies, relation vectors, and predicate pills." },
+    { "name": "High-Density Object List", "path": "src/components/ObjectList.tsx", "role": "Compact detection cards with identity badges and expandable coordinate views." },
+    { "name": "Scene Graph Triplet Panel", "path": "src/components/SceneGraphPanel.tsx", "role": "Visual list of directed canonical relationships with confidence and provenance." },
+    { "name": "Workspace Assistant NLQ Interface", "path": "src/components/WorkspaceAssistant.tsx", "role": "Query input composer, evidence answer rendering, and disambiguation cards." },
+    { "name": "Diagnostics Drawer", "path": "src/components/DiagnosticsPanel.tsx", "role": "Telemetry display for inference latencies, provider status, and memory stats." },
+    { "name": "Pipeline Orchestrator", "path": "src/pipeline/pipelineOrchestrator.ts", "role": "End-to-end controller sequencing preprocess, SGG, association, persistence, and queries." },
+    { "name": "REACT++ ONNX Web Engine", "path": "src/models/sgg/ReactPlusPlusOnnxWebEngine.ts", "role": "Web Worker wrapper managing ONNX Runtime inference sessions." },
+    { "name": "SmolVLM ExecuTorch Engine", "path": "src/models/vlm/SmolVLMExecuTorchEngine.ts", "role": "Web Worker wrapper managing ExecuTorch WebGPU visual reasoning sessions." },
+    { "name": "Vocabulary Adapter", "path": "src/models/sgg/vocabularyAdapter.ts", "role": "Deterministic mapping from OpenPSG categories/predicates to workspace ontology." },
+    { "name": "Identity Association Engine", "path": "src/memory/identityAssociation.ts", "role": "Multi-frame IoU and center distance physical object tracker." },
+    { "name": "Memory Repository", "path": "src/memory/memoryRepository.ts", "role": "IndexedDB CRUD transactions and query retrieval operations." },
+    { "name": "Deterministic NLQ Parser", "path": "src/nlq/parser.ts", "role": "Regex and grammar-based query intent and slot extractor." },
+    { "name": "Fuzzy Entity Resolver", "path": "src/nlq/entityResolver.ts", "role": "Fuse.js-backed instance and category matching engine." },
+    { "name": "Query Executor", "path": "src/nlq/queryExecutor.ts", "role": "Deterministic spatial and temporal graph reasoning engine." }
+  ],
+  "known_limitations": [
+    {
+      "issue": "OpenPSG Vocabulary Coverage Gap",
+      "severity": "Medium",
+      "impact": "Office objects outside OpenPSG (e.g. power adapters, staplers, badges) appear under surrogate classes or as unmapped entities (det_X_Y)."
+    },
+    {
+      "issue": "Monocular 2D Coordinates",
+      "severity": "Medium",
+      "impact": "All spatial bounding boxes and displacement metrics are 2D pixel-based rather than true 3D metric coordinates."
+    },
+    {
+      "issue": "Full-Frame Re-Inference Compute",
+      "severity": "Low",
+      "impact": "Every added observation runs full 640x640 neural inference rather than incremental change-detection patches."
+    },
+    {
+      "issue": "WebGPU Hardware Gating",
+      "severity": "Low",
+      "impact": "Devices without WebGPU support fall back to WASM SIMD, where VLM reasoning incurs 4-5 second execution latency."
+    }
+  ],
+  "planned_features": [
+    {
+      "name": "Custom 39-Class Workspace Fine-Tuning",
+      "priority": "P0 (Near-Term)",
+      "target": "Eliminate unmapped labels and achieve 100% native coverage for office desk objects."
+    },
+    {
+      "name": "Live Webcam Stream Keyframe Sampling",
+      "priority": "P1 (Near-Term)",
+      "target": "Automatically sample 1 FPS keyframes from webcam stream into the multi-frame sequence."
+    },
+    {
+      "name": "Incremental Spatial Diff Inference",
+      "priority": "P2 (Mid-Term)",
+      "target": "Perform neural SGG forward passes only on bounding box patches exhibiting pixel motion."
+    },
+    {
+      "name": "MobileNetV4 Visual Vector Embedding Store",
+      "priority": "P2 (Mid-Term)",
+      "target": "Index object appearance crops using client-side vector cosine search in IndexedDB."
+    },
+    {
+      "name": "3D Oriented Bounding Box Point Cloud Lifting",
+      "priority": "P3 (Long-Term)",
+      "target": "Pair RGB observations with RGB-D depth sensors or WebXR LiDAR point clouds."
+    }
+  ]
+}
