@@ -43,8 +43,9 @@ flowchart TD
 - **`VLMEngine` Interface:**
   - `SmolVLMExecuTorchEngine`: Lazy-loaded WebGPU ExecuTorch worker with OPFS caching and structured schema enforcement.
 
-### Memory & Graph Reasoning Layer (`src/memory/`, `src/graph/`, `src/nlq/`)
-- **`IndexedDB` Storage via `idb`:** 10 structured stores managing sequences, frames, object instances, observations, relationships, and graph change events.
-- **`IdentityAssociation`:** Re-identifies objects across frames using class consistency, bounding-box spatial stability, and temporal recency within a camera sequence.
-- **`NLQ Engine`:** Deterministic slot-filling parser + `Fuse.js` fuzzy matcher. Resolves current, last-seen, and historical queries without calling large LLMs.
-- **`GraphReasoner`:** Traverses temporal scene graph facts to answer object retrieval queries with exact frame provenance.
+### Memory, Graph Reasoning & Logging Layer (`src/memory/`, `src/graph/`, `src/nlq/`, `src/logging/`, `src/utils/`)
+- **`IndexedDB` Storage via `idb` (`workspace_retrieval_db` v2):** 11 object stores managing workspaces, sequences, frames, object instances, observations, relationships, graph change events, provisional VLM candidates, query history, app settings, and persistent session audit logs (`sessionLogs`).
+- **`IdentityAssociation` + `VisualDescriptor`:** Re-identifies physical objects across frames via global 1-to-1 matching combining category/synonym compatibility, bounding-box IoU, normalized displacement, and scale-invariant RGB histogram/aspect-ratio similarity.
+- **`NLQ Engine`:** Deterministic slot-filling parser + `Fuse.js` fuzzy matcher (`current`, `history`, `all`, `/sgg`, and `/visual` scopes) with interactive disambiguation and clickable `View Frame` provenance navigation.
+- **`GraphReasoner`:** Traverses temporal scene graph facts across selected frames to answer object retrieval and comparative diff queries with exact frame provenance.
+- **`SessionLogger` & `LogRepository`:** Non-blocking buffered audit trail tracking uploads, inferences, frame selections, deletions, queries, VLM calls, and errors, with JSON/CSV export inside `DiagnosticsPanel`.

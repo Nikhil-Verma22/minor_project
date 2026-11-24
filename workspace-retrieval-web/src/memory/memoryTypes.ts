@@ -3,6 +3,7 @@
  */
 
 import { CanonicalPredicate } from '../config/predicates';
+import { VisualCropDescriptor } from '../utils/visualDescriptor';
 
 export interface WorkspaceRecord {
   workspaceId: string;
@@ -47,6 +48,8 @@ export interface PersistentObjectInstance {
   firstSeenFrameId: string;
   lastSeenFrameId: string;
   status: 'active' | 'moved' | 'missing' | 'uncertain';
+  latestVisualDescriptor?: VisualCropDescriptor;
+  latestBbox?: [number, number, number, number];
 }
 
 export interface ObjectObservation {
@@ -63,6 +66,9 @@ export interface ObjectObservation {
   confidence?: number;
   source: 'reactpp' | 'manual' | 'vlm';
   timestamp: string;
+  visualDescriptor?: VisualCropDescriptor;
+  associationConfidence?: number;
+  associationReason?: string;
 }
 
 export interface RelationshipFact {

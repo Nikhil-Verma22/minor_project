@@ -1,16 +1,19 @@
 /**
  * FrameSelector Component.
- * Dedicated timeline / filmstrip for multi-frame workspace observation sessions.
- * Supports multi-selection, frame status indicators, thumbnail previews,
- * and batch / sequential frame additions.
+ * Simplified, intuitive timeline filmstrip for multi-frame workspace observation sessions.
+ *
+ * Requirements:
+ * - One click or tap anywhere on a frame card toggles its selection (select/deselect).
+ * - Exactly one primary upload control: "+ Upload Images" (supports 1 or many images).
+ * - Safe individual frame deletion with compact confirmation dialog.
+ * - Selection changes never trigger SGG inference.
  */
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Film,
   CheckSquare,
   Square,
-  Plus,
   Upload,
   Trash2,
   Clock,
@@ -40,9 +43,7 @@ export interface FrameSelectorProps {
   onToggleFrameSelect: (frameId: string) => void;
   onSelectAll: () => void;
   onClearSelection: () => void;
-  onSelectOnlyFrame: (frameId: string) => void;
-  onAddNextFrame: () => void;
-  onBatchUpload: (files: FileList | File[]) => void;
+  onUploadImages: (files: FileList | File[]) => void;
   onDeleteFrame?: (frameId: string) => void;
   isProcessing?: boolean;
 }
@@ -53,17 +54,16 @@ export const FrameSelector: React.FC<FrameSelectorProps> = ({
   onToggleFrameSelect,
   onSelectAll,
   onClearSelection,
-  onSelectOnlyFrame,
-  onAddNextFrame,
-  onBatchUpload,
+  onUploadImages,
   onDeleteFrame,
   isProcessing = false,
 }) => {
-  const batchInputRef = useRef<HTMLInputElement>(null);
+  const uploadInputRef = useRef<HTMLInputElement>(null);
+  const [frameToDelete, setFrameToDelete] = useState<FrameItem | null>(null);
 
-  const handleBatchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      onBatchUpload(e.target.files);
+      onUploadImages(e.target.files);
       e.target.value = '';
     }
   };
@@ -72,17 +72,60 @@ export const FrameSelector: React.FC<FrameSelectorProps> = ({
   const totalCount = frames.length;
 
   return (
-    <div className="frame-selector-container">
-      {/* Hidden Batch File Input */}
+    <div className="frame-selector-container relative">
+      {/* Hidden Unified Multi-File Input */}
       <input
-        ref={batchInputRef}
+        ref={uploadInputRef}
         type="file"
         multiple
-        accept="image/*"
+        accept="image/png,image/jpeg,image/webp"
         className="hidden"
         style={{ display: 'none' }}
-        onChange={handleBatchChange}
+        onChange={handleUploadChange}
       />
+
+      {/* Confirmation Modal for Frame Deletion */}
+      {frameToDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-fadeIn"
+          onClick={() => setFrameToDelete(null)}
+        >
+          <div
+            className="bg-zinc-900 border border-zinc-700 p-5 rounded-lg max-w-sm w-full shadow-2xl space-y-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2 text-rose-400 font-semibold text-sm">
+              <Trash2 size={16} />
+              <h4>Delete Frame {frameToDelete.frameIndex}?</h4>
+            </div>
+            <p className="text-xs text-zinc-300 leading-relaxed">
+              This will remove the selected observation, its image, and its frame-specific annotations.
+              Other observations in this workspace will remain intact.
+            </p>
+            <div className="flex justify-end gap-2 pt-2 border-t border-zinc-800">
+              <button
+                type="button"
+                className="px-3 py-1.5 text-xs text-zinc-300 hover:text-white rounded bg-zinc-800 hover:bg-zinc-700 transition"
+                onClick={() => setFrameToDelete(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="px-3 py-1.5 text-xs text-white bg-rose-600 hover:bg-rose-500 rounded font-medium transition flex items-center gap-1.5"
+                onClick={() => {
+                  const id = frameToDelete.frameId;
+                  setFrameToDelete(null);
+                  onDeleteFrame?.(id);
+                }}
+              >
+                <Trash2 size={12} />
+                Delete Frame
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Header Bar */}
       <div className="frame-selector-header">
@@ -119,26 +162,16 @@ export const FrameSelector: React.FC<FrameSelectorProps> = ({
             </>
           )}
 
+          {/* Unified Primary Upload Control */}
           <button
             type="button"
             className="btn-add-frame-primary"
-            onClick={onAddNextFrame}
+            onClick={() => uploadInputRef.current?.click()}
             disabled={isProcessing}
-            title="Append next workspace photograph to observation sequence"
-          >
-            <Plus size={13} />
-            <span>Add Next Frame</span>
-          </button>
-
-          <button
-            type="button"
-            className="btn-batch-upload"
-            onClick={() => batchInputRef.current?.click()}
-            disabled={isProcessing}
-            title="Select multiple workspace photographs to process sequentially"
+            title="Upload single or multiple images into observation sequence"
           >
             <Upload size={13} />
-            <span>Batch Upload</span>
+            <span>+ Upload Images</span>
           </button>
         </div>
       </div>
@@ -147,7 +180,7 @@ export const FrameSelector: React.FC<FrameSelectorProps> = ({
       {totalCount === 0 ? (
         <div className="filmstrip-empty">
           <span className="text-xs text-zinc-500 italic">
-            No frames in sequence. Click <strong>+ Add Next Frame</strong> or <strong>Batch Upload</strong> to begin.
+            No frames in sequence. Click <strong>+ Upload Images</strong> or drag &amp; drop photos anywhere to begin.
           </span>
         </div>
       ) : (
@@ -159,18 +192,11 @@ export const FrameSelector: React.FC<FrameSelectorProps> = ({
             return (
               <div
                 key={frame.frameId}
-                className={`frame-card ${isSelected ? 'selected' : ''}`}
-                onClick={(e) => {
-                  // If clicking directly on the card, toggle or select only
-                  if (e.shiftKey || e.metaKey || e.ctrlKey) {
-                    onToggleFrameSelect(frame.frameId);
-                  } else {
-                    onSelectOnlyFrame(frame.frameId);
-                  }
-                }}
-                title={`Frame ${frame.frameIndex} (${frame.frameId})\nClick to view single frame; click checkbox to multi-select`}
+                className={`frame-card group ${isSelected ? 'selected' : ''}`}
+                onClick={() => onToggleFrameSelect(frame.frameId)}
+                title={`Frame ${frame.frameIndex} (${frame.frameId})\nClick to ${isSelected ? 'deselect' : 'select'}`}
               >
-                {/* Thumbnail Header with Checkbox and Delete */}
+                {/* Thumbnail Header with Selection Indicator and Delete Button */}
                 <div className="frame-card-thumb-container">
                   {frame.thumbnailDataUrl || frame.imageSrc ? (
                     <img
@@ -184,45 +210,40 @@ export const FrameSelector: React.FC<FrameSelectorProps> = ({
                     </div>
                   )}
 
-                  {/* Multi-select Checkbox */}
-                  <button
-                    type="button"
-                    className="frame-card-checkbox"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleFrameSelect(frame.frameId);
-                    }}
-                    title={isSelected ? 'Deselect frame' : 'Select frame'}
+                  {/* Top-Left Selection Indicator Pill */}
+                  <div
+                    className={`frame-card-checkbox ${isSelected ? 'selected' : ''}`}
+                    title={isSelected ? 'Selected (click card to deselect)' : 'Unselected (click card to select)'}
                   >
                     {isSelected ? (
                       <CheckSquare size={15} className="text-cyan-400" />
                     ) : (
                       <Square size={15} className="text-zinc-500 hover:text-zinc-300" />
                     )}
-                  </button>
+                  </div>
 
-                  {/* Delete Button (if provided) */}
+                  {/* Top-Right Delete Action Button */}
                   {onDeleteFrame && (
                     <button
                       type="button"
                       className="frame-card-delete-btn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        onDeleteFrame(frame.frameId);
+                        setFrameToDelete(frame);
                       }}
-                      title="Remove this frame from observation sequence"
+                      title="Permanently delete this observation frame"
                     >
                       <Trash2 size={12} />
                     </button>
                   )}
 
-                  {/* Frame Index Overlay Badge */}
+                  {/* Frame Index Badge */}
                   <span className="frame-index-badge">
                     Frame {frame.frameIndex}
                   </span>
                 </div>
 
-                {/* Card Meta */}
+                {/* Card Meta Info */}
                 <div className="frame-card-info">
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="flex items-center gap-1 text-zinc-400">

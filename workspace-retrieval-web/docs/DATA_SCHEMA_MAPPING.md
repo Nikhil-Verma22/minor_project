@@ -84,15 +84,16 @@ The pretrained REACT++ model was trained on the OpenPSG dataset (133 classes). T
 
 ## 4. IndexedDB Memory Stores Specification
 
-Database Name: `workspace_retrieval_db` (Version 1)
+Database Name: `workspace_retrieval_db` (Version 2)
 
 1. `workspaces`: `[key: workspaceId]`
 2. `sequences`: `[key: sequenceId, index: workspaceId]`
 3. `frames`: `[key: frameId, index: sequenceId, timestamp]`
 4. `objectInstances`: `[key: instanceId, index: workspaceId, categoryId]`
 5. `objectObservations`: `[key: annotationId, index: frameId, instanceId]`
-6. `relationships`: `[key: relationshipId, index: frameId, subjectId, objectId, canonicalPredicate]`
+6. `relationships`: `[key: relationId, index: frameId, subjectId, objectId, canonicalPredicate]`
 7. `graphEvents`: `[key: eventId, index: workspaceId, instanceId, timestamp]`
-8. `vlmCandidates`: `[key: candidateId, index: frameId, status]`
-9. `queryHistory`: `[key: queryId, index: timestamp]`
-10. `appSettings`: `[key: settingKey]`
+8. `vlmCandidates`: `[key: candidateId, index: frameId, timestamp]`
+9. `queryHistory`: `[key: queryId, index: workspaceId, timestamp, intent]`
+10. `appSettings`: `[key: key]`
+11. `sessionLogs`: `[key: logId, index: sessionId, category, timestamp]`

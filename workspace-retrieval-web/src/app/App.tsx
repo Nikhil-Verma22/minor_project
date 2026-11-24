@@ -1,18 +1,18 @@
 /**
  * Main Application Component.
  * Complete Multi-Frame Workspace Observation & Scene Intelligence:
- * - Timeline / Filmstrip frame selector with single & batch uploading
- * - Multi-frame side-by-side comparative observation viewer
- * - Strict per-frame coordinate and bounding-box isolation
- * - Union 2D Scene Graph with Frame Filtering and source badges
- * - Multi-frame object grouping and persistent instance tracking
- * - Evidence-based Workspace Assistant reasoning over selected frame context
+ * - Global drag-and-drop across the entire application viewport
+ * - Unified "+ Upload Images" control handling single and batch uploads
+ * - Simplified one-click timeline frame selection
+ * - Safe individual frame deletion with confirmation dialog
+ * - Persistent session logging & audit system
+ * - Strict selected-frame data isolation (preventing stale object/graph leaks)
  */
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { Layers } from 'lucide-react';
+import { Layers, Upload } from 'lucide-react';
 import { ModelStatus } from '../components/ModelStatus';
-import { WorkspaceObservation, FrameObservationData } from '../components/WorkspaceObservation';
+import { WorkspaceObservation } from '../components/WorkspaceObservation';
 import { FrameItem } from '../components/FrameSelector';
 import { SceneGraphPanel } from '../components/SceneGraphPanel';
 import { ObjectList } from '../components/ObjectList';
@@ -22,16 +22,16 @@ import { DiagnosticsPanel } from '../components/DiagnosticsPanel';
 import { PipelineOrchestrator } from '../pipeline/pipelineOrchestrator';
 import { MemoryRepository } from '../memory/memoryRepository';
 import { SGGInferenceResult, SGGObjectDetection, SGGRelation } from '../models/sgg/SGGEngine';
-import { SceneGraph } from '../graph/graphTypes';
 import { NLQResult, ConversationContext, QueryScope } from '../nlq/queryTypes';
 import { FrameRecord, PersistentObjectInstance } from '../memory/memoryTypes';
 import { PipelineStage } from '../pipeline/pipelineTypes';
 import { buildEntityColorMap } from '../utils/colors';
 import { VocabularyAdapter } from '../models/sgg/vocabularyAdapter';
+import { getSelectedFrameData, FrameObservationData } from '../utils/frameSelection';
+import { sessionLogger } from '../logging/sessionLogger';
 
 export const App: React.FC = () => {
   const orchestratorRef = useRef<PipelineOrchestrator | null>(null);
-  const addFrameInputRef = useRef<HTMLInputElement>(null);
 
   // Model & Pipeline State
   const [sggStatus, setSggStatus] = useState<any>({ loaded: false, provider: 'unavailable', variant: 'yolo12n' });
@@ -48,14 +48,15 @@ export const App: React.FC = () => {
 
   // Scene Graph & Results
   const [sggResult, setSggResult] = useState<SGGInferenceResult | null>(null);
-  const [objects, setObjects] = useState<SGGObjectDetection[]>([]);
-  const [relationships, setRelationships] = useState<SGGRelation[]>([]);
-  const [graph, setGraph] = useState<SceneGraph | null>(null);
   const [queryResult, setQueryResult] = useState<NLQResult | null>(null);
 
   // Interaction State
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  // Global Drag-and-Drop State
+  const [isGlobalDragging, setIsGlobalDragging] = useState(false);
+  const dragCounterRef = useRef(0);
 
   // Multi-Frame Sequence & Selection State
   const [frames, setFrames] = useState<FrameRecord[]>([]);
@@ -65,6 +66,12 @@ export const App: React.FC = () => {
 
   // Initialize pipeline orchestrator on mount
   useEffect(() => {
+    sessionLogger.info('application', 'APP_INITIALIZED', 'Workspace Retrieval Application mounted', {
+      workspaceId,
+      selectedDomain,
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown',
+    });
+
     const orchestrator = new PipelineOrchestrator({
       onStageChange: (stage, msg) => {
         setPipelineStage(stage);
@@ -72,18 +79,33 @@ export const App: React.FC = () => {
       },
       onSggResult: (res) => {
         setSggResult(res);
-        setObjects([...res.objects]);
-        setRelationships([...res.relationships]);
         setImgDimensions({ width: res.imageWidth, height: res.imageHeight });
+        sessionLogger.info('inference', 'INFERENCE_COMPLETED', `SGG completed for frame ${res.frameId}: ${res.objects.length} objects, ${res.relationships.length} relations`, {
+          frameId: res.frameId,
+          objectCount: res.objects.length,
+          relationCount: res.relationships.length,
+          executionProvider: res.executionProvider,
+          timings: res.timings,
+        });
       },
-      onGraphUpdate: (g) => {
-        setGraph(g);
+      onGraphUpdate: (_g) => {
         refreshMemoryState();
       },
       onQueryResult: (res) => {
         setQueryResult(res);
+        sessionLogger.info('query', 'QUERY_COMPLETED', `Query answered (${res.evidence.source}): "${res.answer}"`, {
+          intent: res.queryPlan?.intent,
+          source: res.evidence.source,
+          evidenceObjectIds: res.evidence.objectInstanceIds,
+          evidenceFrameIds: res.evidence.frameIds,
+          answer: res.answer,
+        });
       },
-      onError: (err) => {
+      onError: (err: any) => {
+        sessionLogger.error('error', 'PIPELINE_ERROR', `Pipeline error: ${err.message || String(err)}`, {
+          error: err.message || String(err),
+          stack: err.stack,
+        });
         console.error('[App] Pipeline error:', err);
       },
     });
@@ -92,14 +114,27 @@ export const App: React.FC = () => {
 
     orchestrator.initialize(workspaceId, selectedDomain).then((status) => {
       setSggStatus(status);
+      sessionLogger.info('application', 'MODEL_INITIALIZED', `SGG model initialized on ${status.provider}`, {
+        provider: status.provider,
+        loaded: status.loaded,
+      });
     });
 
     refreshMemoryState(true);
 
     return () => {
       orchestrator.dispose();
+      sessionLogger.info('application', 'APP_DISPOSED', 'Application unmounted');
     };
   }, []);
+
+  // Synchronize logger context with active frame selection
+  useEffect(() => {
+    sessionLogger.setContext({
+      workspaceId,
+      selectedFrameIds,
+    });
+  }, [workspaceId, selectedFrameIds]);
 
   const refreshMemoryState = async (autoSelectLatest = false) => {
     try {
@@ -121,6 +156,7 @@ export const App: React.FC = () => {
               return {
                 detectionId: o.annotationId,
                 instanceId: o.instanceId,
+                frameId: f.frameId,
                 modelLabel: cleanLabel,
                 projectCategory: mapped.mapped ? mapped.projectCategory : null,
                 bbox: o.bbox || [0, 0, 0, 0],
@@ -137,6 +173,7 @@ export const App: React.FC = () => {
               confidence: r.confidence,
               source: r.source as any,
               provisional: r.provisional,
+              frameId: f.frameId,
             }));
 
             nextCache.set(f.frameId, {
@@ -162,29 +199,14 @@ export const App: React.FC = () => {
     }
   };
 
-  const handleImageSelected = (fileOrBlob: File | Blob, filename: string) => {
-    setCurrentImageBlob(fileOrBlob);
-    const url = URL.createObjectURL(fileOrBlob);
-    setCurrentImageSrc(url);
-
-    const img = new Image();
-    img.onload = () => {
-      setImgDimensions({ width: img.naturalWidth, height: img.naturalHeight });
-    };
-    img.src = url;
-
-    setSggResult(null);
-    setObjects([]);
-    setRelationships([]);
-    setGraph(null);
-    setQueryResult(null);
-    setSelectedId(null);
-    setHoveredId(null);
+  const handleImageSelected = (fileOrBlob: File | Blob, name = 'uploaded_image.jpg') => {
+    addImagesToObservationSequence([fileOrBlob as File]);
   };
 
   const handleDomainChange = (domainId: string) => {
     setSelectedDomain(domainId);
     orchestratorRef.current?.initialize(workspaceId, domainId);
+    sessionLogger.info('application', 'DOMAIN_CHANGED', `Domain switched to ${domainId}`);
   };
 
   const processSingleImage = async (fileOrBlob: File | Blob, filename: string): Promise<string | null> => {
@@ -210,13 +232,78 @@ export const App: React.FC = () => {
       imageSrc: url,
       imgWidth: res.sggResult.imageWidth,
       imgHeight: res.sggResult.imageHeight,
-      objects: res.sggResult.objects,
-      relationships: res.sggResult.relationships,
+      objects: res.sggResult.objects.map((o) => ({ ...o, frameId })),
+      relationships: res.sggResult.relationships.map((r) => ({ ...r, frameId })),
     };
 
     setFrameCache((prev) => new Map(prev).set(frameId, frameData));
     await refreshMemoryState();
     return frameId;
+  };
+
+  // Central unified upload handler for single & batch image ingestion
+  const addImagesToObservationSequence = async (files: FileList | File[]): Promise<string[]> => {
+    const fileArray = Array.from(files);
+    if (fileArray.length === 0 || !orchestratorRef.current) return [];
+
+    const newlyAddedFrameIds: string[] = [];
+    const uploadBatchId = `batch_${Date.now()}`;
+    const validExtensions = ['.png', '.jpg', '.jpeg', '.webp'];
+
+    sessionLogger.info('upload', 'UPLOAD_BATCH_STARTED', `Starting upload of ${fileArray.length} image(s)`, {
+      batchId: uploadBatchId,
+      fileCount: fileArray.length,
+      filenames: fileArray.map((f) => f.name),
+    });
+
+    for (let i = 0; i < fileArray.length; i++) {
+      const file = fileArray[i];
+      const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+      const isValid = file.type.startsWith('image/') || validExtensions.includes(ext);
+
+      if (!isValid) {
+        sessionLogger.warn('upload', 'IMAGE_VALIDATION_FAILED', `Unsupported file type for '${file.name}'`, {
+          filename: file.name,
+          type: file.type,
+          size: file.size,
+        });
+        alert(`File '${file.name}' is not a supported image (PNG, JPG, WebP). Skipping.`);
+        continue;
+      }
+
+      sessionLogger.info('upload', 'IMAGE_UPLOAD_STARTED', `Ingesting image '${file.name}' (${Math.round(file.size / 1024)} KB)`, {
+        batchId: uploadBatchId,
+        filename: file.name,
+        type: file.type,
+        sizeBytes: file.size,
+      });
+
+      try {
+        const fId = await processSingleImage(file, file.name);
+        if (fId) {
+          newlyAddedFrameIds.push(fId);
+          sessionLogger.info('upload', 'IMAGE_UPLOAD_COMPLETED', `Successfully stored frame ${fId} for '${file.name}'`, {
+            frameId: fId,
+            filename: file.name,
+          });
+        }
+      } catch (err: any) {
+        sessionLogger.error('upload', 'IMAGE_UPLOAD_FAILED', `Failed to process image '${file.name}': ${err.message || String(err)}`, {
+          filename: file.name,
+          error: err.message || String(err),
+        });
+        console.error(`Error processing file ${file.name}:`, err);
+      }
+    }
+
+    if (newlyAddedFrameIds.length > 0) {
+      setSelectedFrameIds(newlyAddedFrameIds);
+      sessionLogger.info('frame', 'FRAME_SELECTION_CHANGED', `Active selection updated to ${newlyAddedFrameIds.length} newly added frame(s)`, {
+        selectedFrameIds: newlyAddedFrameIds,
+      });
+    }
+
+    return newlyAddedFrameIds;
   };
 
   const handleRunSgg = async () => {
@@ -232,81 +319,67 @@ export const App: React.FC = () => {
     }
   };
 
-  // Add Next Frame (appends one image to observation sequence)
-  const handleAddNextObservation = () => {
-    addFrameInputRef.current?.click();
-  };
-
-  const handleAddFrameFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      try {
-        const frameId = await processSingleImage(file, file.name);
-        if (frameId) {
-          setSelectedFrameIds((prev) => [...prev, frameId]);
-        }
-      } catch (err: any) {
-        console.error('Failed to add next frame:', err);
-        alert('Failed to process next frame: ' + (err.message || String(err)));
-      }
-      e.target.value = '';
-    }
-  };
-
-  // Batch Image Upload (processes multiple images sequentially)
-  const handleBatchUpload = async (files: FileList | File[]) => {
-    const fileArray = Array.from(files);
-    if (fileArray.length === 0 || !orchestratorRef.current) return;
-
-    const newlyAddedFrameIds: string[] = [];
-    for (let i = 0; i < fileArray.length; i++) {
-      const file = fileArray[i];
-      try {
-        const fId = await processSingleImage(file, file.name);
-        if (fId) newlyAddedFrameIds.push(fId);
-      } catch (err) {
-        console.error(`Error processing batch file ${file.name}:`, err);
-      }
-    }
-
-    if (newlyAddedFrameIds.length > 0) {
-      setSelectedFrameIds(newlyAddedFrameIds);
-    }
-  };
-
-  // Delete Frame
+  // Safe frame deletion with atomic semantics
   const handleDeleteFrame = async (frameId: string) => {
     try {
+      sessionLogger.info('deletion', 'FRAME_DELETION_STARTED', `Deleting frame ${frameId}`, { frameId });
       await MemoryRepository.deleteFrame(frameId);
+
       setFrameCache((prev) => {
         const next = new Map(prev);
         next.delete(frameId);
         return next;
       });
-      setSelectedFrameIds((prev) => prev.filter((id) => id !== frameId));
-      await refreshMemoryState();
-    } catch (err) {
+
+      setSelectedFrameIds((prev) => {
+        const next = prev.filter((id) => id !== frameId);
+        sessionLogger.info('deletion', 'FRAME_DELETED', `Frame ${frameId} removed from memory and timeline`, {
+          deletedFrameId: frameId,
+          remainingSelectedFrameIds: next,
+        });
+        return next;
+      });
+
+      await refreshMemoryState(false);
+    } catch (err: any) {
+      sessionLogger.error('deletion', 'FRAME_DELETION_FAILED', `Failed to delete frame ${frameId}: ${err.message || String(err)}`, {
+        frameId,
+        error: err.message || String(err),
+      });
       console.error(`Failed to delete frame ${frameId}:`, err);
+      alert(`Failed to delete frame: ${err.message || String(err)}`);
     }
   };
 
-  // Frame selection toggles
+  // Simplified one-click timeline selection toggles
   const handleToggleFrameSelect = (frameId: string) => {
-    setSelectedFrameIds((prev) =>
-      prev.includes(frameId) ? prev.filter((id) => id !== frameId) : [...prev, frameId]
-    );
+    setSelectedFrameIds((prev) => {
+      const next = prev.includes(frameId)
+        ? prev.filter((id) => id !== frameId)
+        : [...prev, frameId];
+      sessionLogger.info('frame', 'FRAME_SELECTION_CHANGED', `Frame selection toggled: ${next.length} frame(s) active`, {
+        toggledFrameId: frameId,
+        previousFrameIds: prev,
+        selectedFrameIds: next,
+        selectedFrameCount: next.length,
+      });
+      return next;
+    });
   };
 
   const handleSelectAllFrames = () => {
-    setSelectedFrameIds(frames.map((f) => f.frameId));
+    const allIds = frames.map((f) => f.frameId);
+    setSelectedFrameIds(allIds);
+    sessionLogger.info('frame', 'FRAME_SELECTION_CHANGED', `Selected all ${allIds.length} frames`, {
+      selectedFrameIds: allIds,
+    });
   };
 
   const handleClearFrameSelection = () => {
     setSelectedFrameIds([]);
-  };
-
-  const handleSelectOnlyFrame = (frameId: string) => {
-    setSelectedFrameIds([frameId]);
+    sessionLogger.info('frame', 'FRAME_SELECTION_CHANGED', 'Cleared frame selection (0 active frames)', {
+      selectedFrameIds: [],
+    });
   };
 
   // Multi-turn Natural Language Query with active frame context
@@ -319,8 +392,18 @@ export const App: React.FC = () => {
     activeFrameIds?: string[]
   ) => {
     if (!orchestratorRef.current) return;
+    const framesToQuery = activeFrameIds || selectedFrameIds;
+
+    sessionLogger.info('query', 'QUERY_SUBMITTED', `User query submitted: "${queryText}"`, {
+      queryText,
+      selectedFrameIdsAtSubmission: selectedFrameIds,
+      selectedFrameIdsUsedByExecutor: framesToQuery,
+      forceVLM,
+      forceSGG,
+      scope,
+    });
+
     try {
-      const framesToQuery = activeFrameIds || selectedFrameIds;
       await orchestratorRef.current.answerQuery(
         queryText,
         context,
@@ -329,13 +412,23 @@ export const App: React.FC = () => {
         forceSGG,
         framesToQuery
       );
-    } catch (err) {
+    } catch (err: any) {
+      sessionLogger.error('query', 'QUERY_FAILED', `Query failed: ${err.message || String(err)}`, {
+        queryText,
+        framesToQuery,
+        error: err.message || String(err),
+      });
       console.error('Error executing query:', err);
     }
   };
 
   const handleSelectHistoricalFrame = async (frameId: string, targetObjectId?: string) => {
     setSelectedFrameIds([frameId]);
+    sessionLogger.info('frame', 'FRAME_SELECTION_CHANGED', `Historical frame focused: ${frameId}`, {
+      selectedFrameIds: [frameId],
+      targetObjectId,
+    });
+
     if (targetObjectId) {
       setSelectedId(targetObjectId);
     }
@@ -347,13 +440,11 @@ export const App: React.FC = () => {
 
   const handleClearMemory = async () => {
     if (confirm('Clear all local workspace memory records?')) {
+      sessionLogger.info('memory', 'MEMORY_CLEARED', 'Cleared all workspace memory');
       await MemoryRepository.clearWorkspace(workspaceId);
       await refreshMemoryState();
       setFrameCache(new Map());
       setSelectedFrameIds([]);
-      setGraph(null);
-      setObjects([]);
-      setRelationships([]);
       setQueryResult(null);
       setSelectedId(null);
       setHoveredId(null);
@@ -379,135 +470,86 @@ export const App: React.FC = () => {
     });
   }, [frames, frameCache]);
 
-  // Selected observations data array for multi-frame viewer
-  const selectedFramesData: FrameObservationData[] = useMemo(() => {
-    return selectedFrameIds
-      .map((id) => frameCache.get(id))
-      .filter(Boolean) as FrameObservationData[];
-  }, [selectedFrameIds, frameCache]);
+  // SINGLE AUTHORITATIVE SOURCE of selected frame data
+  // Strictly isolates active visual & query state to selectedFrameIds
+  const frameSelectionContext = useMemo(() => {
+    return getSelectedFrameData(frameCache, selectedFrameIds);
+  }, [frameCache, selectedFrameIds]);
 
-  // Active combined objects across selected frames
-  const activeObjects = useMemo(() => {
-    if (selectedFramesData.length > 0) {
-      return selectedFramesData.flatMap((f) => f.objects);
-    }
-    return objects;
-  }, [selectedFramesData, objects]);
-
-  // Active combined relationships across selected frames
-  const activeRelationships = useMemo(() => {
-    if (selectedFramesData.length > 0) {
-      return selectedFramesData.flatMap((f) => f.relationships);
-    }
-    return relationships;
-  }, [selectedFramesData, relationships]);
-
-  // Active combined scene graph for SceneGraphPanel
-  const activeGraph = useMemo<SceneGraph | null>(() => {
-    if (selectedFramesData.length === 0) return graph;
-    if (selectedFramesData.length === 1) {
-      const sf = selectedFramesData[0];
-      if (graph && graph.frameId === sf.frameId) return graph;
-      const nodesMap = new Map();
-      for (const obj of sf.objects) {
-        const id = obj.instanceId || obj.detectionId;
-        nodesMap.set(id, {
-          id,
-          instanceId: id,
-          detectionId: obj.detectionId,
-          categoryId: obj.projectCategory || obj.modelLabel,
-          label: obj.modelLabel,
-          bbox: obj.bbox,
-          confidence: obj.confidence,
-          isSurface: false,
-          attributes: obj.attributes || { color: null, type: null },
-        });
-      }
-      return {
-        frameId: sf.frameId,
-        timestamp: sf.timestamp,
-        nodes: Array.from(nodesMap.values()),
-        edges: sf.relationships.map((r) => ({
-          id: r.relationId,
-          sourceId: r.subjectDetectionId,
-          targetId: r.objectDetectionId,
-          predicate: r.canonicalPredicate,
-          confidence: r.confidence,
-          source: r.source,
-          provisional: r.provisional,
-          frameId: sf.frameId,
-        })),
-      };
-    }
-
-    // Multi-frame union graph with observedFrames attribution
-    const nodesMap = new Map();
-    const edgeMap = new Map();
-
-    for (const sf of selectedFramesData) {
-      for (const obj of sf.objects) {
-        const id = obj.instanceId || obj.detectionId;
-        if (!nodesMap.has(id)) {
-          nodesMap.set(id, {
-            id,
-            instanceId: id,
-            detectionId: obj.detectionId,
-            categoryId: obj.projectCategory || obj.modelLabel,
-            label: obj.modelLabel,
-            bbox: obj.bbox,
-            confidence: obj.confidence,
-            isSurface: false,
-            attributes: obj.attributes || { color: null, type: null },
-          });
-        }
-      }
-
-      for (const r of sf.relationships) {
-        const key = `${r.subjectDetectionId}__${r.canonicalPredicate}__${r.objectDetectionId}`;
-        if (edgeMap.has(key)) {
-          const existing = edgeMap.get(key);
-          if (!existing.observedFrames.includes(sf.frameId)) {
-            existing.observedFrames.push(sf.frameId);
-          }
-        } else {
-          edgeMap.set(key, {
-            id: r.relationId,
-            sourceId: r.subjectDetectionId,
-            targetId: r.objectDetectionId,
-            predicate: r.canonicalPredicate,
-            confidence: r.confidence,
-            source: r.source,
-            provisional: r.provisional,
-            frameId: sf.frameId,
-            observedFrames: [sf.frameId],
-          });
-        }
-      }
-    }
-
-    return {
-      frameId: 'combined_selection',
-      timestamp: selectedFramesData[selectedFramesData.length - 1].timestamp,
-      nodes: Array.from(nodesMap.values()),
-      edges: Array.from(edgeMap.values()),
-    };
-  }, [selectedFramesData, graph]);
+  const activeObjects = frameSelectionContext.selectedDetections;
+  const activeRelationships = frameSelectionContext.selectedRelationships;
+  const activeGraph = frameSelectionContext.combinedSceneGraph;
+  const selectedFramesData = frameSelectionContext.selectedFrames;
 
   // Compute unified entity color map for synchronized highlighting across views
   const entityColors = useMemo(() => {
     return buildEntityColorMap(activeObjects, activeGraph?.nodes);
   }, [activeObjects, activeGraph]);
 
+  // Global Drag-and-Drop Event Handlers
+  const handleGlobalDragEnter = (e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes('Files')) {
+      e.preventDefault();
+      dragCounterRef.current++;
+      setIsGlobalDragging(true);
+    }
+  };
+
+  const handleGlobalDragOver = (e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes('Files')) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+    }
+  };
+
+  const handleGlobalDragLeave = (e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes('Files')) {
+      e.preventDefault();
+      dragCounterRef.current--;
+      if (dragCounterRef.current <= 0) {
+        dragCounterRef.current = 0;
+        setIsGlobalDragging(false);
+      }
+    }
+  };
+
+  const handleGlobalDrop = (e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes('Files')) {
+      e.preventDefault();
+      dragCounterRef.current = 0;
+      setIsGlobalDragging(false);
+
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        addImagesToObservationSequence(e.dataTransfer.files);
+      }
+    }
+  };
+
   return (
-    <div className="app-shell">
-      {/* Hidden Add Next Frame File Input */}
-      <input
-        ref={addFrameInputRef}
-        type="file"
-        accept="image/*"
-        style={{ display: 'none' }}
-        onChange={handleAddFrameFileChange}
-      />
+    <div
+      className="app-shell relative min-h-screen"
+      onDragEnter={handleGlobalDragEnter}
+      onDragOver={handleGlobalDragOver}
+      onDragLeave={handleGlobalDragLeave}
+      onDrop={handleGlobalDrop}
+    >
+      {/* Global Full-Screen Drag and Drop Overlay */}
+      {isGlobalDragging && (
+        <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center bg-black/80 backdrop-blur-sm p-8 transition-opacity duration-150">
+          <div className="w-full max-w-xl h-72 rounded-2xl border-2 border-dashed border-cyan-400 bg-cyan-950/40 flex flex-col items-center justify-center p-8 text-center shadow-2xl shadow-cyan-950/60">
+            <div className="w-16 h-16 rounded-2xl bg-cyan-900/50 border border-cyan-500/60 flex items-center justify-center text-cyan-400 mb-4 animate-bounce">
+              <Upload size={32} />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2 tracking-wide">Upload Images</h3>
+            <p className="text-sm text-cyan-200/90 mb-3">
+              Drop images anywhere to add workspace observations
+            </p>
+            <span className="text-xs text-zinc-400 font-mono tracking-wider bg-zinc-900/80 px-3 py-1 rounded-full border border-zinc-700/60">
+              PNG &bull; JPG &bull; WebP
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* A. Compact Top Navigation Header */}
       <header className="app-header">
@@ -542,9 +584,7 @@ export const App: React.FC = () => {
             onToggleFrameSelect={handleToggleFrameSelect}
             onSelectAllFrames={handleSelectAllFrames}
             onClearFrameSelection={handleClearFrameSelection}
-            onSelectOnlyFrame={handleSelectOnlyFrame}
-            onAddNextObservation={handleAddNextObservation}
-            onBatchUpload={handleBatchUpload}
+            onUploadImages={addImagesToObservationSequence}
             onDeleteFrame={handleDeleteFrame}
             selectedFramesData={selectedFramesData}
             imageSrc={currentImageSrc}
@@ -625,7 +665,7 @@ export const App: React.FC = () => {
         />
       </section>
 
-      {/* D. Collapsible System Diagnostics & Telemetry */}
+      {/* D. Collapsible System Diagnostics & Telemetry with Session Logs */}
       <footer className="diagnostics-section">
         <DiagnosticsPanel
           sggResult={sggResult}

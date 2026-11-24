@@ -17,6 +17,7 @@ import { QueryParser } from '../nlq/parser';
 import { QueryExecutor } from '../nlq/queryExecutor';
 import { NLQResult, ConversationContext, QueryScope } from '../nlq/queryTypes';
 import { generateId, formatFrameId } from '../utils/ids';
+import { extractVisualDescriptor } from '../utils/visualDescriptor';
 import { getCurrentIsoTimestamp } from '../utils/time';
 import { logMessage } from '../utils/logging';
 import { imageSourceToDataUrl } from '../utils/image';
@@ -112,6 +113,16 @@ export class PipelineOrchestrator {
       const sggResult = await this.sggEngine.infer(imageSource);
       this.latestSggResult = sggResult;
 
+      // Extract visual appearance descriptors for each detected bounding box crop
+      for (const obj of sggResult.objects) {
+        obj.visualDescriptor = extractVisualDescriptor(
+          imageSource,
+          obj.bbox,
+          sggResult.imageWidth,
+          sggResult.imageHeight
+        );
+      }
+
       // 2. Identity Association
       this.setStage('identity_association', 'Associating object identities against workspace memory...');
       const timestamp = getCurrentIsoTimestamp();
@@ -152,11 +163,28 @@ export class PipelineOrchestrator {
 
       // 3. Build Relationships Facts
       const relationshipFacts: RelationshipFact[] = [];
+      const seenTriplets = new Set<string>();
+
       for (const rel of sggResult.relationships) {
         const subjInst = association.instanceMap.get(rel.subjectDetectionId);
         const objInst = association.instanceMap.get(rel.objectDetectionId);
 
         if (subjInst && objInst && rel.canonicalPredicate) {
+          // Filter out self-loops (an entity cannot relate to itself)
+          if (subjInst.instanceId === objInst.instanceId) {
+            continue;
+          }
+
+          // Deduplicate identical relationship triplets within the same frame
+          const tripletKey = `${subjInst.instanceId}__${rel.canonicalPredicate}__${objInst.instanceId}`;
+          if (seenTriplets.has(tripletKey)) {
+            continue;
+          }
+          seenTriplets.add(tripletKey);
+
+          // Gate low confidence relationships (< 0.20) as provisional
+          const isProvisional = rel.confidence < 0.20 || Boolean(rel.provisional);
+
           relationshipFacts.push({
             relationshipId: generateId('rel'),
             frameId,
@@ -167,7 +195,7 @@ export class PipelineOrchestrator {
             confidence: rel.confidence,
             source: 'reactpp',
             timestamp,
-            provisional: false,
+            provisional: isProvisional,
           });
         }
       }

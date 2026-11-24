@@ -11,7 +11,7 @@ let dbPromise: Promise<IDBPDatabase> | null = null;
 export async function getDatabase(): Promise<IDBPDatabase> {
   if (!dbPromise) {
     dbPromise = openDB(DB_NAME, DB_VERSION, {
-      upgrade(db) {
+      upgrade(db, _oldVersion, _newVersion, transaction) {
         logMessage('info', 'IndexedDB', `Upgrading database ${DB_NAME} to v${DB_VERSION}`);
 
         // 1. Workspaces
@@ -65,6 +65,12 @@ export async function getDatabase(): Promise<IDBPDatabase> {
           ev.createIndex('workspaceId', 'workspaceId', { unique: false });
           ev.createIndex('instanceId', 'instanceId', { unique: false });
           ev.createIndex('timestamp', 'timestamp', { unique: false });
+          ev.createIndex('frameId', 'frameId', { unique: false });
+        } else {
+          const evTx = transaction.objectStore(STORES.GRAPH_EVENTS);
+          if (!evTx.indexNames.contains('frameId')) {
+            evTx.createIndex('frameId', 'frameId', { unique: false });
+          }
         }
 
         // 8. VLM Candidates
@@ -84,6 +90,18 @@ export async function getDatabase(): Promise<IDBPDatabase> {
         // 10. App Settings
         if (!db.objectStoreNames.contains(STORES.APP_SETTINGS)) {
           db.createObjectStore(STORES.APP_SETTINGS, { keyPath: 'settingKey' });
+        }
+
+        // 11. Session Logs (v2)
+        if (!db.objectStoreNames.contains(STORES.SESSION_LOGS)) {
+          const sl = db.createObjectStore(STORES.SESSION_LOGS, { keyPath: 'logId' });
+          sl.createIndex('sessionId', 'sessionId', { unique: false });
+          sl.createIndex('timestamp', 'timestamp', { unique: false });
+          sl.createIndex('category', 'category', { unique: false });
+          sl.createIndex('level', 'level', { unique: false });
+          sl.createIndex('eventType', 'eventType', { unique: false });
+          sl.createIndex('frameId', 'frameId', { unique: false });
+          sl.createIndex('queryId', 'queryId', { unique: false });
         }
       },
     });

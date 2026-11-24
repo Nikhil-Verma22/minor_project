@@ -33,3 +33,7 @@ desktop.ini
 build/
 dist/
 *.egg-info/
+
+# Intermediate video production working assets (keep final Object_Retrieval_Product_Demo.mp4)
+production_documentary/
+

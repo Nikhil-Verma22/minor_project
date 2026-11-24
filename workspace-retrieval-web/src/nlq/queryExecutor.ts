@@ -1267,12 +1267,12 @@ export class QueryExecutor {
           }
         }
 
-        // 2. Disappeared objects
-        const disappeared: string[] = [];
-        for (const [id, o] of map1) {
+        // 2. Unobserved objects (missed detection or occluded; does not mean deleted)
+        const unobserved: string[] = [];
+        for (const [id] of map1) {
           if (!map2.has(id) && id !== 'workspace_surface_001') {
             const name = instMap.get(id)?.displayName || id;
-            disappeared.push(name);
+            unobserved.push(name);
           }
         }
 
@@ -1332,8 +1332,8 @@ export class QueryExecutor {
         if (appeared.length > 0) {
           lines.push(`• Newly Appeared: ${appeared.join(', ')}.`);
         }
-        if (disappeared.length > 0) {
-          lines.push(`• Disappeared / Removed: ${disappeared.join(', ')}.`);
+        if (unobserved.length > 0) {
+          lines.push(`• Disappeared / Unobserved in Frame ${f2Index}: ${unobserved.join(', ')} (preserved in memory).`);
         }
         if (movedList.length > 0) {
           lines.push(`• Moved Objects: ${movedList.join(', ')}.`);

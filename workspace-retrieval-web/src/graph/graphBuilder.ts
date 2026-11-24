@@ -51,16 +51,33 @@ export class GraphBuilder {
       });
     }
 
-    const edges: SceneGraphEdge[] = relationships.map((rel) => ({
-      id: rel.relationshipId,
-      sourceId: rel.subjectId,
-      targetId: rel.objectId,
-      predicate: rel.predicate,
-      confidence: rel.confidence,
-      source: rel.source,
-      provisional: rel.provisional,
-      frameId: rel.frameId || frameId,
-    }));
+    const edges: SceneGraphEdge[] = [];
+    const seenEdges = new Set<string>();
+
+    for (const rel of relationships) {
+      // Eliminate self-loops: e.g. workspace_surface_001 -> on -> workspace_surface_001
+      if (rel.subjectId === rel.objectId) {
+        continue;
+      }
+
+      // Deduplicate relationship triplets in this graph view
+      const edgeKey = `${rel.subjectId}__${rel.predicate}__${rel.objectId}`;
+      if (seenEdges.has(edgeKey)) {
+        continue;
+      }
+      seenEdges.add(edgeKey);
+
+      edges.push({
+        id: rel.relationshipId,
+        sourceId: rel.subjectId,
+        targetId: rel.objectId,
+        predicate: rel.predicate,
+        confidence: rel.confidence,
+        source: rel.source,
+        provisional: rel.confidence < 0.20 || Boolean(rel.provisional),
+        frameId: rel.frameId || frameId,
+      });
+    }
 
     return {
       frameId,

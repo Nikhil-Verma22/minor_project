@@ -9,6 +9,8 @@ import { testIdentityAssociation } from './memory/identityAssociation.test';
 import { testQueryParser } from './nlq/parser.test';
 import { testWorkspaceAssistant } from './workspaceAssistant.test';
 import { testMultiFrame } from './multiFrame.test';
+import { testSessionAndIsolation } from './sessionAndIsolation.test';
+import { testCrossFrameReidRegression } from './crossFrameReidRegression.test';
 
 async function run() {
   console.log('==================================================');
@@ -22,9 +24,11 @@ async function run() {
     testQueryParser();
     await testWorkspaceAssistant();
     await testMultiFrame();
+    await testSessionAndIsolation();
+    await testCrossFrameReidRegression();
 
     console.log('\n==================================================');
-    console.log('ALL TESTS PASSED SUCCESSFULLY! (6 suites, 0 failures)');
+    console.log('ALL TESTS PASSED SUCCESSFULLY! (8 suites, 0 failures)');
     console.log('==================================================');
     process.exit(0);
   } catch (err: any) {

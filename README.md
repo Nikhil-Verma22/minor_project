@@ -8,8 +8,21 @@
 
 > **Research Project**: *Object Retrieval in Dynamic Workspace Environments*  
 > **Host Testbed**: Intel(R) Core(TM) Ultra 5 125H (14 Cores / 18 Threads, 16 GB RAM [15.61 GB visible], Windows 11)  
+> **Browser Prototype**: [`workspace-retrieval-web/`](workspace-retrieval-web/README.md) ([Technical Dossier](workspace-retrieval-web/docs/DEMO_TECHNICAL_AND_FUNCTIONAL_DOSSIER.md) | [Architecture](workspace-retrieval-web/docs/ARCHITECTURE.md))  
+> **Product Demo Video**: [`Object_Retrieval_Product_Demo.mp4`](Object_Retrieval_Product_Demo.mp4) (`1830×1278` @ 60 fps, 02:43.50)  
 > **Master Reports**: [`final_report.md`](final_report.md) | [`METHODOLOGY_CROSS_DATASET_BENCHMARKING.md`](METHODOLOGY_CROSS_DATASET_BENCHMARKING.md)  
 > **Audit & Matrix Records**: [`results/audit_discrepancy_log.md`](results/audit_discrepancy_log.md) | [`results/single_pair_benchmark_matrix.csv`](results/single_pair_benchmark_matrix.csv) | [`results/reproducibility_audit_records.json`](results/reproducibility_audit_records.json)  
+
+---
+## 🗂️ Repository Structure
+
+| Directory / Deliverable | Purpose |
+| :--- | :--- |
+| [`workspace-retrieval-web/`](workspace-retrieval-web/README.md) | Local-first React + TypeScript + ONNX Runtime Web prototype (REACT++ SGG, IndexedDB v2 memory, multi-frame comparative reasoning, NLQ Workspace Assistant, SmolVLM-500M WebGPU fallback, and Session Audit Logging). |
+| [`Object_Retrieval_Product_Demo.mp4`](Object_Retrieval_Product_Demo.mp4) | Synchronized technical product demonstration documentary showcasing the full browser pipeline. |
+| [`experiments/`](experiments/) & [`results/`](results/) | 16-run multi-model × multi-dataset empirical SGG benchmark evaluation scripts, metrics, and reproducibility records. |
+| [`evaluation_sets/`](evaluation_sets/) | Frozen 200-image benchmark subsets (PSG, VG150, IndoorVG, OpenImages V6). |
+| [`model_repos/`](model_repos/) | Evaluated reference model repositories (REACT, REACT++, FCSGG, Fast Contextual SGG). |
 
 ---
 ## 📌 Executive Overview

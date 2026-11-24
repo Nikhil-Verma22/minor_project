@@ -3,7 +3,7 @@
  */
 
 export const DB_NAME = 'workspace_retrieval_db';
-export const DB_VERSION = 1;
+export const DB_VERSION = 2;
 
 export const STORES = {
   WORKSPACES: 'workspaces',
@@ -16,4 +16,5 @@ export const STORES = {
   VLM_CANDIDATES: 'vlmCandidates',
   QUERY_HISTORY: 'queryHistory',
   APP_SETTINGS: 'appSettings',
+  SESSION_LOGS: 'sessionLogs',
 } as const;

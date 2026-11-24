@@ -126,6 +126,7 @@ export class MemoryRepository {
         STORES.RELATIONSHIPS,
         STORES.GRAPH_EVENTS,
         STORES.VLM_CANDIDATES,
+        STORES.OBJECT_INSTANCES,
       ],
       'readwrite'
     );
@@ -133,10 +134,15 @@ export class MemoryRepository {
     // Delete frame
     await tx.objectStore(STORES.FRAMES).delete(frameId);
 
-    // Delete observations for this frame
-    const obsIndex = tx.objectStore(STORES.OBJECT_OBSERVATIONS).index('frameId');
+    // Delete observations for this frame and track affected instance IDs
+    const affectedInstanceIds = new Set<string>();
+    const obsStore = tx.objectStore(STORES.OBJECT_OBSERVATIONS);
+    const obsIndex = obsStore.index('frameId');
     let obsCursor = await obsIndex.openCursor(frameId);
     while (obsCursor) {
+      if (obsCursor.value.instanceId) {
+        affectedInstanceIds.add(obsCursor.value.instanceId);
+      }
       await obsCursor.delete();
       obsCursor = await obsCursor.continue();
     }
@@ -149,20 +155,47 @@ export class MemoryRepository {
       relCursor = await relCursor.continue();
     }
 
-    // Delete graph events for this frame
-    const evIndex = tx.objectStore(STORES.GRAPH_EVENTS).index('frameId');
-    let evCursor = await evIndex.openCursor(frameId);
-    while (evCursor) {
-      await evCursor.delete();
-      evCursor = await evCursor.continue();
+    // Delete graph events for this frame (safe fallback if index is missing)
+    const evStore = tx.objectStore(STORES.GRAPH_EVENTS);
+    if (evStore.indexNames.contains('frameId')) {
+      const evIndex = evStore.index('frameId');
+      let evCursor = await evIndex.openCursor(frameId);
+      while (evCursor) {
+        await evCursor.delete();
+        evCursor = await evCursor.continue();
+      }
+    } else {
+      let evCursor = await evStore.openCursor();
+      while (evCursor) {
+        if ((evCursor.value as any).frameId === frameId) {
+          await evCursor.delete();
+        }
+        evCursor = await evCursor.continue();
+      }
     }
 
     // Delete vlm candidates for this frame
-    const vlmIndex = tx.objectStore(STORES.VLM_CANDIDATES).index('frameId');
-    let vlmCursor = await vlmIndex.openCursor(frameId);
-    while (vlmCursor) {
-      await vlmCursor.delete();
-      vlmCursor = await vlmCursor.continue();
+    const vlmStore = tx.objectStore(STORES.VLM_CANDIDATES);
+    if (vlmStore.indexNames.contains('frameId')) {
+      const vlmIndex = vlmStore.index('frameId');
+      let vlmCursor = await vlmIndex.openCursor(frameId);
+      while (vlmCursor) {
+        await vlmCursor.delete();
+        vlmCursor = await vlmCursor.continue();
+      }
+    }
+
+    // Handle affected physical object instances: mark inactive if orphaned (0 observations remaining)
+    const instStore = tx.objectStore(STORES.OBJECT_INSTANCES);
+    for (const instId of affectedInstanceIds) {
+      const remainingObs = await obsStore.index('instanceId').getAll(instId);
+      if (remainingObs.length === 0) {
+        const inst = await instStore.get(instId);
+        if (inst) {
+          inst.status = 'inactive';
+          await instStore.put(inst);
+        }
+      }
     }
 
     await tx.done;

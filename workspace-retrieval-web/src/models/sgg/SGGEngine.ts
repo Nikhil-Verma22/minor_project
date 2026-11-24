@@ -3,10 +3,12 @@
  */
 
 import { CanonicalPredicate } from '../../config/predicates';
+import { VisualCropDescriptor } from '../../utils/visualDescriptor';
 
 export interface SGGObjectDetection {
   detectionId: string;
   instanceId?: string;
+  frameId?: string;
   modelLabel: string;
   projectCategory?: string | null;
   bbox: [number, number, number, number]; // [x1, y1, x2, y2]
@@ -16,6 +18,9 @@ export interface SGGObjectDetection {
     type?: string | null;
   };
   featureRef?: string;
+  visualDescriptor?: VisualCropDescriptor;
+  associationConfidence?: number;
+  associationReason?: string;
 }
 
 export interface SGGRelation {
@@ -27,6 +32,7 @@ export interface SGGRelation {
   confidence: number;
   source: 'reactpp' | 'vlm' | 'manual' | 'user';
   provisional: boolean;
+  frameId?: string;
 }
 
 export interface SGGInferenceResult {

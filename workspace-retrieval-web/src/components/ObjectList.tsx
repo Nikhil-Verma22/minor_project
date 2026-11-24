@@ -45,7 +45,9 @@ export const ObjectList: React.FC<ObjectListProps> = ({
           </h3>
         </div>
         <div className="text-center py-8 text-zinc-500 text-xs italic">
-          No objects detected in current observation.
+          {selectedFrames.length === 0
+            ? 'No frames selected. Click a frame in the observation timeline to inspect.'
+            : 'No objects detected in selected observation.'}
         </div>
       </div>
     );

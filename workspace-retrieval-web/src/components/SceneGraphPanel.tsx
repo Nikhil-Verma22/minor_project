@@ -40,7 +40,9 @@ export const SceneGraphPanel: React.FC<SceneGraphPanelProps> = ({
           </h3>
         </div>
         <div className="text-center py-8 text-zinc-500 text-xs italic">
-          No relationship facts detected in current observation.
+          {selectedFrames.length === 0
+            ? 'No frames selected. Click a frame in the observation timeline to inspect.'
+            : 'No relationship facts detected in selected observation.'}
         </div>
       </div>
     );

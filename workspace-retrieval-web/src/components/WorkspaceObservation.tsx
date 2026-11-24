@@ -47,9 +47,7 @@ interface WorkspaceObservationProps {
   onToggleFrameSelect: (frameId: string) => void;
   onSelectAllFrames: () => void;
   onClearFrameSelection: () => void;
-  onSelectOnlyFrame: (frameId: string) => void;
-  onAddNextObservation: () => void;
-  onBatchUpload: (files: FileList | File[]) => void;
+  onUploadImages: (files: FileList | File[]) => void;
   onDeleteFrame?: (frameId: string) => void;
 
   // Selected observations data
@@ -85,9 +83,7 @@ export const WorkspaceObservation: React.FC<WorkspaceObservationProps> = ({
   onToggleFrameSelect,
   onSelectAllFrames,
   onClearFrameSelection,
-  onSelectOnlyFrame,
-  onAddNextObservation,
-  onBatchUpload,
+  onUploadImages,
   onDeleteFrame,
   selectedFramesData,
   imageSrc,
@@ -139,15 +135,8 @@ export const WorkspaceObservation: React.FC<WorkspaceObservationProps> = ({
     setDragOver(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      if (e.dataTransfer.files.length > 1) {
-        onBatchUpload(e.dataTransfer.files);
-        return;
-      }
-      const file = e.dataTransfer.files[0];
-      if (file.type.startsWith('image/')) {
-        handleFile(file, file.name);
-        return;
-      }
+      onUploadImages(e.dataTransfer.files);
+      return;
     }
 
     const uri = e.dataTransfer.getData('text/uri-list');
@@ -227,9 +216,7 @@ export const WorkspaceObservation: React.FC<WorkspaceObservationProps> = ({
           onToggleFrameSelect={onToggleFrameSelect}
           onSelectAll={onSelectAllFrames}
           onClearSelection={onClearFrameSelection}
-          onSelectOnlyFrame={onSelectOnlyFrame}
-          onAddNextFrame={onAddNextObservation}
-          onBatchUpload={onBatchUpload}
+          onUploadImages={onUploadImages}
           onDeleteFrame={onDeleteFrame}
           isProcessing={isRunning}
         />
@@ -274,11 +261,12 @@ export const WorkspaceObservation: React.FC<WorkspaceObservationProps> = ({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            multiple
+            accept="image/png,image/jpeg,image/webp"
             style={{ display: 'none' }}
             onChange={(e) => {
-              if (e.target.files && e.target.files[0]) {
-                handleFile(e.target.files[0], e.target.files[0].name);
+              if (e.target.files && e.target.files.length > 0) {
+                onUploadImages(e.target.files);
                 e.target.value = '';
               }
             }}
@@ -290,10 +278,10 @@ export const WorkspaceObservation: React.FC<WorkspaceObservationProps> = ({
               className="btn-upload-primary"
               onClick={() => fileInputRef.current?.click()}
               disabled={isRunning}
-              title="Upload RGB workspace photograph"
+              title="Upload one or multiple workspace photographs"
             >
               <Upload size={13} />
-              <span>Upload Image</span>
+              <span>+ Upload Images</span>
             </button>
           )}
 
