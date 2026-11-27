@@ -7,17 +7,21 @@
 [![Benchmark Task](https://img.shields.io/badge/Task-SGDet%20(IoU%20%E2%89%A5%200.5)-orange.svg)]()
 
 > **Research Project**: *Object Retrieval in Dynamic Workspace Environments*  
-> **Host Testbed**: Intel(R) Core(TM) Ultra 5 125H (14 Cores / 18 Threads, 16 GB RAM [15.61 GB visible], Windows 11)  
-> **Browser Prototype**: [`workspace-retrieval-web/`](workspace-retrieval-web/README.md) ([Technical Dossier](workspace-retrieval-web/docs/DEMO_TECHNICAL_AND_FUNCTIONAL_DOSSIER.md) | [Architecture](workspace-retrieval-web/docs/ARCHITECTURE.md))  
+> **Presented By**: Shivansh Kaushik (`24103052`) · Nikhil Verma (`24103048`) · Harman Singh (`24103056`) · Mannan Bharti (`24103046`)  
+> **Mentors**: Dr. Sudesh Rani · Mayank Gupta  
+> **End-Semester Slides**: [`End_Semester_Evaluation.pdf`](presentation_rebuild/out/End_Semester_Evaluation.pdf) | [`End_Semester_Evaluation.pptx`](presentation_rebuild/out/End_Semester_Evaluation.pptx) | [Elements Kit](presentation_rebuild/README.md)  
+> **Browser Prototype**: [`workspace-retrieval-web/`](workspace-retrieval-web/README.md) ([Live GitHub Pages Demo](https://nikhil-verma22.github.io/minor_project/) | [Technical Dossier](workspace-retrieval-web/docs/DEMO_TECHNICAL_AND_FUNCTIONAL_DOSSIER.md) | [Architecture](workspace-retrieval-web/docs/ARCHITECTURE.md))  
 > **Product Demo Video**: [`Object_Retrieval_Product_Demo.mp4`](Object_Retrieval_Product_Demo.mp4) (`1830×1278` @ 60 fps, 02:43.50)  
 > **Master Reports**: [`final_report.md`](final_report.md) | [`METHODOLOGY_CROSS_DATASET_BENCHMARKING.md`](METHODOLOGY_CROSS_DATASET_BENCHMARKING.md)  
 > **Audit & Matrix Records**: [`results/audit_discrepancy_log.md`](results/audit_discrepancy_log.md) | [`results/single_pair_benchmark_matrix.csv`](results/single_pair_benchmark_matrix.csv) | [`results/reproducibility_audit_records.json`](results/reproducibility_audit_records.json)  
+> **Host Testbed**: Intel(R) Core(TM) Ultra 5 125H (14 Cores / 18 Threads, 16 GB RAM [15.61 GB visible], Windows 11)  
 
 ---
 ## 🗂️ Repository Structure
 
 | Directory / Deliverable | Purpose |
 | :--- | :--- |
+| [`presentation_rebuild/`](presentation_rebuild/README.md) | End-Semester Evaluation 30-slide deck ([PDF](presentation_rebuild/out/End_Semester_Evaluation.pdf) / [PPTX](presentation_rebuild/out/End_Semester_Evaluation.pptx)), Mid-Sem originals, Blue & Red asset kits, and modular slide source. |
 | [`workspace-retrieval-web/`](workspace-retrieval-web/README.md) | Local-first React + TypeScript + ONNX Runtime Web prototype (REACT++ SGG, IndexedDB v2 memory, multi-frame comparative reasoning, NLQ Workspace Assistant, SmolVLM-500M WebGPU fallback, and Session Audit Logging). |
 | [`github_page_setup/`](github_page_setup/README.md) | GitHub Pages deployment build of the web prototype ([Live Demo](https://nikhil-verma22.github.io/minor_project/)). |
 | [`Object_Retrieval_Product_Demo.mp4`](Object_Retrieval_Product_Demo.mp4) | Synchronized technical product demonstration documentary showcasing the full browser pipeline. |
@@ -160,35 +164,43 @@ graph LR
 ## 📁 Repository Organization
 
 ```plaintext
-minor/
-├── README.md                                # Master project documentation & 16-run performance matrix
-├── final_report.md                          # Consolidated master benchmark report
+minor_project/
+├── README.md                                 # Master project overview, team details & benchmark matrix
+├── final_report.md                           # Consolidated master benchmark report
 ├── METHODOLOGY_CROSS_DATASET_BENCHMARKING.md # Cross-dataset compatibility & semantic projection framework
-├── evaluation_sets_ai_readable.md           # Dataset audit and metadata specification
-├── SGG_Literature_Review_v3.pdf             # Comprehensive literature review
-├── evaluation_sets/                         # Frozen 200-image evaluation subsets (Strictly Read-Only)
-│   ├── PSG_200.txt / .coco.json / images/   # Panoptic Scene Graph (PSG) benchmark
-│   ├── VG150_200.txt / .coco.json / images/ # Visual Genome (VG150) benchmark
-│   ├── OIDv6_200.txt / .coco.json / images/ # OpenImages V6 benchmark
-│   └── IndoorVG_200.txt / .coco.json / images/ # IndoorVG benchmark
-├── experiments/                             # Standalone evaluation runners (16 Model–Dataset Pairs)
-│   ├── REACT/                               # run_benchmark_react_{psg,vg150,indoorvg,openimages}.py
-│   ├── REACTPP/                             # run_benchmark_reactpp_{psg,vg150,indoorvg,openimages}.py
-│   ├── FCSGG/                               # run_benchmark_fcsgg_{psg,vg150,indoorvg,openimages}.py
-│   └── FastContextualSGG/                   # run_benchmark_fast_contextual_{psg,vg150,indoorvg,openimages}.py
-├── results/                                 # Standardized benchmark deliverables, logs & audit records
-│   ├── single_pair_benchmark_matrix.csv     # Complete 16-run tabular matrix (27 columns)
-│   ├── single_pair_benchmark_matrix.json    # Machine-readable master benchmark matrix
-│   ├── audit_discrepancy_log.md             # Evidence-driven audit log & mathematical derivations
-│   ├── reproducibility_audit_records.json   # Cryptographic SHA-256 verification manifest
-│   ├── REACT/                               # {dataset}_metrics.csv, .json, and run logs
-│   ├── REACTPP/                             # {dataset}_metrics.csv, .json, and run logs
-│   ├── FCSGG/                               # {dataset}_metrics.csv, .json, and run logs
-│   └── FastContextualSGG/                   # {dataset}_metrics.csv, .json, and run logs
-└── model_repos/                             # Source checkouts of evaluated model frameworks
-    ├── SGG-Benchmark/                       # Official REACT & SGG-Benchmark codebase
-    ├── fcsgg/                               # Official FCSGG codebase with CenterNet / RAF
-    └── fast-context-scene-graph-generation/ # Official Fast Contextual SGG codebase
+├── evaluation_sets_ai_readable.md            # Dataset audit and metadata specification
+├── SGG_Literature_Review_v3.pdf              # Comprehensive literature review
+├── Object_Retrieval_Product_Demo.mp4         # End-to-end browser prototype demo video
+├── presentation_rebuild/                     # End-Semester Evaluation slides (.pdf/.pptx), originals & element kits
+│   ├── out/                                  # End_Semester_Evaluation.{pdf,pptx} & elements_blue_red.{pdf,pptx}
+│   ├── originals/                            # Reference Mid-Semester Canva exports (.pptx & .pdf)
+│   ├── assets/                               # Reusable Blue & Red visual element kits
+│   └── src/                                  # Modular PptxGenJS deck builder & design system
+├── workspace-retrieval-web/                  # Local-first React + TS + ONNX Runtime Web app & test suite
+├── github_page_setup/                        # GitHub Pages deployment app (static web + fallback handling)
+├── evaluation_sets/                          # Frozen 200-image evaluation subsets (Strictly Read-Only)
+│   ├── PSG_200.txt / .coco.json / images/    # Panoptic Scene Graph (PSG) benchmark
+│   ├── VG150_200.txt / .coco.json / images/  # Visual Genome (VG150) benchmark
+│   ├── OpenImages_200.txt / .coco.json / images/ # OpenImages V6 benchmark
+│   └── IndoorVG_200.txt / .coco.json / images/   # IndoorVG benchmark
+├── experiments/                              # Standalone evaluation runners (16 Model–Dataset Pairs)
+│   ├── REACT/                                # run_benchmark_react_{psg,vg150,indoorvg,openimages}.py
+│   ├── REACTPP/                              # run_benchmark_reactpp_{psg,vg150,indoorvg,openimages}.py
+│   ├── FCSGG/                                # run_benchmark_fcsgg_{psg,vg150,indoorvg,openimages}.py
+│   └── FastContextualSGG/                    # run_benchmark_fast_contextual_{psg,vg150,indoorvg,openimages}.py
+├── results/                                  # Standardized benchmark deliverables, logs & audit records
+│   ├── single_pair_benchmark_matrix.csv      # Complete 16-run tabular matrix (27 columns)
+│   ├── single_pair_benchmark_matrix.json     # Machine-readable master benchmark matrix
+│   ├── audit_discrepancy_log.md              # Evidence-driven audit log & mathematical derivations
+│   ├── reproducibility_audit_records.json    # Cryptographic SHA-256 verification manifest
+│   ├── REACT/                                # {dataset}_metrics.csv, .json, and run logs
+│   ├── REACTPP/                              # {dataset}_metrics.csv, .json, and run logs
+│   ├── FCSGG/                                # {dataset}_metrics.csv, .json, and run logs
+│   └── FastContextualSGG/                    # {dataset}_metrics.csv, .json, and run logs
+└── model_repos/                              # Source checkouts of evaluated model frameworks
+    ├── SGG-Benchmark/                        # Official REACT & SGG-Benchmark codebase
+    ├── fcsgg/                                # Official FCSGG codebase with CenterNet / RAF
+    └── fast-context-scene-graph-generation/  # Official Fast Contextual SGG codebase
 ```
 
 ---

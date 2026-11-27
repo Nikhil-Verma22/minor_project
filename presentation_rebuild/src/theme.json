@@ -1,0 +1,17 @@
+{
+  "name": "Dynamic Workspace Sky Theme",
+  "colors": {
+    "dk1": "1E293B",
+    "lt1": "FFFFFF",
+    "dk2": "0F172A",
+    "lt2": "F4F9FD",
+    "accent1": "60A5FA",
+    "accent2": "65A1E7",
+    "accent3": "A2CBFF",
+    "accent4": "C5E0FD",
+    "accent5": "9DC4F2",
+    "accent6": "3B82F6",
+    "hlink": "2563EB",
+    "folHlink": "64748B"
+  }
+}
