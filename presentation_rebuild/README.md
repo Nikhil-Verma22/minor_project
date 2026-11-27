@@ -10,7 +10,7 @@ This directory contains the **End-Semester Evaluation** presentation for *Object
 | [`out/End_Semester_Evaluation.pptx`](out/End_Semester_Evaluation.pptx) | Final 30-slide editable PowerPoint deck (`20.0" × 11.25"` widescreen) |
 | [`out/elements_blue_red.pdf`](out/elements_blue_red.pdf) | Blue (original) and Red (recolored) 18-asset element showcase & UI components (PDF) |
 | [`out/elements_blue_red.pptx`](out/elements_blue_red.pptx) | Editable element showcase deck (PPTX) |
-| [`originals/Object Retrieval (3).pdf`](originals/Object%20Retrieval%20(3).pdf) | Mid-Semester original reference export (PDF) |
+| [`originals/Object Retrieval (3).pdf`](originals/Object%20Retrieval%20%283%29.pdf) | Mid-Semester original reference export (PDF) |
 | [`originals/Object Retrieval.pptx`](originals/Object%20Retrieval.pptx) | Mid-Semester original reference export (PPTX) |
 
 ## Directory Layout
